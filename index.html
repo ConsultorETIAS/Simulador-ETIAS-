@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETIAS Consultant Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header h1 { color: #1e3a5f; font-size: 24px; }
+        .header p { color: #666; font-size: 14px; margin-top: 5px; }
+        
+        .lang-selector {
+            float: right;
+            display: flex;
+            gap: 8px;
+            margin-top: -40px;
+        }
+        .lang-btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 2px solid #1e3a5f;
+            background: white;
+            color: #1e3a5f;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .lang-btn.active { background: #1e3a5f; color: white; }
+        
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .step {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+        .step-num.active { background: #1e3a5f; color: white; }
+        .step-num.done { background: #22c55e; color: white; }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h2 { color: #1e3a5f; margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 20px; }
+        
+        .section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        .section-title {
+            color: #1e3a5f;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        
+        .field { margin-bottom: 12px; }
+        .field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #475569;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .field-hint { color: #ef4444; font-size: 11px; margin-bottom: 4px; }
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1e3a5f;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 600px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .lang-selector { float: none; margin: 10px 0; }
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background: #1e3a5f; color: white; }
+        .btn-secondary { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        
+        .warning-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .warning-box label { display: flex; align-items: flex-start; gap: 10px; }
+        .warning-box input { width: auto; margin-top: 3px; }
+        .warning-text { color: #92400e; font-size: 13px; }
+        
+        .dropzone {
+            border: 3px dashed #f59e0b;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            background: #fffbeb;
+            margin-bottom: 20px;
+        }
+        .dropzone-icon { font-size: 48px; margin-bottom: 10px; }
+        .dropzone-title { color: #1e3a5f; font-weight: bold; margin-bottom: 5px; }
+        .dropzone-subtitle { color: #666; font-size: 12px; }
+        
+        .status {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .status-loading { background: #dbeafe; color: #1e40af; }
+        .status-error { background: #fee2e2; color: #991b1b; }
+        .status-success { background: #d1fae5; color: #166534; }
+        
+        .d-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 700px) {
+            .d-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .d-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .d-title { color: #f59e0b; font-size: 10px; font-weight: bold; margin-bottom: 5px; }
+        .d-desc { color: #64748b; font-size: 11px; }
+        
+        .checks {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            .checks { grid-template-columns: 1fr; }
+        }
+        .check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+        .check.pass { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+        .check.fail { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+        .check-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; }
+        .check.pass .check-icon { background: #22c55e; color: white; }
+        .check.fail .check-icon { background: #ef4444; color: white; }
+        
+        .alert { padding: 16px; border-radius: 8px; margin-bottom: 20px; }
+        .alert-error { background: #fef2f2; border: 1px solid #ef4444; color: #991b1b; }
+        .alert-success { background: #f0fdf4; border: 1px solid #22c55e; color: #166534; }
+        .alert-title { font-weight: bold; margin-bottom: 5px; }
+        
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            .review-grid { grid-template-columns: 1fr; }
+        }
+        .review-box { line-height: 1.6; }
+        .review-box strong { color: #1e3a5f; }
+        .review-label { color: #64748b; font-size: 10px; text-transform: uppercase; font-weight: bold; }
+        
+        .success-icon { font-size: 64px; text-align: center; margin-bottom: 20px; }
+        .file-id {
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .file-id-label { color: #64748b; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+        .file-id-value { color: #1e3a5f; font-size: 24px; font-weight: bold; font-family: monospace; }
+        
+        .steps-list {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .steps-list h3 { color: #1e3a5f; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #f59e0b; }
+        .steps-list ol { padding-left: 20px; line-height: 1.8; }
+        .steps-list li { margin-bottom: 6px; }
+        
+        .note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 8px;
+        }
+        .toggle-label { font-weight: 500; font-size: 13px; }
+        .toggle-btns { display: flex; gap: 6px; }
+        .toggle-btn {
+            padding: 6px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .toggle-btn.yes.active { background: #ef4444; color: white; }
+        .toggle-btn.no.active { background: #22c55e; color: white; }
+        .toggle-btn:not(.active) { background: #f1f5f9; color: #64748b; }
+        
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            margin-top: 30px;
+        }
+        .footer a { color: white; font-weight: bold; }
+        
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- Content will be rendered here -->
+    </div>
+
+    <script>
+        // Data and State
+        const CONSULTANT_EMAIL = "consultor.etias@proton.me";
+        const REPO_URL = "https://github.com/consultoretias/ETIAS-simulador-";
+        
+        let currentLang = 'es';
+        let currentStep = 0;
+        
+        let repData = {
+            consultantName: "",
+            consultantEmail: CONSULTANT_EMAIL,
+            company: "",
+            fee: "",
+            travelerName: "",
+            travelerEmail: "",
+            passportNumber: "",
+            relation: 0,
+            signed: false
+        };
+        
+        let travelerData = {
+            surname: "",
+            givenNames: "",
+            nationality: "",
+            dob: "",
+            sex: "",
+            passportNumber: "",
+            expiryDate: "",
+            issuingCountry: "",
+            arrivalDate: "",
+            destination: "",
+            purpose: 0,
+            refused: false,
+            deported: false,
+            criminal: false
+        };
+        
+        let ocrState = { loading: false, error: null, data: null };
+        let pdfState = 'idle';
+
+        // Translations
+        const T = {
+            es: {
+                steps: ["Representación", "Pasaporte", "Datos", "Validación", "Revisión", "Confirmación"],
+                header: { title: "ETIAS Consultant Simulator", subtitle: "Simulador de Representación Legal · Reglamento (UE) 2018/1240" },
+                rep: {
+                    title: "Declaración de Representación",
+                    desc: "Complete los datos para generar la declaración legal de representación ETIAS.",
+                    cLabel: "Intermediario Comercial",
+                    name: "Nombre completo *",
+                    email: "Email profesional",
+                    company: "Empresa / Agencia",
+                    fee: "Tarifa de servicio (€) *",
+                    tLabel: "Viajero Representado",
+                    tname: "Nombre completo del viajero *",
+                    temail: "Email personal del viajero *",
+                    tpass: "Número de pasaporte *",
+                    relation: "Tipo de representación",
+                    relations: ["Adulto (autónomo)", "Menor (tutela parental)", "Tutela legal"],
+                    emailWarn: "⚠ Debe ser email exclusivo del viajero, no del consultor",
+                    declare: "Confirmo que actúo como intermediario comercial autorizado por el viajero conforme al Reglamento (UE) 2018/1240.",
+                    sign: "Continuar →"
+                },
+                pass: {
+                    title: "Datos del Pasaporte",
+                    desc: "Sube una foto del pasaporte o ingresa los datos manualmente.",
+                    drag: "📷 Arrastra foto o haz clic",
+                    formats: "JPG, PNG, WEBP · Máx 5MB",
+                    processing: "Analizando...",
+                    success: "✓ Datos detectados",
+                    error: "No se pudo leer. Ingresa manualmente.",
+                    privacy: "🔒 Los datos no salen de tu dispositivo",
+                    confirm: "Confirmar y continuar →",
+                    skip: "Omitir →",
+                    editTitle: "Verificar datos del pasaporte",
+                    fGiven: "Nombres",
+                    fSurname: "Apellidos",
+                    fNat: "Nacionalidad",
+                    fDob: "Fecha de nacimiento",
+                    fSex: "Sexo",
+                    fNum: "Número de pasaporte",
+                    fExp: "Fecha de vencimiento",
+                    fCountry: "País emisor"
+                },
+                td: {
+                    title: "Datos del Viajero",
+                    pTitle: "Información Personal",
+                    fname: "Nombres",
+                    lname: "Apellidos",
+                    dob: "Fecha de nacimiento",
+                    nat: "Nacionalidad",
+                    gender: "Sexo",
+                    genders: ["Masculino", "Femenino", "Otro"],
+                    ppTitle: "Documento de Viaje",
+                    pnum: "Número de pasaporte",
+                    pexpiry: "Vencimiento",
+                    pcountry: "País emisor",
+                    trvTitle: "Información del Viaje",
+                    dest: "País destino *",
+                    arrival: "Fecha de llegada *",
+                    purpose: "Motivo del viaje",
+                    purposes: ["Turismo", "Negocios", "Tránsito", "Visita familiar", "Estudios", "Otros"],
+                    histTitle: "Antecedentes",
+                    refused: "¿Visa rechazada anteriormente?",
+                    deported: "¿Deportación previa de la UE?",
+                    criminal: "¿Antecedentes penales?",
+                    yes: "Sí",
+                    no: "No",
+                    next: "Validar →"
+                },
+                val: {
+                    title: "Validación del Expediente",
+                    sub: "Verificación de cumplimiento normativo",
+                    dNames: { d1: "DELEGACIÓN", d2: "DESCRIPCIÓN", d3: "DISCERNIMIENTO", d4: "DILIGENCIA" },
+                    dDescs: { d1: "Humano decide", d2: "Contexto completo", d3: "Verificación datos", d4: "Documentación" },
+                    checks: {
+                        d1_1: "Consultor identificado",
+                        d1_2: "Emails diferentes",
+                        d1_3: "Declaración firmada",
+                        d2_1: "Pasaporte vigente >3 meses",
+                        d2_2: "Fecha llegada futura",
+                        d2_3: "Destino en zona ETIAS",
+                        d3_1: "Sin alertas de seguridad",
+                        d3_2: "Datos consistentes",
+                        d3_3: "Tarifa declarada",
+                        d4_1: "Copia para consultor",
+                        d4_2: "Copia para viajero",
+                        d4_3: "Registro de auditoría"
+                    },
+                    fail: "⚠ REVISIÓN NECESARIA",
+                    failDesc: "Algunos criterios no se cumplen. Corrija antes de continuar.",
+                    ok: "✓ EXPEDIENTE VALIDADO",
+                    next: "Revisar →"
+                },
+                rev: {
+                    title: "Revisión Final",
+                    sub: "Verifique todos los datos antes de generar el documento legal",
+                    warn: "⚠ Al confirmar, declara bajo su responsabilidad que los datos son exactos y cuenta con autorización del viajero.",
+                    rLabel: "Datos del Intermediario",
+                    tLabel: "Datos del Viajero",
+                    valOk: "Todas las validaciones superadas",
+                    submit: "Generar declaración →"
+                },
+                conf: {
+                    title: "¡Expediente Completado!",
+                    sub: "La declaración de representación está lista",
+                    idLabel: "Número de Expediente",
+                    pdfTitle: "Descargar documento legal (PDF)",
+                    pdfBtn: "⬇ Descargar PDF",
+                    pdfGen: "Generando...",
+                    pdfOk: "✓ Descargado",
+                    stepsTitle: "Próximos pasos:",
+                    steps: [
+                        "Descargar y guardar el PDF de la declaración",
+                        "Enviar copia al viajero",
+                        "Acceder a travel-europe.europa.eu/etias",
+                        "Completar solicitud oficial con estos datos",
+                        "Pagar €7 de tasa oficial",
+                        "Guardar número de autorización ETIAS"
+                    ],
+                    note: "Simulador educativo. No conectado al sistema oficial ETIAS (lanzamiento 2026).",
+                    newBtn: "Nuevo expediente →"
+                }
+            },
+            en: {
+                steps: ["Representation", "Passport", "Details", "Validation", "Review", "Confirmation"],
+                header: { title: "ETIAS Consultant Simulator", subtitle: "Legal Representation Simulator · Regulation (EU) 2018/1240" },
+                rep: {
+                    title: "Declaration of Representation",
+                    desc: "Complete details to generate the ETIAS legal representation declaration.",
+                    cLabel: "Commercial Intermediary",
+                    name: "Full name *",
+                    email: "Professional email",
+                    company: "Company / Agency",
+                    fee: "Service fee (€) *",
+                    tLabel: "Represented Traveller",
+                    tname: "Traveller full name *",
+                    temail: "Traveller personal email *",
+                    tpass: "Passport number *",
+                    relation: "Type of representation",
+                    relations: ["Adult (self)", "Minor (parental)", "Legal guardianship"],
+                    emailWarn: "⚠ Must be traveller's exclusive email, not consultant's",
+                    declare: "I confirm acting as authorised commercial intermediary per Regulation (EU) 2018/1240.",
+                    sign: "Continue →"
+                },
+                pass: {
+                    title: "Passport Details",
+                    desc: "Upload passport photo or enter data manually.",
+                    drag: "📷 Drag photo or click",
+                    formats: "JPG, PNG, WEBP · Max 5MB",
+                    processing: "Analyzing...",
+                    success: "✓ Data detected",
+                    error: "Could not read. Enter manually.",
+                    privacy: "🔒 Data never leaves your device",
+                    confirm: "Confirm and continue →",
+                    skip: "Skip →",
+                    editTitle: "Verify passport data",
+                    fGiven: "Given names",
+                    fSurname: "Surname",
+                    fNat: "Nationality",
+                    fDob: "Date of birth",
+                    fSex: "Sex",
+                    fNum: "Passport number",
+                    fExp: "Expiry date",
+                    fCountry: "Issuing country"
+                },
+                td: {
+                    title: "Traveller Details",
+                    pTitle: "Personal Information",
+                    fname: "Given names",
+                    lname: "Surname",
+                    dob: "Date of birth",
+                    nat: "Nationality",
+                    gender: "Sex",
+                    genders: ["Male", "Female", "Other"],
+                    ppTitle: "Travel Document",
+                    pnum: "Passport number",
+                    pexpiry: "Expiry date",
+                    pcountry: "Issuing country",
+                    trvTitle: "Travel Information",
+                    dest: "Destination country *",
+                    arrival: "Arrival date *",
+                    purpose: "Purpose of travel",
+                    purposes: ["Tourism", "Business", "Transit", "Family visit", "Studies", "Other"],
+                    histTitle: "Background",
+                    refused: "Previous visa refusal?",
+                    deported: "Previous EU deportation?",
+                    criminal: "Criminal record?",
+                    yes: "Yes",
+                    no: "No",
+                    next: "Validate →"
+                },
+                val: {
+                    title: "File Validation",
+                    sub: "Compliance verification",
+                    dNames: { d1: "DELEGATION", d2: "DESCRIPTION", d3: "DISCERNMENT", d4: "DILIGENCE" },
+                    dDescs: { d1: "Human decides", d2: "Complete context", d3: "Data verification", d4: "Documentation" },
+                    checks: {
+                        d1_1: "Consultant identified",
+                        d1_2: "Different emails",
+                        d1_3: "Declaration signed",
+                        d2_1: "Passport valid >3 months",
+                        d2_2: "Future arrival date",
+                        d2_3: "ETIAS zone destination",
+                        d3_1: "No security alerts",
+                        d3_2: "Consistent data",
+                        d3_3: "Fee declared",
+                        d4_1: "Copy for consultant",
+                        d4_2: "Copy for traveller",
+                        d4_3: "Audit log"
+                    },
+                    fail: "⚠ REVIEW REQUIRED",
+                    failDesc: "Some criteria not met. Please correct before continuing.",
+                    ok: "✓ FILE VALIDATED",
+                    next: "Review →"
+                },
+                rev: {
+                    title: "Final Review",
+                    sub: "Verify all data before generating legal document",
+                    warn: "⚠ By confirming, you declare that data is accurate and you have traveller authorisation.",
+                    rLabel: "Intermediary Details",
+                    tLabel: "Traveller Details",
+                    valOk: "All validations passed",
+                    submit: "Generate declaration →"
+                },
+                conf: {
+                    title: "File Completed!",
+                    sub: "Representation declaration is ready",
+                    idLabel: "File Number",
+                    pdfTitle: "Download legal document (PDF)",
+                    pdfBtn: "⬇ Download PDF",
+                    pdfGen: "Generating...",
+                    pdfOk: "✓ Downloaded",
+                    stepsTitle: "Next steps:",
+                    steps: [
+                        "Download and save declaration PDF",
+                        "Send copy to traveller",
+                        "Access travel-europe.europa.eu/etias",
+                        "Complete official application with this data",
+                        "Pay €7 official fee",
+                        "Save ETIAS authorisation number"
+                    ],
+                    note: "Educational simulator. Not connected to official ETIAS system (launch 2026).",
+                    newBtn: "New file →"
+                }
+            },
+            pt: {
+                steps: ["Representação", "Passaporte", "Dados", "Validação", "Revisão", "Confirmação"],
+                header: { title: "ETIAS Consultant Simulator", subtitle: "Simulador de Representação Legal · Regulamento (UE) 2018/1240" },
+                rep: {
+                    title: "Declaração de Representação",
+                    desc: "Complete os dados para gerar a declaração legal de representação ETIAS.",
+                    cLabel: "Intermediário Comercial",
+                    name: "Nome completo *",
+                    email: "Email profissional",
+                    company: "Empresa / Agência",
+                    fee: "Taxa de serviço (€) *",
+                    tLabel: "Viajante Representado",
+                    tname: "Nome completo do viajante *",
+                    temail: "Email pessoal do viajante *",
+                    tpass: "Número do passaporte *",
+                    relation: "Tipo de representação",
+                    relations: ["Adulto (autónomo)", "Menor (tutela parental)", "Tutela legal"],
+                    emailWarn: "⚠ Deve ser email exclusivo do viajante, não do consultor",
+                    declare: "Confirmo que atuo como intermediário comercial autorizado pelo viajante conforme Regulamento (UE) 2018/1240.",
+                    sign: "Continuar →"
+                },
+                pass: {
+                    title: "Dados do Passaporte",
+                    desc: "Carregue foto do passaporte ou insira dados manualmente.",
+                    drag: "📷 Arrastar foto ou clicar",
+                    formats: "JPG, PNG, WEBP · Máx 5MB",
+                    processing: "A analisar...",
+                    success: "✓ Dados detetados",
+                    error: "Não foi possível ler. Insira manualmente.",
+                    privacy: "🔒 Os dados não saem do seu dispositivo",
+                    confirm: "Confirmar e continuar →",
+                    skip: "Ignorar →",
+                    editTitle: "Verificar dados do passaporte",
+                    fGiven: "Nomes",
+                    fSurname: "Apelidos",
+                    fNat: "Nacionalidade",
+                    fDob: "Data de nascimento",
+                    fSex: "Sexo",
+                    fNum: "Número do passaporte",
+                    fExp: "Data de validade",
+                    fCountry: "País emissor"
+                },
+                td: {
+                    title: "Dados do Viajante",
+                    pTitle: "Informação Pessoal",
+                    fname: "Nomes",
+                    lname: "Apelidos",
+                    dob: "Data de nascimento",
+                    nat: "Nacionalidade",
+                    gender: "Sexo",
+                    genders: ["Masculino", "Feminino", "Outro"],
+                    ppTitle: "Documento de Viagem",
+                    pnum: "Número do passaporte",
+                    pexpiry: "Validade",
+                    pcountry: "País emissor",
+                    trvTitle: "Informação da Viagem",
+                    dest: "País destino *",
+                    arrival: "Data de chegada *",
+                    purpose: "Motivo da viagem",
+                    purposes: ["Turismo", "Negócios", "Trânsito", "Visita familiar", "Estudos", "Outros"],
+                    histTitle: "Antecedentes",
+                    refused: "Visto recusado anteriormente?",
+                    deported: "Deportação prévia da UE?",
+                    criminal: "Antecedentes criminais?",
+                    yes: "Sim",
+                    no: "Não",
+                    next: "Validar →"
+                },
+                val: {
+                    title: "Validação do Expediente",
+                    sub: "Verificação de conformidade",
+                    dNames: { d1: "DELEGAÇÃO", d2: "DESCRIÇÃO", d3: "DISCERNIMENTO", d4: "DILIGÊNCIA" },
+                    dDescs: { d1: "Humano decide", d2: "Contexto completo", d3: "Verificação dados", d4: "Documentação" },
+                    checks: {
+                        d1_1: "Consultor identificado",
+                        d1_2: "Emails diferentes",
+                        d1_3: "Declaração assinada",
+                        d2_1: "Passaporte válido >3 meses",
+                        d2_2: "Data chegada futura",
+                        d2_3: "Destino zona ETIAS",
+                        d3_1: "Sem alertas segurança",
+                        d3_2: "Dados consistentes",
+                        d3_3: "Taxa declarada",
+                        d4_1: "Cópia para consultor",
+                        d4_2: "Cópia para viajante",
+                        d4_3: "Registo auditoria"
+                    },
+                    fail: "⚠ REVISÃO NECESSÁRIA",
+                    failDesc: "Alguns critérios não cumpridos. Corrija antes de continuar.",
+                    ok: "✓ EXPEDIENTE VALIDADO",
+                    next: "Rever →"
+                },
+                rev: {
+                    title: "Revisão Final",
+                    sub: "Verifique todos os dados antes de gerar o documento legal",
+                    warn: "⚠ Ao confirmar, declara sob sua responsabilidade que os dados são exatos e conta com autorização do viajante.",
+                    rLabel: "Dados do Intermediário",
+                    tLabel: "Dados do Viajante",
+                    valOk: "Todas as validações superadas",
+                    submit: "Gerar declaração →"
+                },
+                conf: {
+                    title: "Expediente Concluído!",
+                    sub: "A declaração de representação está pronta",
+                    idLabel: "Número do Expediente",
+                    pdfTitle: "Transferir documento legal (PDF)",
+                    pdfBtn: "⬇ Transferir PDF",
+                    pdfGen: "A gerar...",
+                    pdfOk: "✓ Transferido",
+                    stepsTitle: "Próximos passos:",
+                    steps: [
+                        "Transferir e guardar o PDF da declaração",
+                        "Enviar cópia ao viajante",
+                        "Aceder a travel-europe.europa.eu/etias",
+                        "Completar solicitação oficial com estes dados",
+                        "Pagar €7 de taxa oficial",
+                        "Guardar número de autorização ETIAS"
+                    ],
+                    note: "Simulador educativo. Não conectado ao sistema oficial ETIAS (lançamento 2026).",
+                    newBtn: "Novo expediente →"
+                }
+            }
+        };
+
+        // Functions
+        function setLang(lang) {
+            currentLang = lang;
+            render();
+        }
+
+        function updateRep(key, value) {
+            repData[key] = value;
+            render();
+        }
+
+        function updateTraveler(key, value) {
+            travelerData[key] = value;
+            render();
+        }
+
+        function handleFile(file) {
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File too large (max 5MB)');
+                return;
+            }
+            ocrState = { loading: true, error: null, data: null };
+            render();
+            setTimeout(function() {
+                ocrState = { loading: false, error: true, data: null };
+                render();
+            }, 1500);
+        }
+
+        function runValidation() {
+            var etiasZones = ['españa','spain','espanha','francia','france','frança','alemania','germany','alemanha','italia','italy','itália','portugal','paises bajos','netherlands','holanda','bélgica','belgium','belgica','suiza','switzerland','suíça','austria','noruega','norway','dinamarca','denmark','suecia','sweden','suécia','finlandia','finland','irlanda','ireland'];
+            
+            var dest = (travelerData.destination || '').toLowerCase();
+            var isEtias = false;
+            for (var i = 0; i < etiasZones.length; i++) {
+                if (dest.indexOf(etiasZones[i]) !== -1) {
+                    isEtias = true;
+                    break;
+                }
+            }
+            
+            var checks = {
+                d1_1: repData.consultantName.length > 2,
+                d1_2: repData.travelerEmail !== repData.consultantEmail && repData.travelerEmail.indexOf('@') !== -1,
+                d1_3: repData.signed,
+                d2_1: travelerData.expiryDate && new Date(travelerData.expiryDate) > new Date(Date.now() + 90*24*60*60*1000),
+                d2_2: travelerData.arrivalDate && new Date(travelerData.arrivalDate) > new Date(),
+                d2_3: isEtias || travelerData.destination.length > 2,
+                d3_1: !travelerData.refused && !travelerData.deported && !travelerData.criminal,
+                d3_2: travelerData.passportNumber === repData.passportNumber && travelerData.passportNumber.length > 5,
+                d3_3: repData.fee && parseFloat(repData.fee) > 0,
+                d4_1: true, d4_2: true, d4_3: true
+            };
+            
+            var failed = [];
+            for (var key in checks) {
+                if (!checks[key]) failed.push(key);
+            }
+            return { checks: checks, failed: failed, passed: failed.length === 0 };
+        }
+
+        function generatePDF() {
+            pdfState = 'generating';
+            render();
+            
+            try {
+                var jsPDF = window.jspdf.jsPDF;
+                var doc = new jsPDF();
+                var W = 210, M = 20, CW = W - M * 2;
+                var y = 20;
+                var expId = 'ETIAS-' + Date.now().toString(36).toUpperCase();
+                var today = new Date().toLocaleDateString();
+                var tx = T[currentLang];
+                
+                // Header
+                doc.setFillColor(30, 58, 95);
+                doc.rect(0, 0, W, 40, "F");
+                doc.setTextColor(201, 168, 76);
+                doc.setFontSize(20);
+                doc.setFont("helvetica", "bold");
+                doc.text(tx.rep.title.toUpperCase(), M, 18);
+                doc.setFontSize(10);
+                doc.setTextColor(200, 200, 200);
+                doc.text("Art. 67, Regulation (EU) 2018/1240", M, 26);
+                doc.setTextColor(150, 150, 150);
+                doc.text("Ref: " + expId + " | " + today, M, 34);
+                y = 50;
+
+                function section(title) {
+                    doc.setFillColor(30, 58, 95);
+                    doc.rect(M, y, CW, 8, "F");
+                    doc.setTextColor(201, 168, 76);
+                    doc.setFontSize(11);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(title, M + 4, y + 5.5);
+                    y += 14;
+                }
+
+                function row(label, value) {
+                    doc.setFillColor(245, 245, 245);
+                    doc.rect(M, y, 60, 7, "F");
+                    doc.setTextColor(100, 100, 100);
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(label, M + 3, y + 5);
+                    doc.setTextColor(30, 30, 30);
+                    doc.setFont("helvetica", "normal");
+                    var text = String(value || "—");
+                    var lines = doc.splitTextToSize(text, CW - 68);
+                    doc.text(lines, M + 65, y + 5);
+                    y += 9;
+                }
+
+                // I. Intermediary
+                section(currentLang === 'es' ? "I. INTERMEDIARIO" : currentLang === 'pt' ? "I. INTERMEDIÁRIO" : "I. INTERMEDIARY");
+                row("Name:", repData.consultantName);
+                row("Email:", repData.consultantEmail);
+                row("Company:", repData.company);
+                row("Fee:", "€" + repData.fee);
+                y += 6;
+
+                // II. Traveller
+                section(currentLang === 'es' ? "II. VIAJERO" : currentLang === 'pt' ? "II. VIAJANTE" : "II. TRAVELLER");
+                row("Name:", repData.travelerName);
+                row("Passport:", repData.passportNumber);
+                row("Nationality:", travelerData.nationality);
+                row("DOB:", travelerData.dob);
+                row("Type:", tx.rep.relations[repData.relation]);
+                row("Destination:", travelerData.destination);
+                row("Arrival:", travelerData.arrivalDate);
+                y += 6;
+
+                // III. Declaration
+                section(currentLang === 'es' ? "III. DECLARACIÓN" : currentLang === 'pt' ? "III. DECLARAÇÃO" : "III. DECLARATION");
+                doc.setTextColor(30, 30, 30);
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                
+                var decl = currentLang === 'es'
+                    ? "Yo, " + repData.travelerName + ", autorizo a " + repData.consultantName + " para presentar mi solicitud ETIAS."
+                    : currentLang === 'pt'
+                    ? "Eu, " + repData.travelerName + ", autorizo " + repData.consultantName + " a apresentar o meu pedido ETIAS."
+                    : "I, " + repData.travelerName + ", authorise " + repData.consultantName + " to submit my ETIAS application.";
+                
+                var lines = doc.splitTextToSize(decl, CW);
+                doc.text(lines, M, y);
+                y += lines.length * 5 + 10;
+
+                // IV. Signatures
+                section(currentLang === 'es' ? "IV. FIRMAS" : currentLang === 'pt' ? "IV. ASSINATURAS" : "IV. SIGNATURES");
+                var bw = (CW - 10) / 2;
+                
+                // Box 1
+                doc.rect(M, y, bw, 35);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(10);
+                doc.setTextColor(30, 58, 95);
+                doc.text(currentLang === 'es' ? "Intermediario" : currentLang === 'pt' ? "Intermediário" : "Intermediary", M + bw/2, y + 8, {align:"center"});
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(9);
+                doc.setTextColor(80, 80, 80);
+                doc.text(repData.consultantName, M + bw/2, y + 16, {align:"center"});
+                doc.setDrawColor(180, 180, 180);
+                doc.line(M + 10, y + 28, M + bw - 10, y + 28);
+                doc.text(today, M + bw/2, y + 33, {align:"center"});
+                
+                // Box 2
+                doc.rect(M + bw + 10, y, bw, 35);
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(30, 58, 95);
+                doc.text(currentLang === 'es' ? "Viajero" : currentLang === 'pt' ? "Viajante" : "Traveller", M + bw + 10 + bw/2, y + 8, {align:"center"});
+                doc.setFont("helvetica", "normal");
+                doc.text(repData.travelerName, M + bw + 10 + bw/2, y + 16, {align:"center"});
+                doc.line(M + bw + 20, y + 28, M + 2*bw + 10, y + 28);
+                doc.text(today, M + bw + 10 + bw/2, y + 33, {align:"center"});
+                
+                y += 45;
+
+                // Footer
+                doc.setFillColor(30, 58, 95);
+                doc.rect(0, 280, W, 17, "F");
+                doc.setTextColor(180, 180, 180);
+                doc.setFontSize(8);
+                doc.text("ETIAS Consultant Simulator | " + CONSULTANT_EMAIL + " | Educational Only", W/2, 290, {align:"center"});
+
+                doc.save("ETIAS-" + expId + ".pdf");
+                pdfState = 'downloaded';
+                render();
+                setTimeout(function() { pdfState = 'idle'; render(); }, 2000);
+            } catch (e) {
+                console.error(e);
+                alert('PDF Error: ' + e.message);
+                pdfState = 'idle';
+                render();
+            }
+        }
+
+        function reset() {
+            currentStep = 0;
+            repData = { consultantName: "", consultantEmail: CONSULTANT_EMAIL, company: "", fee: "", travelerName: "", travelerEmail: "", passportNumber: "", relation: 0, signed: false };
+            travelerData = { surname: "", givenNames: "", nationality: "", dob: "", sex: "", passportNumber: "", expiryDate: "", issuingCountry: "", arrivalDate: "", destination: "", purpose: 0, refused: false, deported: false, criminal: false };
+            ocrState = { loading: false, error: null, data: null };
+            pdfState = 'idle';
+            render();
+        }
+
+        function renderSteps() {
+            var t = T[currentLang];
+            var html = '<div class="steps">';
+            for (var i = 0; i < t.steps.length; i++) {
+                var cls = i === currentStep ? 'active' : i < currentStep ? 'done' : '';
+                var num = i < currentStep ? '✓' : (i + 1);
+                html += '<div class="step"><span class="step-num ' + cls + '">' + num + '</span>' + t.steps[i] + '</div>';
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function render() {
+            var app = document.getElementById('app');
+            var t = T[currentLang];
+            var html = '';
+            
+            // Header
+            html += '<div class="header">';
+            html += '<div class="lang-selector">';
+            html += '<button class="lang-btn ' + (currentLang === 'es' ? 'active' : '') + '" onclick="setLang(\'es\')">ES</button>';
+            html += '<button class="lang-btn ' + (currentLang === 'en' ? 'active' : '') + '" onclick="setLang(\'en\')">EN</button>';
+            html += '<button class="lang-btn ' + (currentLang === 'pt' ? 'active' : '') + '" onclick="setLang(\'pt\')">PT</button>';
+            html += '</div>';
+            html += '<h1>' + t.header.title + '</h1>';
+            html += '<p>' + t.header.subtitle + '</p>';
+            html += '</div>';
+            
+            // Steps
+            html += renderSteps();
+            
+            // Card
+            html += '<div class="card">';
+            
+            if (currentStep === 0) {
+                var canProceed = repData.consultantName.length > 2 && repData.travelerName.length > 2 && 
+                                repData.travelerEmail.indexOf('@') !== -1 && repData.travelerEmail !== repData.consultantEmail &&
+                                repData.passportNumber.length > 5 && repData.fee && repData.signed;
+                
+                html += '<h2>' + t.rep.title + '</h2>';
+                html += '<p class="subtitle">' + t.rep.desc + '</p>';
+                
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.rep.cLabel + '</div>';
+                html += '<div class="grid-2">';
+                html += '<div class="field"><label class="field-label">' + t.rep.name + '</label><input value="' + repData.consultantName + '" oninput="updateRep(\'consultantName\',this.value)" placeholder="Dr. Ana García"></div>';
+                html += '<div class="field"><label class="field-label">' + t.rep.email + '</label><input value="' + repData.consultantEmail + '" oninput="updateRep(\'consultantEmail\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.rep.company + '</label><input value="' + repData.company + '" oninput="updateRep(\'company\',this.value)" placeholder="ETIAS Solutions"></div>';
+                html += '<div class="field"><label class="field-label">' + t.rep.fee + '</label><input type="number" value="' + repData.fee + '" oninput="updateRep(\'fee\',this.value)" placeholder="50"></div>';
+                html += '</div></div>';
+                
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.rep.tLabel + '</div>';
+                html += '<div class="grid-2">';
+                html += '<div class="field"><label class="field-label">' + t.rep.tname + '</label><input value="' + repData.travelerName + '" oninput="updateRep(\'travelerName\',this.value);updateTraveler(\'givenNames\',this.value.split(\' \')[0]);updateTraveler(\'surname\',this.value.split(\' \').slice(1).join(\' \'))" placeholder="John Smith"></div>';
+                html += '<div class="field"><label class="field-label">' + t.rep.temail + '</label><p class="field-hint">' + t.rep.emailWarn + '</p><input value="' + repData.travelerEmail + '" oninput="updateRep(\'travelerEmail\',this.value)" placeholder="john@personal.com"></div>';
+                html += '<div class="field"><label class="field-label">' + t.rep.tpass + '</label><input value="' + repData.passportNumber + '" oninput="updateRep(\'passportNumber\',this.value.toUpperCase());updateTraveler(\'passportNumber\',this.value.toUpperCase())" placeholder="P12345678"></div>';
+                html += '<div class="field"><label class="field-label">' + t.rep.relation + '</label><select onchange="updateRep(\'relation\',parseInt(this.value))">';
+                for (var i = 0; i < t.rep.relations.length; i++) {
+                    html += '<option value="' + i + '" ' + (repData.relation === i ? 'selected' : '') + '>' + t.rep.relations[i] + '</option>';
+                }
+                html += '</select></div>';
+                html += '</div></div>';
+                
+                html += '<div class="warning-box">';
+                html += '<label><input type="checkbox" ' + (repData.signed ? 'checked' : '') + ' onchange="updateRep(\'signed\',this.checked)"><span class="warning-text">' + t.rep.declare + '</span></label>';
+                html += '</div>';
+                
+                html += '<div style="display:flex;justify-content:space-between;align-items:center">';
+                html += '<span style="font-size:12px;color:#999">* Required fields</span>';
+                html += '<button class="btn btn-primary" onclick="' + (canProceed ? 'currentStep=1;render()' : 'alert(\'Complete all required fields\')') + '" ' + (canProceed ? '' : 'disabled') + '>' + t.rep.sign + '</button>';
+                html += '</div>';
+            }
+            else if (currentStep === 1) {
+                html += '<h2>' + t.pass.title + '</h2>';
+                html += '<p class="subtitle">' + t.pass.desc + '</p>';
+                
+                html += '<div class="dropzone" onclick="document.getElementById(\'file\').click()" ondragover="event.preventDefault();this.style.borderColor=\'#1e3a5f\'" ondragleave="this.style.borderColor=\'#f59e0b\'" ondrop="event.preventDefault();this.style.borderColor=\'#f59e0b\';handleFile(event.dataTransfer.files[0])">';
+                html += '<input type="file" id="file" style="display:none" accept="image/*" onchange="handleFile(this.files[0])">';
+                html += '<div class="dropzone-icon">📷</div>';
+                html += '<div class="dropzone-title">' + t.pass.drag + '</div>';
+                html += '<div class="dropzone-subtitle">' + t.pass.formats + '</div>';
+                html += '</div>';
+                
+                if (ocrState.loading) {
+                    html += '<div class="status status-loading">' + t.pass.processing + '</div>';
+                }
+                if (ocrState.error) {
+                    html += '<div class="status status-error">' + t.pass.error + '</div>';
+                }
+                
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.pass.editTitle + '</div>';
+                html += '<div class="grid-2">';
+                html += '<div class="field"><label class="field-label">' + t.pass.fGiven + '</label><input value="' + travelerData.givenNames + '" oninput="updateTraveler(\'givenNames\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.pass.fSurname + '</label><input value="' + travelerData.surname + '" oninput="updateTraveler(\'surname\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.pass.fNat + '</label><input value="' + travelerData.nationality + '" oninput="updateTraveler(\'nationality\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.pass.fDob + '</label><input type="date" value="' + travelerData.dob + '" oninput="updateTraveler(\'dob\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.pass.fSex + '</label><select onchange="updateTraveler(\'sex\',this.value)"><option value="">' + t.td.genders[2] + '</option><option value="M" ' + (travelerData.sex === 'M' ? 'selected' : '') + '>' + t.td.genders[0] + '</option><option value="F" ' + (travelerData.sex === 'F' ? 'selected' : '') + '>' + t.td.genders[1] + '</option></select></div>';
+                html += '<div class="field"><label class="field-label">' + t.pass.fNum + '</label><input value="' + travelerData.passportNumber + '" oninput="updateTraveler(\'passportNumber\',this.value.toUpperCase());updateRep(\'passportNumber\',this.value.toUpperCase())"></div>';
+                html += '<div class="field"><label class="field-label">' + t.pass.fExp + '</label><input type="date" value="' + travelerData.expiryDate + '" oninput="updateTraveler(\'expiryDate\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.pass.fCountry + '</label><input value="' + travelerData.issuingCountry + '" oninput="updateTraveler(\'issuingCountry\',this.value)"></div>';
+                html += '</div></div>';
+                
+                html += '<div style="display:flex;justify-content:space-between;align-items:center">';
+                html += '<button class="btn btn-secondary" onclick="currentStep=0;render()">← Back</button>';
+                html += '<div style="display:flex;gap:10px">';
+                html += '<button class="btn btn-secondary" onclick="currentStep=2;render()">' + t.pass.skip + '</button>';
+                html += '<button class="btn btn-primary" onclick="currentStep=2;render()">' + t.pass.confirm + '</button>';
+                html += '</div></div>';
+                html += '<p style="text-align:center;margin-top:16px;font-size:12px;color:#999">' + t.pass.privacy + '</p>';
+            }
+            else if (currentStep === 2) {
+                html += '<h2>' + t.td.title + '</h2>';
+                
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.td.pTitle + '</div>';
+                html += '<div class="grid-2">';
+                html += '<div class="field"><label class="field-label">' + t.td.fname + '</label><input value="' + travelerData.givenNames + '" oninput="updateTraveler(\'givenNames\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.td.lname + '</label><input value="' + travelerData.surname + '" oninput="updateTraveler(\'surname\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.td.dob + '</label><input type="date" value="' + travelerData.dob + '" oninput="updateTraveler(\'dob\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.td.nat + '</label><input value="' + travelerData.nationality + '" oninput="updateTraveler(\'nationality\',this.value)"></div>';
+                html += '</div></div>';
+                
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.td.ppTitle + '</div>';
+                html += '<div class="grid-2">';
+                html += '<div class="field"><label class="field-label">' + t.td.pnum + '</label><input value="' + travelerData.passportNumber + '" oninput="updateTraveler(\'passportNumber\',this.value.toUpperCase());updateRep(\'passportNumber\',this.value.toUpperCase())"></div>';
+                html += '<div class="field"><label class="field-label">' + t.td.pexpiry + '</label><input type="date" value="' + travelerData.expiryDate + '" oninput="updateTraveler(\'expiryDate\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.td.pcountry + '</label><input value="' + travelerData.issuingCountry + '" oninput="updateTraveler(\'issuingCountry\',this.value)"></div>';
+                html += '</div></div>';
+                
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.td.trvTitle + '</div>';
+                html += '<div class="grid-2">';
+                html += '<div class="field"><label class="field-label">' + t.td.dest + '</label><input value="' + travelerData.destination + '" oninput="updateTraveler(\'destination\',this.value)" placeholder="Spain, France..."></div>';
+                html += '<div class="field"><label class="field-label">' + t.td.arrival + '</label><input type="date" value="' + travelerData.arrivalDate + '" oninput="updateTraveler(\'arrivalDate\',this.value)"></div>';
+                html += '<div class="field"><label class="field-label">' + t.td.purpose + '</label><select onchange="updateTraveler(\'purpose\',parseInt(this.value))">';
+                for (var i = 0; i < t.td.purposes.length; i++) {
+                    html += '<option value="' + i + '" ' + (travelerData.purpose === i ? 'selected' : '') + '>' + t.td.purposes[i] + '</option>';
+                }
+                html += '</select></div>';
+                html += '</div></div>';
+                
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.td.histTitle + '</div>';
+                var toggles = [[t.td.refused, 'refused'], [t.td.deported, 'deported'], [t.td.criminal, 'criminal']];
+                for (var i = 0; i < toggles.length; i++) {
+                    var label = toggles[i][0];
+                    var key = toggles[i][1];
+                    html += '<div class="toggle-row">';
+                    html += '<span class="toggle-label">' + label + '</span>';
+                    html += '<div class="toggle-btns">';
+                    html += '<button class="toggle-btn yes ' + (travelerData[key] ? 'active' : '') + '" onclick="updateTraveler(\'' + key + '\',true)">' + t.td.yes + '</button>';
+                    html += '<button class="toggle-btn no ' + (!travelerData[key] ? 'active' : '') + '" onclick="updateTraveler(\'' + key + '\',false)">' + t.td.no + '</button>';
+                    html += '</div></div>';
+                }
+                html += '</div>';
+                
+                html += '<div style="display:flex;justify-content:space-between;align-items:center">';
+                html += '<button class="btn btn-secondary" onclick="currentStep=1;render()">← Back</button>';
+                html += '<button class="btn btn-primary" onclick="currentStep=3;render()">' + t.td.next + '</button>';
+                html += '</div>';
+            }
+            else if (currentStep === 3) {
+                var v = runValidation();
+                html += '<h2>' + t.val.title + '</h2>';
+                html += '<p class="subtitle">' + t.val.sub + '</p>';
+                
+                html += '<div class="d-grid">';
+                var dKeys = ['d1', 'd2', 'd3', 'd4'];
+                for (var i = 0; i < dKeys.length; i++) {
+                    var dk = dKeys[i];
+                    html += '<div class="d-card"><div class="d-title">' + t.val.dNames[dk] + '</div><div class="d-desc">' + t.val.dDescs[dk] + '</div></div>';
+                }
+                html += '</div>';
+                
+                html += '<div class="checks">';
+                var checkKeys = Object.keys(t.val.checks);
+                for (var i = 0; i < checkKeys.length; i++) {
+                    var ck = checkKeys[i];
+                    var pass = v.checks[ck];
+                    html += '<div class="check ' + (pass ? 'pass' : 'fail') + '"><span class="check-icon">' + (pass ? '✓' : '!') + '</span><span>' + t.val.checks[ck] + '</span></div>';
+                }
+                html += '</div>';
+                
+                if (!v.passed) {
+                    html += '<div class="alert alert-error"><div class="alert-title">' + t.val.fail + '</div>' + t.val.failDesc + '</div>';
+                } else {
+                    html += '<div class="alert alert-success"><div class="alert-title">' + t.val.ok + '</div></div>';
+                }
+                
+                html += '<div style="display:flex;justify-content:space-between;align-items:center">';
+                html += '<button class="btn btn-secondary" onclick="currentStep=2;render()">← Back</button>';
+                html += '<button class="btn btn-primary" onclick="currentStep=4;render()" ' + (v.passed ? '' : 'disabled') + '>' + t.val.next + '</button>';
+                html += '</div>';
+            }
+            else if (currentStep === 4) {
+                html += '<h2>' + t.rev.title + '</h2>';
+                html += '<p class="subtitle">' + t.rev.sub + '</p>';
+                
+                html += '<div class="warning-box">';
+                html += '<span class="warning-text">' + t.rev.warn + '</span>';
+                html += '</div>';
+                
+                html += '<div class="review-grid">';
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.rev.rLabel + '</div>';
+                html += '<div class="review-box">';
+                html += '<strong>' + repData.consultantName + '</strong>';
+                html += '<div style="color:#666;margin:4px 0">' + repData.consultantEmail + '</div>';
+                html += '<div style="color:#666">' + (repData.company || '—') + '</div>';
+                html += '<div style="margin-top:12px;padding-top:12px;border-top:2px solid #e2e8f0"><span class="review-label">Fee:</span> €' + repData.fee + '</div>';
+                html += '</div></div>';
+                
+                html += '<div class="section">';
+                html += '<div class="section-title">' + t.rev.tLabel + '</div>';
+                html += '<div class="review-box">';
+                html += '<strong>' + repData.travelerName + '</strong>';
+                html += '<div style="color:#666;margin:4px 0">' + repData.travelerEmail + '</div>';
+                html += '<div style="color:#666">' + t.rep.relations[repData.relation] + '</div>';
+                html += '<div style="margin-top:12px;padding-top:12px;border-top:2px solid #e2e8f0">';
+                html += '<div><span class="review-label">Passport:</span> ' + repData.passportNumber + '</div>';
+                html += '<div><span class="review-label">Expires:</span> ' + travelerData.expiryDate + '</div>';
+                html += '<div><span class="review-label">To:</span> ' + travelerData.destination + '</div>';
+                html += '</div></div></div>';
+                html += '</div>';
+                
+                html += '<div style="padding:20px;background:#f0fdf4;border-radius:12px;color:#166534;text-align:center;font-weight:700;margin-bottom:24px">';
+                html += '✓ ' + t.rev.valOk;
+                html += '</div>';
+                
+                html += '<div style="display:flex;justify-content:space-between;align-items:center">';
+                html += '<button class="btn btn-secondary" onclick="currentStep=3;render()">← Back</button>';
+                html += '<button class="btn btn-primary" onclick="currentStep=5;render()">' + t.rev.submit + '</button>';
+                html += '</div>';
+            }
+            else if (currentStep === 5) {
+                var expId = 'ETIAS-' + Date.now().toString(36).toUpperCase();
+                html += '<div class="success-icon">✓</div>';
+                html += '<h2 style="text-align:center">' + t.conf.title + '</h2>';
+                html += '<p class="subtitle" style="text-align:center">' + t.conf.sub + '</p>';
+                
+                html += '<div class="file-id">';
+                html += '<div class="file-id-label">' + t.conf.idLabel + '</div>';
+                html += '<div class="file-id-value">' + expId + '</div>';
+                html += '</div>';
+                
+                html += '<div style="margin-bottom:24px">';
+                html += '<h3 style="color:#1e3a5f;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid #f59e0b">' + t.conf.pdfTitle + '</h3>';
+                var btnText = pdfState === 'idle' ? t.conf.pdfBtn : (pdfState === 'generating' ? '<span class="spinner"></span> ' + t.conf.pdfGen : '✓ ' + t.conf.pdfOk);
+                html += '<button class="btn btn-primary" onclick="generatePDF()" style="width:100%;justify-content:center" ' + (pdfState !== 'idle' ? 'disabled' : '') + '>' + btnText + '</button>';
+                html += '</div>';
+                
+                html += '<div class="steps-list">';
+                html += '<h3>' + t.conf.stepsTitle + '</h3>';
+                html += '<ol>';
+                for (var i = 0; i < t.conf.steps.length; i++) {
+                    html += '<li>' + t.conf.steps[i] + '</li>';
+                }
+                html += '</ol></div>';
+                
+                html += '<div class="note">' + t.conf.note + '</div>';
+                html += '<button class="btn btn-primary" onclick="reset()" style="width:100%;justify-content:center">' + t.conf.newBtn + '</button>';
+            }
+            
+            html += '</div>'; // close card
+            
+            // Footer
+            html += '<div class="footer">';
+            html += '<p><a href="' + REPO_URL + '" target="_blank">GitHub Repository</a> · ' + CONSULTANT_EMAIL + '</p>';
+            html += '<p style="margin-top:8px">Educational simulator · Not affiliated with the EU</p>';
+            html += '</div>';
+            
+            app.innerHTML = html;
+        }
+
+        // Initialize
+        render();
+    </script>
+</body>
+</html>
