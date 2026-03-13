@@ -1,0 +1,164 @@
+# DECISIONES DEL PROYECTO ETIAS
+
+Registro cronológico de decisiones importantes y lecciones aprendidas.
+
+---
+
+## 2026-03-12 (Sesión Claude + Termux)
+
+### ✅ DECISIÓN: Crear sistema de memoria persistente multi-LLM
+
+**Contexto**: 
+- >1 año iterando con LLMs free sin conclusión
+- Cada chat empezaba desde cero (Claude, ChatGPT, Moonshot, Kimi)
+- Pérdida de contexto entre sesiones
+- 45 artefactos HTML creados, ninguno lanzado
+
+**Solución implementada**:
+- AI_CONTEXT/PROYECTO_MASTER.md = única fuente de verdad
+- AI_CONTEXT/PROMPTS.md = prompt maestro para iniciar cualquier LLM
+- AI_CONTEXT/ESTADO_ACTUAL.md = tareas concretas del día
+- AI_CONTEXT/DECISIONES.md = este archivo
+- Git en Termux para deployment
+
+**Resultado esperado**:
+- Continuidad entre sesiones
+- Cualquier LLM puede continuar exactamente donde quedó el anterior
+- Fin de la parálisis por análisis
+
+---
+
+### ✅ DECISIÓN: NO monetizar hasta Q4 2026
+
+**Contexto**:
+- ETIAS no es obligatorio hasta octubre 2026
+- Intentar cobrar hoy = imposible (producto no existe)
+- Simulador funcional pero sin demanda actual
+
+**Estrategia adoptada**:
+- Marzo-Septiembre 2026: Construcción de ventanilla (SEO + leads)
+- Octubre 2026: Avalancha de demanda → captura mercado
+
+**Implicaciones**:
+- Costo mensual debe ser $0 (no hay revenue)
+- Enfoque 100% en posicionamiento SEO
+- Capturar 1000 emails waitlist para octubre
+
+---
+
+### ✅ DECISIÓN: Priorizar SEO sobre features
+
+**Contexto**:
+- 45 artefactos HTML iterados sin distribución
+- 0 tráfico orgánico
+- Simulador funcional (~1,150 líneas) pero invisible en Google
+- Kimi AI confirmó tamaño real del código
+
+**Prioridades definidas**:
+1. SEO básico (sitemap, robots.txt, meta tags)
+2. Programmatic SEO (1000 páginas automáticas)
+3. Captura de leads (formulario waitlist)
+
+**Features descartadas** (hasta octubre 2026):
+- ❌ OCR de pasaporte (ya existe en algún artefacto, no es prioridad)
+- ❌ Integración Telegram bot compleja
+- ❌ Backend/database
+- ❌ Panel admin/CRM
+- ❌ Optimizaciones UI/UX del simulador
+
+**Razón**: 
+Google tarda 3-6 meses en indexar y rankear contenido nuevo.
+Si empezamos SEO en marzo, estaremos rankeados #1 en octubre cuando ETIAS lance.
+
+---
+
+### ✅ DECISIÓN: GitHub Pages + Termux como stack definitivo
+
+**Alternativas consideradas**:
+- Vercel
+- Netlify  
+- Hosting pago
+- Editar directo en GitHub web
+
+**Decisión final**: GitHub Pages + Git desde Termux
+
+**Razones**:
+- Costo: $0 (vs $5-10/mes otros)
+- Control total desde Android vía Termux
+- Ya tenemos repo: ConsultorETIAS/Simulador-ETIAS-
+- Soporta custom domains (cuando compremos etias-mexico.com)
+- Unlimited bandwidth
+- SSL gratis
+- Git-based deployment (profesional, versionado)
+
+---
+
+### ✅ DECISIÓN: NO modificar index.html existente
+
+**Contexto**:
+- index.html tiene ~1,150 líneas (confirmado por Kimi AI)
+- Funciona correctamente (genera PDFs, 3 idiomas, 6 pasos)
+- Vanilla JS sin frameworks
+- 1 dependencia: jsPDF 2.5.1
+
+**Decisión**:
+- Dejar index.html intacto
+- Crear archivos SEO NUEVOS (sitemap, robots, páginas optimizadas)
+- Estos archivos NO requieren modificar código existente
+
+**Razón**:
+- "Si funciona, no lo toques"
+- 1,150 líneas = riesgo de romper algo
+- SEO se logra con archivos adicionales, no modificando el simulador
+- Separación de concerns: simulador (funcional) vs SEO (marketing)
+
+---
+
+### ❌ LECCIÓN APRENDIDA: No sobre-optimizar sin usuarios
+
+**Error cometido**:
+- >1 año construyendo 45 versiones HTML
+- Probando solo con LLMs free
+- 0 usuarios reales testeando
+- Cada LLM sugería "mejoras" diferentes
+- Parálisis por análisis
+
+**Consecuencia**:
+- Tiempo perdido en "arquitectura perfecta"
+- Features que nadie pidió
+- Código funcionando pero sin distribución
+
+**Corrección aplicada hoy**:
+- Sistema de memoria persistente (PROYECTO_MASTER.md)
+- Reglas claras: NO features, SÍ SEO
+- Enfoque en lanzamiento imperfecto
+- Documentar decisiones para no repetir errores
+
+---
+
+### 📝 DECISIONES PENDIENTES
+
+- [ ] ¿Comprar dominio etias-mexico.com ($12/año) o seguir con GitHub subdomain?
+- [ ] ¿Contactar agencias de viaje AHORA o esperar a tener tráfico SEO primero?
+- [ ] ¿Implementar pSEO con 100 páginas o ir directo a 1000?
+- [ ] ¿Usar Personal Access Token temporal o crear uno sin expiración?
+
+---
+
+## TEMPLATE PARA NUEVAS DECISIONES
+✅/❌ DECISIÓN: [Título]
+Contexto:
+[Por qué surgió esta decisión]
+Alternativas consideradas:
+Opción A
+Opción B
+Decisión final: [La que elegimos]
+Razones:
+Razón 1
+Razón 2
+Implicaciones:
+Consecuencia 1
+Consecuencia 2
+---
+
+**Actualiza este archivo después de cada decisión importante para no repetir errores.**
