@@ -1,79 +1,70 @@
 # ESTADO ACTUAL - ETIAS SIMULATOR
 **Fecha**: 2026-03-12
-**Actualizado por**: Daniel + Claude + Termux
+**Última actualización**: 22:00 (Deployment exitoso)
 
 ---
 
-## ✅ COMPLETADO HOY
+## ✅ COMPLETADO HOY (2026-03-12)
 
 - [x] Identificado problema de pérdida de contexto multi-LLM
-- [x] Creado sistema de memoria persistente
+- [x] Creado sistema de memoria persistente (4 archivos AI_CONTEXT)
 - [x] Configurado Git en Termux
-- [x] Clonado repo ConsultorETIAS/Simulador-ETIAS-
-- [x] First commit exitoso
-- [x] Creado estructura AI_CONTEXT/
-- [x] Confirmado código simulador: ~1,150 líneas (Kimi AI)
+- [x] Creado Personal Access Token para GitHub
+- [x] Deployado 7 archivos nuevos exitosamente
+- [x] Creados archivos SEO básicos (sitemap, robots, etias-mexico.html)
+- [x] Push exitoso a GitHub (commit 3030dd0)
+- [x] Verificado deployment en GitHub Pages
 
 ---
 
-## 🔥 TAREAS PENDIENTES (PRÓXIMAS 2 HORAS)
+## 🔥 TAREAS PENDIENTES (PRÓXIMAS 48H)
 
-### URGENTE: Configurar autenticación Git
-1. [ ] Crear Personal Access Token en GitHub
-2. [ ] Configurar git credential helper en Termux
-3. [ ] Probar push con token
+### URGENTE: SEO - Indexación Google
+1. [ ] Submit sitio a Google Search Console
+2. [ ] Verificar propiedad del dominio
+3. [ ] Submit sitemap.xml a GSC
+4. [ ] Esperar 48-72h para indexación inicial
+5. [ ] Verificar indexación: site:consultoretias.github.io
 
-### URGENTE: SEO Básico
-4. [ ] Crear `sitemap.xml` en repo
-5. [ ] Crear `robots.txt` en repo
-6. [ ] Crear página `/etias-mexico.html` (keyword exacta)
-7. [ ] Git add + commit + push de los 3 archivos
-8. [ ] Verificar que GitHub Pages esté sirviendo los archivos
+### IMPORTANTE: Documentación
+6. [ ] Actualizar DECISIONES.md con deployment exitoso
+7. [ ] Testear PROMPTS.md con ChatGPT/Moonshot/Kimi
 
 ---
 
 ## 📋 BACKLOG (PRÓXIMAS 2 SEMANAS)
 
-- [ ] Submit sitio a Google Search Console
-- [ ] Esperar 48-72h para indexación Google
-- [ ] Verificar indexación: `site:consultoretias.github.io`
+- [ ] Crear 2 páginas SEO adicionales (requisitos-etias, cuando-entra-vigor)
 - [ ] Agregar sección "Lista de espera" al simulador
-- [ ] Script pSEO: generar 100 páginas (nacionalidad × destino)
+- [ ] Script pSEO: generar 50 páginas (nacionalidad × destino)
 - [ ] Contactar 3 agencias de viaje mexicanas
 
 ---
 
-## 🚫 NO HACER (REGLAS)
+## 🚫 NO HACER
 
-- ❌ NO modificar index.html existente (~1,150 líneas funcionando)
+- ❌ NO modificar index.html (~1,150 líneas funcionando)
 - ❌ NO agregar features nuevas al simulador
-- ❌ NO cambiar arquitectura del código
-- ❌ NO intentar monetizar ahora
-- ❌ NO construir backend/database
-
-**Por qué**: ETIAS no es obligatorio hasta Q4 2026. Enfoque 100% en SEO + captura leads.
+- ❌ NO monetizar ahora (ETIAS no existe hasta Q4 2026)
 
 ---
 
 ## 💡 SIGUIENTE SESIÓN LLM
 
-**Cuando abras ChatGPT/Moonshot/Kimi/Claude nuevamente:**
+**Para continuar con ChatGPT/Moonshot/Kimi:**
 
-1. Copia el contenido de `PROMPTS.md`
-2. Pégalo al inicio del chat
-3. Di: "Quiero trabajar en [tarea específica del listado arriba]"
-4. El LLM continuará exactamente donde quedaste
-
----
-
-## 📝 NOTAS DE SESIÓN ACTUAL
-
-- Termux funcionando correctamente con Git
-- Necesita Personal Access Token para push (password no funciona)
-- Repo local en: ~/ETIAS-simulador
-- Branch: main
-- Remote: https://github.com/ConsultorETIAS/Simulador-ETIAS-.git
+1. Abre AI_CONTEXT/PROMPTS.md en GitHub
+2. Copia el bloque completo
+3. Pégalo al inicio del chat
+4. Di: "Quiero submit el sitio a Google Search Console"
 
 ---
 
-**Última actualización**: 2026-03-12 21:45
+## 📝 NOTAS
+
+- Commit exitoso: d27a9c4..3030dd0
+- 10 archivos changed, 11.14 KiB deployados
+- GitHub Pages actualizado correctamente
+- Sistema de memoria persistente FUNCIONANDO
+
+**Última actualización**: 2026-03-12 22:00
