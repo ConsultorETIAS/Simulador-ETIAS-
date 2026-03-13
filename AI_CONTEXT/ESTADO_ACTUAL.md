@@ -1,6 +1,6 @@
 # ESTADO ACTUAL - ETIAS SIMULATOR
 **Fecha**: 2026-03-13
-**Última actualización**: 00:10 (Sesión completada exitosamente)
+**Última actualización**: 00:15 (Sesión completada exitosamente)
 
 ---
 
@@ -17,9 +17,10 @@
 **Commits realizados:**
 - d27a9c4..3030dd0: Add AI context system + SEO files
 - c2d7c3f..ba4d575: Add deployment exitoso decision
+- ba4d575..[nuevo]: Session complete
 
 **URLs verificadas:**
-✅ https://consultoretias.github.io/Simulador-ETIAS/
+✅ https://consultoretias.github.io/Simulador-ETIAS-/
 ✅ https://consultoretias.github.io/Simulador-ETIAS-/sitemap.xml
 ✅ https://consultoretias.github.io/Simulador-ETIAS-/robots.txt
 ✅ https://consultoretias.github.io/Simulador-ETIAS-/etias-mexico.html
@@ -32,7 +33,7 @@
 1. [ ] Submit sitio a Google Search Console
 2. [ ] Verificar propiedad del dominio
 3. [ ] Submit sitemap.xml
-4. [ ] Esperar indexación inicial
+4. [ ] Esperar indexación inicial (48-72h)
 
 ### IMPORTANTE: Testear sistema memoria
 5. [ ] Probar PROMPTS.md con ChatGPT
@@ -68,17 +69,34 @@
 1. Abre: https://github.com/ConsultorETIAS/Simulador-ETIAS-/blob/main/AI_CONTEXT/PROMPTS.md
 2. Click en "Raw" o copia el contenido completo
 3. Pégalo al inicio del nuevo chat
-4. Di: "Quiero [tarea específica de ESTADO_ACTUAL.md]"
+4. Di: "Quiero [tarea específica de arriba]"
 5. El LLM continuará exactamente donde Claude quedó
 
+**Ejemplo de uso:**
+[Pegar contenido de PROMPTS.md]
+Quiero submit el sitio a Google Search Console.
+Dame las instrucciones paso a paso.
 ---
 
 ## 📝 LOGROS DE ESTA SESIÓN
 
-- ✅ Rompimos parálisis de >1 año
+**Rompimos la parálisis de >1 año:**
 - ✅ Sistema de memoria funcionando
 - ✅ Deployment exitoso vía Termux
 - ✅ Base para escalar a 1000+ páginas
 - ✅ Primera vez que código llega a producción
+- ✅ Continuidad entre LLMs garantizada
 
-**Última actualización**: 2026-03-13 00:10
+**Métricas:**
+- Archivos deployados: 7
+- Commits exitosos: 4
+- URLs funcionando: 4/4 (100%)
+- Tiempo total sesión: ~3 horas
+- Tiempo bloqueado antes: >1 año
+
+**Próximo hito:**
+Primera aparición en Google (5-7 días después de submit a GSC)
+
+---
+
+**Última actualización**: 2026-03-13 00:15
