@@ -1,13 +1,3 @@
 User-agent: *
 Allow: /
-
-# Sitemap
 Sitemap: https://consultoretias.github.io/Simulador-ETIAS-/sitemap.xml
-
-# Permitir rastreo de páginas principales
-Allow: /index.html
-Allow: /etias-mexico.html
-Allow: /requisitos-etias.html
-
-# Bloquear carpeta de contexto AI (no necesita indexarse)
-Disallow: /AI_CONTEXT/
