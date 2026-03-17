@@ -194,3 +194,11 @@ Consecuencia 2
 Submit a Google Search Console para iniciar indexación
 
 ---
+## 2026-03-17 — EmailJS integrado
+
+- Botón enviar reparado y funcional
+- EmailJS conectado: service_hxuq7gn / template_r225rld
+- Variables template: {{name}}, {{nombre}}, {{email}}, {{nacionalid}}, {{title}}
+- Promise.all: Google Forms + EmailJS simultáneo
+- Fix caracteres especiales en PDF footer
+- Estado: pre-simulador operativo al 100%
