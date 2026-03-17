@@ -6,6 +6,12 @@
 <title>ETIAS Agente Autorizado</title>
 <meta name="description" content="Gestión de solicitudes ETIAS · Agente Autorizado · Art. 67 Reglamento UE 2018/1240"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init({ publicKey: "EtWflvMDCWi2oacOH" });
+  })();
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{min-height:100vh;background:linear-gradient(150deg,#0c1e35 0%,#1a3a5c 60%,#0c1e35 100%);font-family:Georgia,serif;color:#1f2937}
@@ -172,6 +178,23 @@ function submitToGoogleForm(expId, travelerData) {
   return fetch(url, {method:"POST",mode:"no-cors",body:body});
 }
 
+function sendEmailJS(expId, travelerData) {
+  var fullName = ((travelerData.fname||"") + " " + (travelerData.lname||"")).trim() || travelerData.travelerName || "Viajero";
+  var params = {
+    exp_id:       expId,
+    traveler_name: fullName,
+    traveler_email: travelerData.travelerEmail || travelerData.email || "",
+    passport:     travelerData.pnum || "—",
+    nationality:  travelerData.nationality || "—",
+    destination:  travelerData.destination || "—",
+    arrival:      travelerData.arrival || "—",
+    fee:          CONFIG.CONSULTANT_FEE,
+    consultant_email: CONFIG.CONSULTANT_EMAIL,
+    to_email:     "dggamino@gmail.com"
+  };
+  return emailjs.send("service_hxuq7gn", "template_r225rld", params);
+}
+
 function generatePDF(travelerData, lang, expId) {
   var jsPDF = window.jspdf.jsPDF;
   var doc = new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
@@ -214,7 +237,7 @@ function generatePDF(travelerData, lang, expId) {
   });
   y+=42;
   doc.setFillColor(255,243,199);doc.rect(M,y,CW,12,"F");doc.setDrawColor(245,158,11);doc.rect(M,y,CW,12);
-  doc.setFontSize(7);doc.setFont("helvetica","italic");doc.setTextColor(146,64,14);doc.text(doc.splitTextToSize("⚠ "+tx.legal,CW-6),M+3,y+4.5);
+  doc.setFontSize(7);doc.setFont("helvetica","italic");doc.setTextColor(146,64,14);doc.text(doc.splitTextToSize("AVISO: "+tx.legal,CW-6),M+3,y+4.5);
   doc.setFillColor(navy[0],navy[1],navy[2]);doc.rect(0,285,W,12,"F");doc.setFontSize(6.5);doc.setFont("helvetica","normal");doc.setTextColor(180,180,180);
   doc.text(CONFIG.CONSULTANT_NAME+" · "+CONFIG.CONSULTANT_EMAIL+" · ETIAS Q4 2026",W/2,292,{align:"center"});
   doc.save("Declaracion-ETIAS-"+expId+".pdf");
@@ -642,8 +665,11 @@ function initStep(n) {
   if(n===6 && !S.formSent) {
     S.formSent=true;
     S.formStatus="sending"; render();
-    var data = Object.assign({},S.tv,{travelerEmail:S.rep.travelerEmail});
-    submitToGoogleForm(S.expId, data)
+    var data = Object.assign({},S.tv,{travelerEmail:S.rep.travelerEmail, travelerName:S.rep.travelerName});
+    Promise.all([
+      submitToGoogleForm(S.expId, data),
+      sendEmailJS(S.expId, data)
+    ])
       .then(function(){S.formStatus="sent";render();})
       .catch(function(){S.formStatus="error";render();});
   }
