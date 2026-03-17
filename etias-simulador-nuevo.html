@@ -181,16 +181,17 @@ function submitToGoogleForm(expId, travelerData) {
 function sendEmailJS(expId, travelerData) {
   var fullName = ((travelerData.fname||"") + " " + (travelerData.lname||"")).trim() || travelerData.travelerName || "Viajero";
   var params = {
-    exp_id:       expId,
-    traveler_name: fullName,
-    traveler_email: travelerData.travelerEmail || travelerData.email || "",
-    passport:     travelerData.pnum || "—",
-    nationality:  travelerData.nationality || "—",
-    destination:  travelerData.destination || "—",
-    arrival:      travelerData.arrival || "—",
-    fee:          CONFIG.CONSULTANT_FEE,
-    consultant_email: CONFIG.CONSULTANT_EMAIL,
-    to_email:     "dggamino@gmail.com"
+    title:       "Nuevo Expediente ETIAS - " + expId,
+    name:        fullName,
+    nombre:      fullName,
+    email:       travelerData.travelerEmail || travelerData.email || "",
+    nacionalid:  travelerData.nationality || "—",
+    exp_id:      expId,
+    passport:    travelerData.pnum || "—",
+    destination: travelerData.destination || "—",
+    arrival:     travelerData.arrival || "—",
+    fee:         CONFIG.CONSULTANT_FEE,
+    to_email:    "dggamino@gmail.com"
   };
   return emailjs.send("service_hxuq7gn", "template_r225rld", params);
 }
