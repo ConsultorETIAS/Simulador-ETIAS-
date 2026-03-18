@@ -766,10 +766,68 @@ function resetAll() {
 }
 
 // ============================================================
-// BOOT
+// BOOT — URL PARAMS (captura búsqueda larga desde páginas programáticas)
 // ============================================================
-render();
-initStep(0);
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var q       = params.get("q");
+  var pais    = params.get("pais");
+  var destino = params.get("destino");
+  var lang    = params.get("lang");
+
+  // Idioma por parámetro (para páginas Brasil en PT)
+  if(lang && ["es","en","pt"].indexOf(lang) > -1) S.lang = lang;
+
+  // Pre-cargar nacionalidad y destino en el estado de viaje
+  if(pais)    S.tv.nationality  = pais.toLowerCase();
+  if(destino) S.tv.destination  = destino.toLowerCase();
+
+  // Si viene con consulta libre (búsqueda larga), inyectarla como mensaje del usuario
+  if(q) {
+    S.chatStarted = true;
+    render();
+    S.chatLoading = true; render();
+    // Construir historial: saludo del bot + mensaje del usuario
+    var initMsg = [{role:"user", content:"Hola"}];
+    chatWithETIAS(initMsg, S.lang).then(function(greet){
+      S.chatMessages = [
+        {role:"assistant", content: greet},
+        {role:"user",      content: q}
+      ];
+      render();
+      // Responder automáticamente a la consulta del usuario
+      return chatWithETIAS(S.chatMessages, S.lang);
+    }).then(function(reply){
+      if(reply.includes("INICIAR_SIMULADOR")){
+        var allText = S.chatMessages.map(function(m){return m.content;}).join(" ").toLowerCase();
+        var nat = ETIAS_NAT.find(function(n){return allText.includes(n);}) || S.tv.nationality || "";
+        var confirm_msg = S.lang==="es"?"¡Perfecto! Abriendo el formulario...":S.lang==="pt"?"Perfeito! Abrindo o formulário...":"Perfect! Opening the form...";
+        S.chatMessages.push({role:"assistant", content: confirm_msg});
+        if(nat) S.tv.nationality = nat;
+        S.chatLoading = false; render();
+        setTimeout(function(){ setStep(1); }, 1200);
+      } else if(reply.includes("ESCALAR_CONSULTOR")){
+        S.chatEscalate = true;
+        S.chatMessages.push({role:"assistant", content: reply.replace("ESCALAR_CONSULTOR","").trim()});
+        S.chatLoading = false; render();
+      } else {
+        S.chatMessages.push({role:"assistant", content: reply});
+        S.chatLoading = false; render();
+      }
+    }).catch(function(){
+      S.chatMessages = [
+        {role:"assistant", content:"¡Hola! Soy el Asistente ETIAS. ¿De qué país eres y a dónde quieres viajar?"},
+        {role:"user",      content: q}
+      ];
+      S.chatLoading = false; render();
+    });
+    return; // No llamar initStep(0) normal — ya se maneja arriba
+  }
+
+  // Boot normal sin parámetros
+  render();
+  initStep(0);
+})();
 </script>
 </body>
 </html>
