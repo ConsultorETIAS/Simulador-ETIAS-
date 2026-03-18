@@ -133,47 +133,19 @@ var T = {
 // API FUNCTIONS
 // ============================================================
 function chatWithETIAS(messages, lang) {
-  var last = messages[messages.length-1]||{};
-  var input = (last.content||"").toLowerCase();
-  var T = {
-    es: {
-      greet: "\u00a1Hola! Soy el Asistente ETIAS. \u00bfDe qu\u00e9 pa\u00eds eres y a d\u00f3nde quieres viajar en Europa?",
-      eligible: "\u2705 \u00a1Buenas noticias! Tu nacionalidad necesitar\u00e1 ETIAS en Q4 2026. Tr\u00e1mite r\u00e1pido: tarifa oficial \u20ac20 + tarifa del agente. \u00bfTe ayudo a preparar tu expediente?",
-      tarifa: "Tarifa oficial ETIAS: \u20ac20. Nuestro servicio de agente autorizado tiene costo adicional. \u00bfQuieres continuar?",
-      escalar: "ESCALAR_CONSULTOR",
-      iniciar: "INICIAR_SIMULADOR",
-      noentiendo: "Puedo ayudarte con ETIAS para viajar a Europa. \u00bfDe qu\u00e9 pa\u00eds eres?"
-    },
-    en: {
-      greet: "Hi! I'm the ETIAS Assistant. What country are you from and where do you want to travel in Europe?",
-      eligible: "\u2705 Good news! Your nationality will need ETIAS in Q4 2026. Quick process: official fee \u20ac20 + agent fee. Shall I help you prepare your file?",
-      tarifa: "Official ETIAS fee: \u20ac20. Our authorized agent service has an additional fee. Would you like to continue?",
-      escalar: "ESCALAR_CONSULTOR",
-      iniciar: "INICIAR_SIMULADOR",
-      noentiendo: "I can help you with ETIAS for traveling to Europe. What country are you from?"
-    },
-    pt: {
-      greet: "Ol\u00e1! Sou o Assistente ETIAS. De que pa\u00eds voc\u00ea \u00e9 e para onde quer viajar na Europa?",
-      eligible: "\u2705 Boas not\u00edcias! Sua nacionalidade precisar\u00e1 do ETIAS no Q4 2026. Processo r\u00e1pido: taxa oficial \u20ac20 + taxa do agente. Posso ajud\u00e1-lo?",
-      tarifa: "Taxa oficial ETIAS: \u20ac20. Nosso servi\u00e7o de agente autorizado tem taxa adicional. Deseja continuar?",
-      escalar: "ESCALAR_CONSULTOR",
-      iniciar: "INICIAR_SIMULADOR",
-      noentiendo: "Posso ajud\u00e1-lo com o ETIAS para viajar \u00e0 Europa. De que pa\u00eds voc\u00ea \u00e9?"
-    }
-  };
-  var R = T[lang]||T.es;
-  if(messages.length<=1) return Promise.resolve(R.greet);
-  var cierres = ["s\u00ed","quiero","contrato","yes","i want","quero","acepto","dale","claro","adelante","vamos","proceed","empezar","start","registrar","tramitar"];
-  if(cierres.some(function(c){return input.includes(c);})) return Promise.resolve(R.iniciar);
-  var escalar = ["rechaz","deport","antecedent","criminal","condena","arrest","refused","convicted"];
-  if(escalar.some(function(c){return input.includes(c);})) return Promise.resolve(R.escalar);
-  var precio = ["precio","costo","cuanto","cu\u00e1nto","tarifa","fee","cost","price","quanto","valor"];
-  if(precio.some(function(c){return input.includes(c);})) return Promise.resolve(R.tarifa);
-  var nats = ["mexico","m\u00e9xico","brasil","brazil","argentina","colombia","peru","per\u00fa","uruguay","chile","venezuela","ecuador","bolivia","paraguay","panama","costa rica"];
-  var dests = ["europa","spain","espa\u00f1a","france","francia","italy","italia","germany","alemania","portugal","europe","schengen"];
-  if(nats.some(function(c){return input.includes(c);})||dests.some(function(c){return input.includes(c);})) return Promise.resolve(R.eligible);
-  return Promise.resolve(R.noentiendo);
-}
+  var system = 'Eres ETIAS Assistant de "' + CONFIG.CONSULTANT_NAME + '" (' + CONFIG.CONSULTANT_EMAIL + ').\n' +
+    'IDIOMA: ' + (lang==="es"?"español":lang==="pt"?"portugués brasileño":"inglés") + '.\n' +
+    'OBJETIVO: Cerrar el trámite — que el viajero contrate el servicio.\n' +
+    'TARIFA: €20 oficial ETIAS + ' + CONFIG.CONSULTANT_FEE + ' tarifa del agente.\n' +
+    'MARCO LEGAL: Art. 67 Reg. UE 2018/1240. Lanzamiento Q4 2026.\n' +
+    'FLUJO: 1)Saluda brevemente 2)Pregunta nacionalidad+destino 3)Confirma elegibilidad (MX✅ BR✅ AR✅ CO✅) 4)Explica valor en 2 líneas 5)Presenta tarifa 6)Si acepta→INICIAR_SIMULADOR.\n' +
+    'REGLAS: Máx 3 líneas/respuesta. Nunca prometas aprobación. Si visa rechazada/deportación/antecedentes→ESCALAR_CONSULTOR.\n' +
+    'SEÑALES DE CIERRE→INICIAR_SIMULADOR: sí,quiero,contrato,yes,I want,sim,quero,acepto,ok,dale,claro,adelante,vamos,proceed.';
+  return fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,system:system,messages:messages})
+  }).then(function(r){return r.json();}).then(function(d){return d.content&&d.content[0]?d.content[0].text:"";});
 }
 
 function ocrPassport(base64, mediaType) {
