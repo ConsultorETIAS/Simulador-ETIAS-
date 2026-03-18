@@ -385,7 +385,7 @@ function renderStep0() {
 
   var inputHtml = !S.chatEscalate?
     '<div style="display:flex;gap:8px;margin-bottom:14px">'
-    +'<input id="chat-input" style="flex:1;padding:11px 16px;border:1.5px solid #d1d5db;border-radius:24px;font-size:13px;font-family:inherit" placeholder="'+esc(c.placeholder)+'" value="'+esc(S.chatInput)+'" oninput="S.chatInput=this.value" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();doChat();}" '+(S.chatLoading?"disabled":"")+'>'
+    +'<input id="chat-input" style="flex:1;padding:11px 16px;border:1.5px solid #d1d5db;border-radius:24px;font-size:13px;font-family:inherit" placeholder="'+esc(c.placeholder)+'" value="'+esc(S.chatInput)+'" oninput="S.chatInput=this.value;render()" onchange="S.chatInput=this.value;render()" onkeyup="S.chatInput=this.value;render()" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();doChat();}" '+(S.chatLoading?"disabled":"")+'>'
     +'<button onclick="doChat()" '+(S.chatLoading||!S.chatInput.trim()?"disabled":"")
     +' style="background:'+(S.chatInput.trim()&&!S.chatLoading?"#1a3a5c":"#d1d5db")+';color:#fff;border:none;border-radius:24px;padding:11px 20px;font-weight:700;font-size:13px;cursor:'+(S.chatInput.trim()&&!S.chatLoading?"pointer":"not-allowed")+';flex-shrink:0">'+esc(c.send)+'</button>'
     +'</div>':'';
