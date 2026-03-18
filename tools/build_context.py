@@ -8,7 +8,10 @@ FILES = [
     "AI_CONTEXT/PROMPTS.md",
 ]
 
-output = f"# CONTEXTO AUTO-GENERADO — {datetime.date.today()}\n\n"
+import subprocess
+today = datetime.date.today().isoformat()
+subprocess.run(["sed", "-i", f"s/[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}}/{today}/g", "AI_CONTEXT/ESTADO_ACTUAL.md"])
+output = f"# CONTEXTO AUTO-GENERADO — {today}\n\n"
 
 for f in FILES:
     if os.path.exists(f):
