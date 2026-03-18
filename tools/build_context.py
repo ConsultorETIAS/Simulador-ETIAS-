@@ -5,6 +5,7 @@ FILES = [
     "AI_CONTEXT/ESTADO_ACTUAL.md",
     "AI_CONTEXT/DECISIONES.md",
     "AI_CONTEXT/FUNDAMENTOS.md",
+    "AI_CONTEXT/PROMPTS.md",
 ]
 
 output = f"# CONTEXTO AUTO-GENERADO — {datetime.date.today()}\n\n"
@@ -12,12 +13,9 @@ output = f"# CONTEXTO AUTO-GENERADO — {datetime.date.today()}\n\n"
 for f in FILES:
     if os.path.exists(f):
         content = open(f).read()
-        lines = content.split('\n')[:300]
-        output += f"## {f}\n" + '\n'.join(lines) + "\n\n---\n\n"
+        output += f"## {f}\n" + content + "\n\n---\n\n"
 
 with open("AI_CONTEXT/PROMPT_CONTEXT.txt", "w") as out:
     out.write(output)
 
-chars = len(output)
-print(f"✅ Contexto generado: {chars} chars (~{chars//4} tokens)")
-print("📋 Archivo listo: AI_CONTEXT/PROMPT_CONTEXT.txt")
+print(f"✅ Contexto generado: {len(output)} chars")
