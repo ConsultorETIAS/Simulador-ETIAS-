@@ -163,7 +163,9 @@ function chatWithETIAS(messages, lang) {
   };
   var R = T[lang]||T.es;
   if(messages.length<=1) return Promise.resolve(R.greet);
-  var cierres = ["quiero","contrato","yes","i want","quero","acepto","dale","claro","adelante","vamos","proceed","empezar","start","registrar","tramitar","si ","sí","afirm","confirm","correcto","exacto","eso","listo"];
+  var cierres = ["quiero","contrato","yes","i want","quero","acepto","dale","claro","adelante","vamos","proceed","empezar","start","registrar","tramitar","afirm","correcto","exacto","listo"];
+  var esAfirmSi = input.trim()==="si" || input.trim()==="sí" || input.trim()==="ok" || input.trim()==="eso";
+  if(esAfirmSi) return Promise.resolve(R.iniciar);
   if(cierres.some(function(c){return input.includes(c);})) return Promise.resolve(R.iniciar);
   var escalares = ["rechaz","deport","antecedent","criminal","condena","arrest","refused","convicted"];
   if(escalares.some(function(c){return input.includes(c);})) return Promise.resolve(R.escalar);
