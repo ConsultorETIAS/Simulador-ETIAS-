@@ -133,19 +133,46 @@ var T = {
 // API FUNCTIONS
 // ============================================================
 function chatWithETIAS(messages, lang) {
-  var system = 'Eres ETIAS Assistant de "' + CONFIG.CONSULTANT_NAME + '" (' + CONFIG.CONSULTANT_EMAIL + ').\n' +
-    'IDIOMA: ' + (lang==="es"?"español":lang==="pt"?"portugués brasileño":"inglés") + '.\n' +
-    'OBJETIVO: Cerrar el trámite — que el viajero contrate el servicio.\n' +
-    'TARIFA: €20 oficial ETIAS + ' + CONFIG.CONSULTANT_FEE + ' tarifa del agente.\n' +
-    'MARCO LEGAL: Art. 67 Reg. UE 2018/1240. Lanzamiento Q4 2026.\n' +
-    'FLUJO: 1)Saluda brevemente 2)Pregunta nacionalidad+destino 3)Confirma elegibilidad (MX✅ BR✅ AR✅ CO✅) 4)Explica valor en 2 líneas 5)Presenta tarifa 6)Si acepta→INICIAR_SIMULADOR.\n' +
-    'REGLAS: Máx 3 líneas/respuesta. Nunca prometas aprobación. Si visa rechazada/deportación/antecedentes→ESCALAR_CONSULTOR.\n' +
-    'SEÑALES DE CIERRE→INICIAR_SIMULADOR: sí,quiero,contrato,yes,I want,sim,quero,acepto,ok,dale,claro,adelante,vamos,proceed.';
-  return fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,system:system,messages:messages})
-  }).then(function(r){return r.json();}).then(function(d){return d.content&&d.content[0]?d.content[0].text:"";});
+  var last = messages[messages.length-1]||{};
+  var input = (last.content||"").toLowerCase();
+  var T = {
+    es: {
+      greet: "¡Hola! Soy el Asistente ETIAS. ¿De qué país eres y a dónde quieres viajar en Europa?",
+      eligible: "✅ ¡Buenas noticias! Tu nacionalidad necesitará ETIAS en Q4 2026. Trámite rápido: tarifa oficial €20 + tarifa del agente. ¿Te ayudo?",
+      tarifa: "Tarifa oficial ETIAS: €20. Nuestro servicio de agente autorizado tiene costo adicional. ¿Quieres continuar?",
+      escalar: "ESCALAR_CONSULTOR",
+      iniciar: "INICIAR_SIMULADOR",
+      noentiendo: "Puedo ayudarte con ETIAS para viajar a Europa. ¿De qué país eres?"
+    },
+    en: {
+      greet: "Hi! I'm the ETIAS Assistant. What country are you from and where do you want to travel in Europe?",
+      eligible: "✅ Good news! Your nationality will need ETIAS in Q4 2026. Official fee €20 + agent fee. Shall I help you prepare your file?",
+      tarifa: "Official ETIAS fee: €20. Our authorized agent service has an additional fee. Would you like to continue?",
+      escalar: "ESCALAR_CONSULTOR",
+      iniciar: "INICIAR_SIMULADOR",
+      noentiendo: "I can help you with ETIAS for traveling to Europe. What country are you from?"
+    },
+    pt: {
+      greet: "Olá! Sou o Assistente ETIAS. De que país você é e para onde quer viajar na Europa?",
+      eligible: "✅ Boas notícias! Sua nacionalidade precisará do ETIAS no Q4 2026. Taxa oficial €20 + taxa do agente. Posso ajudá-lo?",
+      tarifa: "Taxa oficial ETIAS: €20. Nosso serviço de agente autorizado tem taxa adicional. Deseja continuar?",
+      escalar: "ESCALAR_CONSULTOR",
+      iniciar: "INICIAR_SIMULADOR",
+      noentiendo: "Posso ajudá-lo com o ETIAS para viajar à Europa. De que país você é?"
+    }
+  };
+  var R = T[lang]||T.es;
+  if(messages.length<=1) return Promise.resolve(R.greet);
+  var cierres = ["quiero","contrato","yes","i want","quero","acepto","dale","claro","adelante","vamos","proceed","empezar","start","registrar","tramitar"];
+  if(cierres.some(function(c){return input.includes(c);})) return Promise.resolve(R.iniciar);
+  var escalares = ["rechaz","deport","antecedent","criminal","condena","arrest","refused","convicted"];
+  if(escalares.some(function(c){return input.includes(c);})) return Promise.resolve(R.escalar);
+  var precio = ["precio","costo","cuanto","tarifa","fee","cost","price","quanto","valor"];
+  if(precio.some(function(c){return input.includes(c);})) return Promise.resolve(R.tarifa);
+  var nats = ["mexico","brasil","brazil","argentina","colombia","peru","uruguay","chile","venezuela","ecuador","bolivia","paraguay","panama","costa rica"];
+  var dests = ["europa","spain","france","italia","germany","alemania","portugal","europe","schengen"];
+  if(nats.some(function(c){return input.includes(c);})||dests.some(function(c){return input.includes(c);})) return Promise.resolve(R.eligible);
+  return Promise.resolve(R.noentiendo);
 }
 
 function ocrPassport(base64, mediaType) {
