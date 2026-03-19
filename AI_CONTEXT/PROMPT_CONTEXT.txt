@@ -1,4 +1,4 @@
-# CONTEXTO AUTO-GENERADO — 2026-03-17
+# CONTEXTO AUTO-GENERADO — 2026-03-18
 
 ## AI_CONTEXT/PROYECTO_MASTER.md
 # ETIAS CONSULTANT SIMULATOR - PROYECTO MASTER
@@ -187,13 +187,51 @@ Primera aparición en Google (5-7 días después de submit a GSC)
 ---
 
 **Última actualización**: 2026-03-13 00:15
-## Estado: 2026-03-17
+## Estado: 2026-03-18
 
 ✅ Flujo 7 pasos completo
 ✅ PDF trilingüe ES/EN/PT
 ✅ Google Forms activo
 ✅ EmailJS notificación a dggamino@gmail.com
 ✅ GitHub Pages live
+
+
+---
+## Actualización: 2026-03-18 (Sesión Termux + Programmatic SEO)
+
+### Logros de esta sesión:
+- ✅ Termux configurado desde cero (OPPO CPH2579, Android 15)
+- ✅ Repo clonado en ~/storage/shared/Simulador-ETIAS-
+- ✅ Sistema ctx (Opción B) instalado y funcionando
+- ✅ 80 páginas programmatic SEO generadas y deployadas
+- ✅ sitemap.xml actualizado (82 URLs totales)
+- ✅ Sitemap submitido a Google Search Console
+
+### Métricas:
+- HTML pages en producción: 82
+- Commits hoy: 2
+- Costo: $0
+
+### Clusters SEO generados:
+- 32 estados mexicanos
+- 15 países LATAM
+- 15 destinos europeos
+- 18 situaciones específicas
+
+### Próximo hito:
+- Revisar GSC el 2026-03-24 (7 días post-submit)
+- Batch 2: agencias de viaje + operadores turísticos
+
+## 2026-03-18 — Sesión completada
+
+### ✅ COMPLETADO HOY
+- [x] Fix conflicto git (fetch first)
+- [x] Chat paso 1 — respuestas predefinidas sin API key
+- [x] Fix botón Enviar Android (onchange+onkeyup)
+- [x] Fix detección "Si/Sí/ok" para avanzar al formulario
+- [x] ctx auto-actualiza fecha
+- [x] SEO: title y meta description con keywords México/ETIAS 2026
+- [x] GSC verificado: 1 URL indexada en Google
 
 
 ---
@@ -403,6 +441,22 @@ Submit a Google Search Console para iniciar indexación
 - Promise.all: Google Forms + EmailJS simultáneo
 - Fix caracteres especiales en PDF footer
 - Estado: pre-simulador operativo al 100%
+
+## 2026-03-18 — SEO title y meta description
+
+### ✅ DECISIÓN: Actualizar title y meta description con keywords reales
+
+**Cambio realizado:**
+- Antes: `<title>ETIAS Agente Autorizado</title>`
+- Después: `<title>ETIAS México 2026 — Tramita tu autorización de viaje a Europa</title>`
+- Meta description actualizada con keywords: México, Argentina, Brasil, Colombia, Uruguay, €20, Q4 2026
+
+**Razón:**
+- Google reescribía el título porque el original era genérico
+- Keywords de búsqueda real aumentan CTR orgánico
+- Mercado objetivo: viajeros latinoamericanos a Europa
+
+**Commit:** ca3e5bc
 
 
 ---

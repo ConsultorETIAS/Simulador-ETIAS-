@@ -202,3 +202,19 @@ Submit a Google Search Console para iniciar indexación
 - Promise.all: Google Forms + EmailJS simultáneo
 - Fix caracteres especiales en PDF footer
 - Estado: pre-simulador operativo al 100%
+
+## 2026-03-18 — SEO title y meta description
+
+### ✅ DECISIÓN: Actualizar title y meta description con keywords reales
+
+**Cambio realizado:**
+- Antes: `<title>ETIAS Agente Autorizado</title>`
+- Después: `<title>ETIAS México 2026 — Tramita tu autorización de viaje a Europa</title>`
+- Meta description actualizada con keywords: México, Argentina, Brasil, Colombia, Uruguay, €20, Q4 2026
+
+**Razón:**
+- Google reescribía el título porque el original era genérico
+- Keywords de búsqueda real aumentan CTR orgánico
+- Mercado objetivo: viajeros latinoamericanos a Europa
+
+**Commit:** ca3e5bc

@@ -134,3 +134,14 @@ Primera aparición en Google (5-7 días después de submit a GSC)
 ### Próximo hito:
 - Revisar GSC el 2026-03-24 (7 días post-submit)
 - Batch 2: agencias de viaje + operadores turísticos
+
+## 2026-03-18 — Sesión completada
+
+### ✅ COMPLETADO HOY
+- [x] Fix conflicto git (fetch first)
+- [x] Chat paso 1 — respuestas predefinidas sin API key
+- [x] Fix botón Enviar Android (onchange+onkeyup)
+- [x] Fix detección "Si/Sí/ok" para avanzar al formulario
+- [x] ctx auto-actualiza fecha
+- [x] SEO: title y meta description con keywords México/ETIAS 2026
+- [x] GSC verificado: 1 URL indexada en Google
