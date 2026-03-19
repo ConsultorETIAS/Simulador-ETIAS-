@@ -145,3 +145,4 @@ Primera aparición en Google (5-7 días después de submit a GSC)
 - [x] ctx auto-actualiza fecha
 - [x] SEO: title y meta description con keywords México/ETIAS 2026
 - [x] GSC verificado: 1 URL indexada en Google
+- [x] Certificación MCP Anthropic completada (ccox625gp87k) — base para Camino B
