@@ -146,3 +146,36 @@ Primera aparición en Google (5-7 días después de submit a GSC)
 - [x] SEO: title y meta description con keywords México/ETIAS 2026
 - [x] GSC verificado: 1 URL indexada en Google
 - [x] Certificación MCP Anthropic completada (ccox625gp87k) — base para Camino B
+ESTADO ACTUAL - ETIAS SIMULATOR
+**Fecha**: 2026-03-19
+**Última actualización**: Sesión Claude
+
+## COMPLETADO HOY
+
+- [x] 20 páginas pSEO Brasil deployadas
+- [x] 20 páginas pSEO Colombia deployadas
+- [x] 20 páginas pSEO Argentina generadas (pendiente deploy)
+- [x] Scripts generadores versionados en GitHub
+- [x] Sitemap actualizado con URLs Brasil + Colombia
+- [x] Sitemap re-enviado a Google Search Console (18 mar 2026)
+
+## PÁGINAS EN PRODUCCIÓN
+- México: 1 hub
+- Brasil: 20 páginas ✅
+- Colombia: 20 páginas ✅
+- Argentina: 20 páginas (deploy pendiente)
+- Total sitemap: ~122 URLs indexables
+
+## TAREAS PENDIENTES
+
+- [ ] Deploy Argentina + actualizar sitemap
+- [ ] Re-submit sitemap con URLs Argentina
+- [ ] Semana próxima: Chile + Perú (20 páginas)
+- [ ] Agregar internal linking a páginas Brasil (retroactivo)
+
+## REGLAS ESTRICTAS
+
+- NO modificar index.html
+- NO monetizar antes de Q4 2026
+- SÍ enfocarse en SEO + captura leads
+- Ritmo: ~20 páginas/semana por país
