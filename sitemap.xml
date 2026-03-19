@@ -5,7 +5,7 @@
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-mexico.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
 
-  <!-- BRASIL (20 páginas) -->
+  <!-- BRASIL -->
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-brasil.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-brasil-requisitos.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-brasil-costo.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
@@ -27,7 +27,7 @@
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-brasil-italia.html</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-brasil-preguntas-frecuentes.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
 
-  <!-- COLOMBIA (20 páginas) -->
+  <!-- COLOMBIA -->
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-colombia.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-colombia-requisitos.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-colombia-costo.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
@@ -49,7 +49,7 @@
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-colombia-francia.html</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-colombia-preguntas-frecuentes.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
 
-  <!-- ARGENTINA (20 páginas) -->
+  <!-- ARGENTINA -->
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-argentina.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-argentina-requisitos.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-argentina-costo.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
@@ -69,5 +69,43 @@
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-argentina-italia.html</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-argentina-espana.html</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-argentina-preguntas-frecuentes.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+
+  <!-- CLUSTER A: RECHAZO / DUDA -->
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-rechazo-solicitud.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-con-antecedentes-penales.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-visa-negada-previa.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-rechazo-apelar.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-tiempo-revision-extended.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-cancelado-que-hacer.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-dudas-declaracion.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-enfermedad-cronica.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-doble-nacionalidad.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-pasaporte-danado.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-menor-edad-solo.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-adulto-mayor.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-error-formulario.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-nombre-diferente-boleto.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-historial-viajes.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-trabajo-irregular-europa.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-solicitud-ultima-hora.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-rechazo-sin-motivo.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+
+  <!-- CLUSTER B: PROFESIONES -->
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-medicos-mexicanos.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-enfermeras-europa.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-ingenieros-negocios.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-periodistas-prensa.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-deportistas-competencia.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-artistas-gira.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-estudiantes-intercambio.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-investigadores-academicos.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-empresarios-pymes.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-transportistas-logistica.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-chefs-gastronomia.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-arquitectos-disenadores.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-abogados-notarios.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-pilotos-tripulacion.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-influencers-creadores.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://consultoretias.github.io/Simulador-ETIAS-/etias-freelancers-nomadas.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
 
 </urlset>
