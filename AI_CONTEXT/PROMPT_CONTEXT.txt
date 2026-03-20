@@ -1,593 +1,74 @@
-# CONTEXTO AUTO-GENERADO — 2026-03-18
+# CONTEXTO AUTO-GENERADO — 2026-03-19
 
-## AI_CONTEXT/PROYECTO_MASTER.md
-# ETIAS CONSULTANT SIMULATOR - PROYECTO MASTER
-
-**Propietario:** Daniel
-**Objetivo:** Dominar mercado ETIAS México antes de Q4 2026
-**URL:** https://consultoretias.github.io/Simulador-ETIAS-/
-**Última actualización:** 2026-03-14
-
----
-
-## ESTADO ACTUAL (14 Mar 2026)
-
-### ✅ COMPLETADO HOY
-
-| Tarea | Archivo/URL | Estado |
-|-------|-------------|--------|
-| Verificación Google Search Console | googleb3774603a75b32a8.html | ✅ Activo |
-| Sitemap.xml enviado | 2 URLs indexadas | ✅ Completado |
-| Robots.txt configurado | Permitir todo | ✅ Activo |
-| Landing page SEO | /etias-mexico.html | ✅ Online |
-| Sincronización Git | main branch | ✅ Up to date |
-
-### 📊 MÉTRICAS ACTUALES
-- **Usuarios reales:** 0
-- **Tráfico:** 0
-- **Indexación Google:** En proceso (24-48h)
-- **Costo mensual:** $0
-- **Commits totales:** 5
-
----
-
-## PRÓXIMA SESIÓN AGENDADA
-
-**📅 Martes 16 Marzo 2026 - 14:00 (1h 30min)**
-
-**Objetivo:** Implementar envío automático de PDF por email
-
-**Tareas:**
-- Configurar EmailJS (200 emails/mes gratis)
-- Modificar index.html con función enviarPDFporEmail()
-- Testing con usuario de prueba
-- Deploy vía Termux
-
-**Recordatorios:** 13:00 (1h antes) + 13:45 (15 min antes)
-
----
-
-## PRIORIDADES
-
-### 🔥 URGENTE (Esta semana)
-1. [ ] Envío automático PDF (Mar 16 - agendado)
-2. [ ] Verificar indexación Google (48-72h post-sitemap)
-3. [ ] Testear sistema memoria con otros LLMs
-
-### 📋 IMPORTANTE (Próximas 2 semanas)
-4. [ ] Crear requisitos-etias.html
-5. [ ] Crear cuando-entra-vigor-etias.html
-6. [ ] Formulario waitlist integrado
-
----
-
-## REGLAS DEL PROYECTO
-
-### ✅ SÍ HACER
-- Documentar cambios en AI_CONTEXT/
-- Usar Termux para deployment
-- Actualizar ESTADO_ACTUAL.md después de cada sesión
-- Usar PROMPTS.md con cualquier LLM
-
-### ❌ NO HACER
-- NO modificar index.html sin backup
-- NO monetizar antes de Q4 2026
-- NO agregar features sin validación
-- NO sobre-optimizar código funcionando
-
----
-
-**Commits totales:** 5  
-**Última sincronización:** 2026-03-14  
-**Próxima sesión:** Martes 16 Mar, 14:00
-
-
----
-
-## AI_CONTEXT/ESTADO_ACTUAL.md
-# ESTADO ACTUAL - ETIAS SIMULATOR
-**Fecha**: 2026-03-13
-**Última actualización**: 00:15 (Sesión completada exitosamente)
-
----
-
-## ✅ COMPLETADO HOY (2026-03-12/13)
-
-- [x] Identificado problema de pérdida de contexto multi-LLM
-- [x] Creado sistema de memoria persistente (AI_CONTEXT/)
-- [x] Configurado Git + Personal Access Token en Termux
-- [x] Deployado 7 archivos nuevos (3 commits exitosos)
-- [x] Verificado 4 URLs funcionando 100%
-- [x] Documentado deployment en DECISIONES.md
-- [x] Confirmado visualmente con screenshots
-
-**Commits realizados:**
-- d27a9c4..3030dd0: Add AI context system + SEO files
-- c2d7c3f..ba4d575: Add deployment exitoso decision
-- ba4d575..[nuevo]: Session complete
-
-**URLs verificadas:**
-✅ https://consultoretias.github.io/Simulador-ETIAS-/
-✅ https://consultoretias.github.io/Simulador-ETIAS-/sitemap.xml
-✅ https://consultoretias.github.io/Simulador-ETIAS-/robots.txt
-✅ https://consultoretias.github.io/Simulador-ETIAS-/etias-mexico.html
-
----
-
-## 🔥 TAREAS PENDIENTES (PRÓXIMAS 24H)
-
-### URGENTE: Google Search Console
-1. [ ] Submit sitio a Google Search Console
-2. [ ] Verificar propiedad del dominio
-3. [ ] Submit sitemap.xml
-4. [ ] Esperar indexación inicial (48-72h)
-
-### IMPORTANTE: Testear sistema memoria
-5. [ ] Probar PROMPTS.md con ChatGPT
-6. [ ] Probar PROMPTS.md con Moonshot AI
-7. [ ] Probar PROMPTS.md con Kimi AI
-8. [ ] Verificar continuidad de contexto
-
----
-
-## 📋 BACKLOG (PRÓXIMA SEMANA)
-
-- [ ] Crear requisitos-etias.html
-- [ ] Crear cuando-entra-vigor-etias.html
-- [ ] Verificar indexación: site:consultoretias.github.io
-- [ ] Agregar formulario waitlist al simulador
-- [ ] Script pSEO: generar 50 páginas
-
----
-
-## 🚫 REGLAS ESTRICTAS
-
-- ❌ NO modificar index.html (~1,150 líneas funcionando)
-- ❌ NO agregar features nuevas al simulador
-- ❌ NO monetizar ahora (ETIAS no existe hasta Q4 2026)
-- ✅ SÍ enfocarse en SEO + captura leads
-
----
-
-## 💡 CÓMO CONTINUAR CON OTROS LLMs
-
-**Para ChatGPT/Moonshot/Kimi:**
-
-1. Abre: https://github.com/ConsultorETIAS/Simulador-ETIAS-/blob/main/AI_CONTEXT/PROMPTS.md
-2. Click en "Raw" o copia el contenido completo
-3. Pégalo al inicio del nuevo chat
-4. Di: "Quiero [tarea específica de arriba]"
-5. El LLM continuará exactamente donde Claude quedó
-
-**Ejemplo de uso:**
-[Pegar contenido de PROMPTS.md]
-Quiero submit el sitio a Google Search Console.
-Dame las instrucciones paso a paso.
----
-
-## 📝 LOGROS DE ESTA SESIÓN
-
-**Rompimos la parálisis de >1 año:**
-- ✅ Sistema de memoria funcionando
-- ✅ Deployment exitoso vía Termux
-- ✅ Base para escalar a 1000+ páginas
-- ✅ Primera vez que código llega a producción
-- ✅ Continuidad entre LLMs garantizada
-
-**Métricas:**
-- Archivos deployados: 7
-- Commits exitosos: 4
-- URLs funcionando: 4/4 (100%)
-- Tiempo total sesión: ~3 horas
-- Tiempo bloqueado antes: >1 año
-
-**Próximo hito:**
-Primera aparición en Google (5-7 días después de submit a GSC)
-
----
-
-**Última actualización**: 2026-03-13 00:15
-## Estado: 2026-03-18
-
-✅ Flujo 7 pasos completo
-✅ PDF trilingüe ES/EN/PT
-✅ Google Forms activo
-✅ EmailJS notificación a dggamino@gmail.com
-✅ GitHub Pages live
-
-
----
-## Actualización: 2026-03-18 (Sesión Termux + Programmatic SEO)
-
-### Logros de esta sesión:
-- ✅ Termux configurado desde cero (OPPO CPH2579, Android 15)
-- ✅ Repo clonado en ~/storage/shared/Simulador-ETIAS-
-- ✅ Sistema ctx (Opción B) instalado y funcionando
-- ✅ 80 páginas programmatic SEO generadas y deployadas
-- ✅ sitemap.xml actualizado (82 URLs totales)
-- ✅ Sitemap submitido a Google Search Console
-
-### Métricas:
-- HTML pages en producción: 82
-- Commits hoy: 2
-- Costo: $0
-
-### Clusters SEO generados:
-- 32 estados mexicanos
-- 15 países LATAM
-- 15 destinos europeos
-- 18 situaciones específicas
-
-### Próximo hito:
-- Revisar GSC el 2026-03-24 (7 días post-submit)
-- Batch 2: agencias de viaje + operadores turísticos
-
-## 2026-03-18 — Sesión completada
-
-### ✅ COMPLETADO HOY
-- [x] Fix conflicto git (fetch first)
-- [x] Chat paso 1 — respuestas predefinidas sin API key
-- [x] Fix botón Enviar Android (onchange+onkeyup)
-- [x] Fix detección "Si/Sí/ok" para avanzar al formulario
-- [x] ctx auto-actualiza fecha
-- [x] SEO: title y meta description con keywords México/ETIAS 2026
-- [x] GSC verificado: 1 URL indexada en Google
-
-
----
-
-## AI_CONTEXT/DECISIONES.md
-# DECISIONES DEL PROYECTO ETIAS
-
-Registro cronológico de decisiones importantes y lecciones aprendidas.
-
----
-
-## 2026-03-12 (Sesión Claude + Termux)
-
-### ✅ DECISIÓN: Crear sistema de memoria persistente multi-LLM
-
-**Contexto**: 
-- >1 año iterando con LLMs free sin conclusión
-- Cada chat empezaba desde cero (Claude, ChatGPT, Moonshot, Kimi)
-- Pérdida de contexto entre sesiones
-- 45 artefactos HTML creados, ninguno lanzado
-
-**Solución implementada**:
-- AI_CONTEXT/PROYECTO_MASTER.md = única fuente de verdad
-- AI_CONTEXT/PROMPTS.md = prompt maestro para iniciar cualquier LLM
-- AI_CONTEXT/ESTADO_ACTUAL.md = tareas concretas del día
-- AI_CONTEXT/DECISIONES.md = este archivo
-- Git en Termux para deployment
-
-**Resultado esperado**:
-- Continuidad entre sesiones
-- Cualquier LLM puede continuar exactamente donde quedó el anterior
-- Fin de la parálisis por análisis
-
----
-
-### ✅ DECISIÓN: NO monetizar hasta Q4 2026
-
-**Contexto**:
-- ETIAS no es obligatorio hasta octubre 2026
-- Intentar cobrar hoy = imposible (producto no existe)
-- Simulador funcional pero sin demanda actual
-
-**Estrategia adoptada**:
-- Marzo-Septiembre 2026: Construcción de ventanilla (SEO + leads)
-- Octubre 2026: Avalancha de demanda → captura mercado
-
-**Implicaciones**:
-- Costo mensual debe ser $0 (no hay revenue)
-- Enfoque 100% en posicionamiento SEO
-- Capturar 1000 emails waitlist para octubre
-
----
-
-### ✅ DECISIÓN: Priorizar SEO sobre features
-
-**Contexto**:
-- 45 artefactos HTML iterados sin distribución
-- 0 tráfico orgánico
-- Simulador funcional (~1,150 líneas) pero invisible en Google
-- Kimi AI confirmó tamaño real del código
-
-**Prioridades definidas**:
-1. SEO básico (sitemap, robots.txt, meta tags)
-2. Programmatic SEO (1000 páginas automáticas)
-3. Captura de leads (formulario waitlist)
-
-**Features descartadas** (hasta octubre 2026):
-- ❌ OCR de pasaporte (ya existe en algún artefacto, no es prioridad)
-- ❌ Integración Telegram bot compleja
-- ❌ Backend/database
-- ❌ Panel admin/CRM
-- ❌ Optimizaciones UI/UX del simulador
-
-**Razón**: 
-Google tarda 3-6 meses en indexar y rankear contenido nuevo.
-Si empezamos SEO en marzo, estaremos rankeados #1 en octubre cuando ETIAS lance.
-
----
-
-### ✅ DECISIÓN: GitHub Pages + Termux como stack definitivo
-
-**Alternativas consideradas**:
-- Vercel
-- Netlify  
-- Hosting pago
-- Editar directo en GitHub web
-
-**Decisión final**: GitHub Pages + Git desde Termux
-
-**Razones**:
-- Costo: $0 (vs $5-10/mes otros)
-- Control total desde Android vía Termux
-- Ya tenemos repo: ConsultorETIAS/Simulador-ETIAS-
-- Soporta custom domains (cuando compremos etias-mexico.com)
-- Unlimited bandwidth
-- SSL gratis
-- Git-based deployment (profesional, versionado)
-
----
-
-### ✅ DECISIÓN: NO modificar index.html existente
-
-**Contexto**:
-- index.html tiene ~1,150 líneas (confirmado por Kimi AI)
-- Funciona correctamente (genera PDFs, 3 idiomas, 6 pasos)
-- Vanilla JS sin frameworks
-- 1 dependencia: jsPDF 2.5.1
-
-**Decisión**:
-- Dejar index.html intacto
-- Crear archivos SEO NUEVOS (sitemap, robots, páginas optimizadas)
-- Estos archivos NO requieren modificar código existente
-
-**Razón**:
-- "Si funciona, no lo toques"
-- 1,150 líneas = riesgo de romper algo
-- SEO se logra con archivos adicionales, no modificando el simulador
-- Separación de concerns: simulador (funcional) vs SEO (marketing)
-
----
-
-### ❌ LECCIÓN APRENDIDA: No sobre-optimizar sin usuarios
-
-**Error cometido**:
-- >1 año construyendo 45 versiones HTML
-- Probando solo con LLMs free
-- 0 usuarios reales testeando
-- Cada LLM sugería "mejoras" diferentes
-- Parálisis por análisis
-
-**Consecuencia**:
-- Tiempo perdido en "arquitectura perfecta"
-- Features que nadie pidió
-- Código funcionando pero sin distribución
-
-**Corrección aplicada hoy**:
-- Sistema de memoria persistente (PROYECTO_MASTER.md)
-- Reglas claras: NO features, SÍ SEO
-- Enfoque en lanzamiento imperfecto
-- Documentar decisiones para no repetir errores
-
----
-
-### 📝 DECISIONES PENDIENTES
-
-- [ ] ¿Comprar dominio etias-mexico.com ($12/año) o seguir con GitHub subdomain?
-- [ ] ¿Contactar agencias de viaje AHORA o esperar a tener tráfico SEO primero?
-- [ ] ¿Implementar pSEO con 100 páginas o ir directo a 1000?
-- [ ] ¿Usar Personal Access Token temporal o crear uno sin expiración?
-
----
-
-## TEMPLATE PARA NUEVAS DECISIONES
-✅/❌ DECISIÓN: [Título]
-Contexto:
-[Por qué surgió esta decisión]
-Alternativas consideradas:
-Opción A
-Opción B
-Decisión final: [La que elegimos]
-Razones:
-Razón 1
-Razón 2
-Implicaciones:
-Consecuencia 1
-Consecuencia 2
----
-
-**Actualiza este archivo después de cada decisión importante para no repetir errores.**
-
----
-
-## 2026-03-12 (22:00) - DEPLOYMENT EXITOSO
-
-### ✅ HITO: Primer deployment completo del sistema
-
-**Logros**:
-- 7 archivos nuevos deployados vía Termux + Git
-- Sistema de memoria persistente funcionando
-- Archivos SEO básicos live en GitHub Pages
-- Commit: d27a9c4..3030dd0
-
-**Archivos deployados**:
-1. AI_CONTEXT/PROYECTO_MASTER.md
-2. AI_CONTEXT/ESTADO_ACTUAL.md
-3. AI_CONTEXT/PROMPTS.md
-4. AI_CONTEXT/DECISIONES.md
-5. sitemap.xml
-6. robots.txt
-7. etias-mexico.html
-
-**Resultado**:
-- ✅ URLs funcionando en GitHub Pages
-- ✅ Sistema de contexto listo para usar con otros LLMs
-- ✅ SEO básico implementado
-- ✅ Base para escalamiento pSEO
-
-**Próximo paso**:
-Submit a Google Search Console para iniciar indexación
-
----
-## 2026-03-17 — EmailJS integrado
-
-- Botón enviar reparado y funcional
-- EmailJS conectado: service_hxuq7gn / template_r225rld
-- Variables template: {{name}}, {{nombre}}, {{email}}, {{nacionalid}}, {{title}}
-- Promise.all: Google Forms + EmailJS simultáneo
-- Fix caracteres especiales en PDF footer
-- Estado: pre-simulador operativo al 100%
-
-## 2026-03-18 — SEO title y meta description
-
-### ✅ DECISIÓN: Actualizar title y meta description con keywords reales
-
-**Cambio realizado:**
-- Antes: `<title>ETIAS Agente Autorizado</title>`
-- Después: `<title>ETIAS México 2026 — Tramita tu autorización de viaje a Europa</title>`
-- Meta description actualizada con keywords: México, Argentina, Brasil, Colombia, Uruguay, €20, Q4 2026
-
-**Razón:**
-- Google reescribía el título porque el original era genérico
-- Keywords de búsqueda real aumentan CTR orgánico
-- Mercado objetivo: viajeros latinoamericanos a Europa
-
-**Commit:** ca3e5bc
-
-
----
-
-## AI_CONTEXT/FUNDAMENTOS.md
-Directo a Termux:
-cd ~/Simulador-ETIAS-/AI_CONTEXT
-nano FUNDAMENTOS.md
-Pega esto completo:
-# FUNDAMENTOS CONCEPTUALES DEL SISTEMA
-
-## Base académica del AI_CONTEXT/
-
-Knowledge Management (HKPolyU 2015)
-→ Principio: externalizar conocimiento tácito
-→ Aplicación: AI_CONTEXT/ como memoria organizacional transferible a cualquier LLM
-
-Financial Analysis (Tsinghua 2014)
-→ Principio: decisiones basadas en datos estructurados
-→ Aplicación: validación 4D en simulador ETIAS
-
-Age of Globalization (UT Austin 2014)
-→ Principio: asimetrías en flujos comerciales internacionales
-→ Aplicación: tesis de parasitación de plataformas travel/visas
-
-AI Fluency Framework (Anthropic)
-→ Principio: Delegation, Description, Discernment, Diligence
-→ Aplicación: framework de compliance ya en producción en simulador
-
-Data Economics (IAB Spain Libro Blanco 2019)
-→ Principio: First Party Data tiene mayor calidad y menor volumen
-→ Aplicación: cada expediente ETIAS es First Party Data propio
-   con valor creciente antes de que exista competencia
-
-## Insight estratégico central
-
-Cada expediente ETIAS capturado hoy es First Party Data de intención
-de viaje: nombre, destino, fecha, pasaporte, email.
-Dato declarativo, verificado, consentido — máxima calidad.
-
-Cuando ETIAS lance Q4 2026 y lleguen competidores, existe una base
-de datos de viajeros latinoamericanos con intención activa hacia Europa
-que ningún competidor podrá comprar ni replicar.
-
-El simulador no es solo una herramienta de tramitación.
-Es una DMP vertical de viaje que se construye sola antes de que
-el mercado exista.
-
-## Nota metodológica
-
-El AI_CONTEXT/ no es un workaround técnico.
-Es aplicación directa de Knowledge Management:
-convertir conocimiento tácito personal en conocimiento explícito
-transferible a cualquier agente — humano o LLM.
-
-
----
-
-## AI_CONTEXT/PROMPTS.md
-# PROMPT MAESTRO - ETIAS SIMULATOR
-
-**Copia y pega este bloque completo al inicio de CUALQUIER chat con LLMs (Claude, ChatGPT, Moonshot, Kimi, etc.)**
-
----
-CONTEXTO DEL PROYECTO
-Soy Daniel, construyendo ETIAS Consultant Simulator para dominar el mercado ETIAS México antes de Q4 2026 (cuando ETIAS se vuelve obligatorio para viajeros latinoamericanos a Europa).
-ESTADO ACTUAL:
-Simulador web funcional (~1,150 líneas HTML/CSS/JS)
+## PROYECTO
+ETIAS Consultant Simulator — Daniel Gomez Gamiño
 URL: https://consultoretias.github.io/Simulador-ETIAS-/
-Genera PDFs de Declaración de Representación (compliance UE 2018/1240)
-3 idiomas: ES/EN/PT
-Bot Telegram: @ETIAS_BOT
-Git configurado en Termux
-0 usuarios reales, 0 tráfico, NO indexado en Google
-PROBLEMA RESUELTO CON ESTE PROMPT:
-Uso múltiples LLMs free (Claude, ChatGPT, Moonshot, Kimi). Cada chat perdía contexto.
-Ahora tengo memoria externa en GitHub (AI_CONTEXT/PROYECTO_MASTER.md) que todos los LLMs leen.
-TU ROL:
-Eres asistente técnico enfocado SOLO en ejecutar tareas específicas del proyecto.
-NO sugieras cambios arquitectónicos. NO propongas "mejoras". NO hagas análisis largos.
-Solo pregunta: "¿Qué tarea específica quieres hacer?" y ejecútala.
-PRIORIDADES (en orden):
-SEO básico (sitemap.xml, robots.txt, página /etias-mexico.html)
-Captura de leads (formulario waitlist)
-Programmatic SEO (100 páginas automáticas)
-REGLAS CRÍTICAS:
-NO monetizar ahora (ETIAS no existe hasta Q4 2026)
-NO construir features nuevas al simulador
-NO modificar index.html existente (~1,150 líneas funcionando)
-SÍ enfocarse en SEO + captura leads
-DOCUMENTOS EN GITHUB:
-AI_CONTEXT/PROYECTO_MASTER.md = contexto completo
-AI_CONTEXT/ESTADO_ACTUAL.md = tareas pendientes HOY
-AI_CONTEXT/DECISIONES.md = historial de cambios
-index.html = simulador (~1,150 líneas)
-ENTORNO TÉCNICO:
-Android 14, Termux con Git configurado
-GitHub Pages (free)
-Sin backend (todo client-side)
+Repo: github.com/ConsultorETIAS/Simulador-ETIAS-
+Entorno: Android 15, Termux, Git, Python, GitHub Pages
 Costo: $0/mes
-Ahora pregúntame: ¿Qué tarea específica de las PRIORIDADES quieres hacer hoy?
----
 
-## EJEMPLOS DE USO
+## QUIÉN SOY
+Solopreneur mexicano construyendo ecosistema de servicios
+de documentación de viaje internacional.
+Visión: parasitar plataformas travel/visas como capa inteligente
+entre el viajero latinoamericano y sistemas oficiales europeos.
 
-### Ejemplo 1: Iniciar ChatGPT
-[Pegar bloque de arriba]
-Quiero crear sitemap.xml para mi proyecto ETIAS
-### Ejemplo 2: Iniciar Moonshot AI
-[Pegar bloque de arriba]
-Ayúdame a escribir la página /etias-mexico.html optimizada para SEO
-### Ejemplo 3: Iniciar Kimi AI
-[Pegar bloque de arriba]
-Necesito comandos Termux para crear los archivos SEO
----
+## ESTADO ACTUAL (19 Mar 2026)
+- Simulador 7 pasos operativo, PDF legal trilingüe ES/EN/PT
+- EmailJS activo: service_hxuq7gn / template_r225rld → dggamino@gmail.com
+- Google Forms + EmailJS simultáneo (Promise.all)
+- GSC verificado: 1 URL indexada confirmada
+- Certificación MCP Anthropic completada (ccox625gp87k)
 
-## ANTI-PATRONES (lo que NO debes hacer)
+## PÁGINAS EN PRODUCCIÓN
+- México: 1 hub (etias-mexico.html)
+- Brasil: 20 páginas ✅ deployadas
+- Colombia: 20 páginas ✅ deployadas
+- Argentina: 20 páginas generadas — DEPLOY PENDIENTE
+- Total sitemap: ~122 URLs indexables
+- Sitemap re-enviado a GSC: 2026-03-18
 
-❌ MALO:
-"Hola ChatGPT, tengo un proyecto de ETIAS y no sé por dónde empezar"
-**Resultado**: ChatGPT sugiere arquitectura completa desde cero, ignora tu trabajo previo
+## STACK TÉCNICO
+- Frontend: HTML/CSS/JS vanilla (~774 líneas index.html)
+- Email: EmailJS
+- Hosting: GitHub Pages
+- pSEO: Python (generar_brasil.py como template base)
+- Contexto LLM: AI_CONTEXT/ + script ctx en Termux
 
-✅ BUENO:
-[Pegar PROMPT MAESTRO]
-Quiero crear sitemap.xml con los comandos exactos para Termux
-**Resultado**: ChatGPT ejecuta tarea específica con contexto completo, respeta decisiones previas
+## ARQUITECTURA pSEO (hub-and-spoke 3 niveles)
+- Tier 1 (0.9): Hub país → /etias-[pais].html
+- Tier 2 (0.7): Intención → /etias-[pais]-[intencion].html
+- Tier 3 (0.5): Long-tail geo/segmento
+Cada página: Schema.org FAQPage + canonical + breadcrumbs + CTA simulador
+Ritmo: ~20 páginas/semana por país
 
----
+## TAREAS PENDIENTES INMEDIATAS
+1. Deploy Argentina + actualizar sitemap
+2. Re-submit sitemap con URLs Argentina
+3. Agregar internal linking retroactivo a páginas Brasil
+4. Semana próxima: Chile + Perú (20 páginas cada uno)
 
-**Guarda este archivo y úsalo SIEMPRE al iniciar cualquier LLM.**
+## ROADMAP
+Camino A (activo): ctx + LLMs web + distribución SEO
+Camino B (próximo): Claude Code + Memory MCP en Termux
+Camino C (futuro): Cowork + MCPs especializados
 
+## DECISIONES VIGENTES
+- NO tocar index.html (funciona, no tocar)
+- NO monetizar hasta Q4 2026 (ETIAS no existe aún)
+- NO features nuevas sin validación
+- SÍ pSEO país por país ~20 páginas/semana
+- SÍ ritmo controlado (evitar señales spam)
+- SÍ un dato local único por país (evitar thin content)
 
----
+## REGLAS PARA EL LLM
+- Responder siempre en español
+- Comandos exactos para Termux (editor: nano)
+- Soluciones $0 o mínimo costo
+- NO sugerir cambios arquitectónicos no solicitados
+- NO proponer features nuevas sin que se pidan
+- SÍ ejecutar la tarea específica solicitada
+- Fuente de verdad: AI_CONTEXT/ en GitHub
 
+## PRÓXIMA REVISIÓN GSC
+2026-03-24 (7 días post-submit sitemap)

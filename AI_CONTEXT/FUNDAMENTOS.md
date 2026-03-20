@@ -47,3 +47,13 @@ El AI_CONTEXT/ no es un workaround técnico.
 Es aplicación directa de Knowledge Management:
 convertir conocimiento tácito personal en conocimiento explícito
 transferible a cualquier agente — humano o LLM.
+## Certificación técnica aplicada
+
+Model Context Protocol - Introduction (Anthropic, 2026)
+→ Principio: protocolo estándar para conectar LLMs con herramientas y fuentes de datos externas
+→ Aplicación: Camino B del proyecto ETIAS — Claude Code + Memory MCP en Termux
+→ Implementación concreta:
+   - Memory MCP server = AI_CONTEXT/ con persistencia nativa entre sesiones
+   - Claude Code en Termux = agente autónomo que ejecuta git, edita archivos, hace deploy
+   - Elimina script ctx manual → contexto se inyecta automáticamente vía MCP
+→ Certificación: ccox625gp87k / Anthropic / 18 marzo 2026
