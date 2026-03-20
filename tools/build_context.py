@@ -8,9 +8,16 @@ FILES = [
     "AI_CONTEXT/PROMPTS.md",
 ]
 
-import subprocess
 today = datetime.date.today().isoformat()
-subprocess.run(["sed", "-i", f"s/[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}}/{today}/g", "AI_CONTEXT/ESTADO_ACTUAL.md"])
+
+# Solo actualiza la línea "Fecha:" al inicio, no todas las fechas
+import re
+estado_path = "AI_CONTEXT/ESTADO_ACTUAL.md"
+if os.path.exists(estado_path):
+    content = open(estado_path).read()
+    content = re.sub(r'(?m)^(\*\*Fecha\*\*: )\d{4}-\d{2}-\d{2}', f'\\g<1>{today}', content)
+    open(estado_path, "w").write(content)
+
 output = f"# CONTEXTO AUTO-GENERADO — {today}\n\n"
 
 for f in FILES:
