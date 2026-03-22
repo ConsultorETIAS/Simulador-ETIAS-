@@ -75,3 +75,11 @@
 - ✅ SÍ ritmo controlado (evitar señales spam)
 - ✅ Próxima revisión GSC: 26 Mar 2026
 - ✅ Decisión siguiente batch: 01 Abr 2026
+
+## 2026-03-21 — Homogenización + Sitemap
+
+✅ Repo local sincronizado (estaba 80+ commits atrás)
+✅ Sitemap regenerado: 95 → 172 URLs
+✅ GSC re-submit: 21 mar 2026 — 19:10h
+✅ Commit: 32b3caa
+
