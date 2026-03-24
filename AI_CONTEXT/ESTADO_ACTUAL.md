@@ -1,4 +1,11 @@
 # ESTADO ACTUAL - ETIAS SIMULATOR
+## Estado: 2026-03-24
+
+✅ Reemplazado "Agente Autorizado" por "Simulador · Pase Electrónico de Viaje ✈️" en index.html
+✅ cLabel formulario legal cambiado a "Consultor ETIAS" (ES + PT)
+✅ Commit: aeb4166..89e1454
+✅ GitHub Pages live y verificado
+
 **Fecha**: 2026-03-19
 **Última actualización**: Sesión Claude — Deployment masivo clusters A+B
 
