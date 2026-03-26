@@ -1,92 +1,97 @@
-# ESTADO ACTUAL - ETIAS SIMULATOR
-## Estado: 2026-03-24
-
-✅ Reemplazado "Agente Autorizado" por "Simulador · Pase Electrónico de Viaje ✈️" en index.html
-✅ cLabel formulario legal cambiado a "Consultor ETIAS" (ES + PT)
-✅ Commit: aeb4166..89e1454
-✅ GitHub Pages live y verificado
-
-**Fecha**: 2026-03-19
-**Última actualización**: Sesión Claude — Deployment masivo clusters A+B
+# ESTADO ACTUAL — ETIAS SIMULATOR
+**Fecha**: 2026-03-25
+**Última actualización**: 18:30 CST
 
 ---
 
-## ✅ COMPLETADO EN ESTA SESIÓN (19 Mar 2026)
+## ✅ COMPLETADO HOY (2026-03-25)
 
-- [x] PROMPT_CONTEXT.txt actualizado con estado real del proyecto
-- [x] 20 páginas pSEO Argentina generadas y deployadas (`53e8716`)
-- [x] Sitemap actualizado 62 URLs y enviado a GSC
-- [x] 18 páginas Cluster A (Rechazo/Duda) generadas y deployadas
-- [x] 16 páginas Cluster B (Profesiones) generadas y deployadas (`71db74c`)
-- [x] Sitemap actualizado 97 URLs (`69bb69b`)
-- [x] GSC re-submit confirmado (19 mar 2026 — 11:06)
-- [x] Scripts versionados en GitHub: generar_argentina.py, generar_cluster_a.py, generar_cluster_b.py
+- [x] Arreglado sitemap.xml roto (estructura XML inválida)
+- [x] Creado generar_sitemap.py — genera sitemap desde archivos reales
+- [x] Generadas 13 páginas Chile (spokes: requisitos, costo, Santiago, España, etc.)
+- [x] Generadas 12 páginas Venezuela (spokes: requisitos, costo, España, diáspora, etc.)
+- [x] Sitemap limpio con 207 URLs deployado en un solo commit
+- [x] Sitemap enviado a Google Search Console ✅
+- [x] Verificación agendada en calendario: 8 abril y 15 abril
+
+**Commit**: f20a1ce → 72eb6b1
+**URLs en sitemap**: 207
+**Sitemap enviado a GSC**: 25 mar 2026 ✅
 
 ---
 
-## 📊 PÁGINAS EN PRODUCCIÓN
+## 🚫 REGLA CRÍTICA HASTA 8 ABRIL
 
-| Cluster | Páginas | Estado |
-|---|---|---|
-| México hub | 1 | ✅ |
-| Brasil | 20 | ✅ |
-| Colombia | 20 | ✅ |
-| Argentina | 20 | ✅ |
-| Rechazo/Duda (Cluster A) | 18 | ✅ |
-| Profesiones (Cluster B) | 16 | ✅ |
-| **TOTAL** | **95 páginas** | ✅ |
-| Sitemap total | 97 URLs | ✅ GSC enviado |
+**NO modificar sitemap.xml.**
+Google necesita verlo estable 2-3 semanas para indexar.
+El problema anterior era exactamente ese: cambios diarios = 0 indexación.
+
+---
+
+## 📊 COBERTURA ACTUAL POR PAÍS
+
+| País | Hub | Spokes | Estado |
+|------|-----|--------|--------|
+| México | ✅ | 32 estados + segmentos | Profundo |
+| Argentina | ✅ | ~18 spokes | Profundo |
+| Brasil | ✅ | ~20 spokes | Profundo |
+| Colombia | ✅ | ~19 spokes | Profundo |
+| Chile | ✅ | 13 spokes nuevos | ✅ Hoy |
+| Venezuela | ✅ | 12 spokes nuevos | ✅ Hoy |
+| Bolivia | ✅ | 0 spokes | Solo hub |
+| Ecuador | ✅ | 0 spokes | Solo hub |
+| Costa Rica | ✅ | 0 spokes | Solo hub |
+| Perú | ❌ | — | PRÓXIMO BATCH |
+
+---
+
+## 🔥 PRÓXIMO BATCH (semana 8 abril — post verificación)
+
+1. Perú (hub nuevo + spokes: Lima, requisitos, costo, turismo)
+2. Nuevo León (estado mexicano faltante, alta prioridad)
+3. Puebla (estado mexicano faltante)
+4. Quintana Roo (Cancún, turismo alto)
+
+**Flujo fijo para cualquier batch:**
+```bash
+cd ~/ETIAS-simulador
+python3 generar_[país].py
+python3 generar_sitemap.py
+git add . && git commit -m "Add [país] + sitemap" && git push
+```
+
+---
+
+## 📋 SCRIPTS DISPONIBLES EN REPO
+
+```
+generar_argentina.py
+generar_brasil.py
+generar_colombia.py
+generar_chile.py       ← nuevo hoy
+generar_venezuela.py   ← nuevo hoy
+generar_cluster_a.py
+generar_cluster_b.py
+generar_sitemap.py     ← nuevo hoy — USAR SIEMPRE AL FINAL
+```
 
 ---
 
 ## 📅 AGENDA
 
-### 26 Mar 2026 — Revisión GSC
-- [ ] Verificar indexación: site:consultoretias.github.io
-- [ ] Revisar URLs descubiertas vs indexadas en GSC
-- [ ] Confirmar que no hay errores de cobertura
-- [ ] Decidir si agregar Chile + Perú esta semana o esperar señales
-
-### 01 Abr 2026 — Revisión indexaciones + siguiente batch
-- [ ] Auditoría completa GSC: cuántas de 97 URLs indexadas
-- [ ] Si indexación > 50%: generar Chile + Perú (20 páginas cada uno)
-- [ ] Si indexación < 50%: revisar thin content, mejorar internal linking
-- [ ] Agregar internal linking retroactivo a páginas Brasil
-- [ ] Actualizar sitemap con Chile + Perú si procede
-- [ ] Re-submit GSC con nuevas URLs
-
----
-
-## 🔥 TAREAS PENDIENTES
-
-### Inmediatas
-- [ ] Internal linking retroactivo en páginas Brasil (mejora crawl budget)
-- [ ] Revisar que slugs Cluster A/B no tengan errores 404
-
-### Próxima semana (si GSC muestra indexación sana)
-- [ ] generar_chile.py — 20 páginas
-- [ ] generar_peru.py — 20 páginas
-- [ ] Sitemap → ~137 URLs
-
-### Backlog
-- [ ] Cluster C: Destinos específicos (París, Roma, Barcelona, Amsterdam)
-- [ ] Formulario waitlist integrado al simulador
-- [ ] Camino B: Claude Code + Memory MCP en Termux
+| Fecha | Acción |
+|-------|--------|
+| 25 mar 2026 | Sitemap 207 URLs enviado a GSC ✅ |
+| 8 abr 2026 | Verificar indexación GSC — ¿cuántas URLs? |
+| 15 abr 2026 | Segunda verificación si indexación parcial |
+| Post 8 abr | Batch Perú + Nuevo León + Puebla |
 
 ---
 
 ## 🚫 REGLAS ESTRICTAS
-- ❌ NO modificar index.html
+
+- ❌ NO tocar sitemap.xml hasta 8 abril
 - ❌ NO monetizar antes de Q4 2026
-- ✅ SÍ pSEO país por país ~20 páginas/semana
-- ✅ SÍ ritmo controlado (evitar señales spam)
-- ✅ Próxima revisión GSC: 26 Mar 2026
-- ✅ Decisión siguiente batch: 01 Abr 2026
-
-## 2026-03-21 — Homogenización + Sitemap
-
-✅ Repo local sincronizado (estaba 80+ commits atrás)
-✅ Sitemap regenerado: 95 → 172 URLs
-✅ GSC re-submit: 21 mar 2026 — 19:10h
-✅ Commit: 32b3caa
-
+- ❌ NO modificar index.html (774 líneas funcionando)
+- ✅ SÍ ejecutar generar_sitemap.py después de cada batch
+- ✅ SÍ respetar flujo: generar → sitemap → push
