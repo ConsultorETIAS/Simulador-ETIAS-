@@ -1,0 +1,833 @@
+
+
+
+
+
+etias agente autorizado
+
+
+
+
+ (function(){
+ emailjs.init({ publickey: "etwflvmdcwi2oacoh" });
+ })();
+
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:linear-gradient(150deg,#0c1e35 0%,#1a3a5c 60%,#0c1e35 100%);font-family:georgia,serif;color:#1f2937}
+@keyframes bounce{0%,80%,100%{transform:translatey(0)}40%{transform:translatey(-6px)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes fadein{from{opacity:0;transform:translatey(8px)}to{opacity:1;transform:translatey(0)}}
+.dot{width:6px;height:6px;border-radius:50%;background:#9ca3af;display:inline-block}
+.dot0{animation:bounce 1s 0s infinite}
+.dot1{animation:bounce 1s 0.2s infinite}
+.dot2{animation:bounce 1s 0.4s infinite}
+.spin{animation:spin 1s linear infinite;display:inline-block}
+input,select{width:100%;padding:9px 11px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;color:#1f2937;background:#f9fafb;box-sizing:border-box;font-family:inherit}
+input:focus,select:focus{outline:none;border-color:#1a3a5c}
+.btn{border:none;border-radius:8px;padding:11px 22px;font-weight:700;font-size:13px;cursor:pointer;transition:opacity 0.2s}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn-navy{background:#1a3a5c;color:#fff}
+.btn-gold{background:#c9a84c;color:#fff}
+.btn-link{background:none;border:none;color:#9ca3af;font-size:12px;cursor:pointer;text-decoration:underline;font-family:inherit}
+.card{background:#fff;border-radius:18px;padding:24px 28px;box-shadow:0 30px 60px rgba(0,0,0,0.5);animation:fadein 0.3s ease}
+.section-label{font-size:10px;font-weight:800;color:#c9a84c;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;border-bottom:2px solid #c9a84c;padding-bottom:4px}
+.field{margin-bottom:12px}
+.field-label{display:block;font-size:10px;font-weight:700;color:#4b5563;margin-bottom:3px;letter-spacing:0.06em;text-transform:uppercase}
+.field-hint{font-size:10px;color:#ef4444;margin:0 0 3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+.chat-bubble-bot{max-width:78%;padding:10px 14px;border-radius:16px 16px 16px 4px;background:#f3f4f6;color:#1f2937;font-size:13px;line-height:1.5;align-self:flex-start;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.chat-bubble-user{max-width:78%;padding:10px 14px;border-radius:16px 16px 4px 16px;background:#1a3a5c;color:#fff;font-size:13px;line-height:1.5;align-self:flex-end;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.check-pass{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid #f3f4f6}
+.check-fail{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid #f3f4f6}
+@media(max-width:640px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+
+
+
+
+
+// ============================================================
+// config
+// ============================================================
+var config = {
+ consultant_name: "etias agente autorizado",
+ consultant_email: "consultor.etias@proton.me",
+ consultant_fee: "mxn 400 / r$120",
+ google_form_id: "1faipqlsf67d6xl62dfhi2v0sdh8p8dttxflxpvogu2dcovxsnmqs1gw",
+ entries: {
+ exp_id: "entry.1574739686",
+ fecha: "entry.680746807",
+ consultor: "entry.172662325",
+ viajero: "entry.933790999",
+ email_viajero: "entry.671901623",
+ pasaporte: "entry.2006734991",
+ destino: "entry.1186338250",
+ llegada: "entry.963884759",
+ nacionalidad: "entry.1895038246"
+ }
+};
+
+var etias_nat = ["mexico","mexicano","mexicana","méxico","brasil","brasileño","brasileña","brazilian","mexican","argentina","argentino","colombiano","colombiana"];
+
+// ============================================================
+// state
+// ============================================================
+var s = {
+ lang: "es",
+ step: 0,
+ expid: "etias-" + date.now().tostring(36).touppercase(),
+ chatmessages: [],
+ chatinput: "",
+ chatloading: false,
+ chatescalate: false,
+ chatstarted: false,
+ rep: { travelername:"", traveleremail:"", passportnumber:"", relation:0 },
+ passstatus: "idle", // idle|processing|success|error
+ passpreview: null,
+ passocr: null,
+ tv: { fname:"",lname:"",dob:"",nationality:"",gender:0,pnum:"",pissue:"",pexpiry:"",pcountry:"",destination:"",arrival:"",purpose:0,prev_refused:false,prev_deported:false,criminal:false },
+ pdfstatus: "idle",
+ formstatus: "idle",
+ formsent: false
+};
+
+// ============================================================
+// translations
+// ============================================================
+var t = {
+ es:{
+ steps:["asistente","representación","pasaporte","datos","validación 4d","revisión","confirmación"],
+ chat:{title:"asistente etias",subtitle:"agente autorizado · art. 67 reg. ue 2018/1240",placeholder:"ej: 'soy mexicano y viajo a francia'",send:"enviar",escalate:"⚠️ este caso requiere revisión del agente.",escalatecontact:"contactar:",skip:"ir directamente al formulario →"},
+ rep:{title:"declaración de representación",desc:"el viajero autoriza al agente a gestionar su solicitud etias.",clabel:"agente autorizado",tlabel:"tus datos como viajero",tname:"tu nombre completo",temail:"tu email personal",tpass:"tu número de pasaporte",relation:"tipo de representación",relations:["adulto por sí mismo","menor bajo patria potestad","persona bajo tutela legal"],emailwarn:"⚠ debe ser tu email personal — acceso exclusivo tuyo",declare:"el viajero declara haber leído y acepta los términos de representación.",sign:"aceptar y continuar →"},
+ pass:{title:"escaneo de pasaporte",desc:"sube foto de tu pasaporte. claude extrae los datos automáticamente.",drag:"arrastra aquí o haz clic",formats:"jpg png webp · máx 5mb",scan:"📷 escanear pasaporte",processing:"leyendo pasaporte...",success:"✓ datos extraídos",error:"no se pudo leer — completa manualmente",privacy:"🔒 imagen no almacenada",confirm:"confirmar y continuar →",skip:"omitir — ingresar manualmente →",fsurname:"apellido(s)",fgiven:"nombre(s)",fnat:"nacionalidad",fdob:"nacimiento",fsex:"sexo",fnum:"número",fexp:"vencimiento",fcountry:"país emisor"},
+ td:{title:"tus datos de viaje",ptitle:"datos personales",fname:"nombre(s)",lname:"apellido(s)",dob:"fecha nacimiento",nat:"nacionalidad",gender:"género",genders:["masculino","femenino","no especificado"],pptitle:"pasaporte",pnum:"número",pissue:"emisión",pexpiry:"vencimiento",pcountry:"país emisor",trvtitle:"tu viaje",dest:"país de destino",arrival:"fecha de llegada",purpose:"propósito",purposes:["turismo","negocios","tránsito","visita familiar","estudios"],histtitle:"historial migratorio",refused:"¿visa rechazada alguna vez?",deported:"¿deportación previa?",criminal:"¿antecedentes penales?",yes:"sí",no:"no",next:"continuar →"},
+ val:{title:"validación 4 d's",sub:"ai fluency framework · anthropic",dnames:{d1:"delegation",d2:"description",d3:"discernment",d4:"diligence"},ddescs:{d1:"ia asiste · humano decide",d2:"contexto completo",d3:"datos vs fuente oficial",d4:"participación documentada"},checks:{d1_1:"riesgo reservado al agente",d1_2:"email viajero ≠ email agente",d1_3:"viajero identificado",d2_1:"pasaporte vigente 3+ meses post-llegada",d2_2:"fecha de llegada futura",d2_3:"destino en zona etias",d3_1:"sin alertas historial migratorio",d3_2:"datos consistentes con documento",d3_3:"tarifa comunicada",d4_1:"copia guardada por agente",d4_2:"email viajero registrado",d4_3:"expediente creado"},fail:"🚨 escalar — revisión del agente requerida",faildesc:"checks críticos fallaron. contacta al agente.",ok:"✅ listo para revisiÓn final",next:"continuar →"},
+ rev:{title:"revisión final",sub:"verifica tus datos antes de confirmar",warn:"⚠ eres responsable de la veracidad de los datos proporcionados.",rlabel:"agente",tlabel:"tus datos",valok:"validación 4 d's: todos los filtros superados",submit:"confirmar y registrar expediente →"},
+ conf:{title:"expediente registrado",sub:"tu solicitud ha sido documentada correctamente",idlabel:"id expediente",pdftitle:"descarga tu declaración de representación",pdfgen:"generando...",pdfok:"✓ pdf descargado",steps:["el agente recibirá tu expediente y te contactará en 24h","el agente accede a travel-europe.europa.eu/etias con tu email","el agente ingresa tus datos y gestiona el trámite","pagas €20 oficial + tarifa del agente","recibirás tu número de autorización etias por email"],note:"simulador · no conectado a plataforma oficial · etias lanza q4 2026",newbtn:"nuevo trámite"}
+ },
+ en:{
+ steps:["assistant","representation","passport","details","4d validation","review","confirm"],
+ chat:{title:"etias assistant",subtitle:"authorised agent · art. 67 reg. eu 2018/1240",placeholder:"e.g. 'i'm mexican traveling to france'",send:"send",escalate:"⚠️ this case requires agent review.",escalatecontact:"contact:",skip:"go directly to form →"},
+ rep:{title:"declaration of representation",desc:"the traveller authorises the agent to manage their etias application.",clabel:"authorised agent",tlabel:"your details as traveller",tname:"your full name",temail:"your personal email",tpass:"your passport number",relation:"type of representation",relations:["adult (self)","minor under parental authority","person under legal guardianship"],emailwarn:"⚠ must be your personal email — exclusively accessible to you",declare:"the traveller declares to have read and accepts the representation terms.",sign:"accept and continue →"},
+ pass:{title:"passport scan",desc:"upload your passport photo. claude extracts data automatically.",drag:"drag here or click",formats:"jpg png webp · max 5mb",scan:"📷 scan passport",processing:"reading passport...",success:"✓ data extracted",error:"could not read — fill manually",privacy:"🔒 image not stored",confirm:"confirm and continue →",skip:"skip — enter manually →",fsurname:"surname(s)",fgiven:"given name(s)",fnat:"nationality",fdob:"date of birth",fsex:"sex",fnum:"number",fexp:"expiry",fcountry:"issuing country"},
+ td:{title:"your travel details",ptitle:"personal details",fname:"given name(s)",lname:"surname(s)",dob:"date of birth",nat:"nationality",gender:"gender",genders:["male","female","unspecified"],pptitle:"passport",pnum:"number",pissue:"issue date",pexpiry:"expiry date",pcountry:"issuing country",trvtitle:"your trip",dest:"destination country",arrival:"arrival date",purpose:"purpose",purposes:["tourism","business","transit","family visit","studies"],histtitle:"migration history",refused:"visa ever refused?",deported:"previous deportation?",criminal:"criminal record?",yes:"yes",no:"no",next:"continue →"},
+ val:{title:"4 d's validation",sub:"ai fluency framework · anthropic",dnames:{d1:"delegation",d2:"description",d3:"discernment",d4:"diligence"},ddescs:{d1:"ai assists · human decides",d2:"complete context",d3:"data vs official source",d4:"documented"},checks:{d1_1:"risk reserved for agent",d1_2:"traveller email ≠ agent email",d1_3:"traveller identified",d2_1:"passport valid 3+ months after arrival",d2_2:"arrival date in future",d2_3:"destination in etias zone",d3_1:"no migration history alerts",d3_2:"data consistent with document",d3_3:"fee communicated",d4_1:"copy kept by agent",d4_2:"traveller email registered",d4_3:"file created"},fail:"🚨 escalate — agent review required",faildesc:"critical checks failed. contact the agent.",ok:"✅ ready for final review",next:"continue →"},
+ rev:{title:"final review",sub:"verify your data before confirming",warn:"⚠ you are responsible for the accuracy of the data provided.",rlabel:"agent",tlabel:"your data",valok:"4 d's validation: all filters passed",submit:"confirm and register file →"},
+ conf:{title:"file registered",sub:"your application has been correctly documented",idlabel:"file id",pdftitle:"download your declaration of representation",pdfgen:"generating...",pdfok:"✓ pdf downloaded",steps:["the agent will receive your file and contact you within 24h","the agent accesses travel-europe.europa.eu/etias with your email","the agent enters your data and processes the application","you pay €20 official + agent fee","you will receive your etias authorisation number by email"],note:"simulator · not connected to official platform · etias launches q4 2026",newbtn:"new application"}
+ },
+ pt:{
+ steps:["assistente","representação","passaporte","dados","validação 4d","revisão","confirmação"],
+ chat:{title:"assistente etias",subtitle:"agente autorizado · art. 67 reg. ue 2018/1240",placeholder:"ex: 'sou brasileiro e vou para portugal'",send:"enviar",escalate:"⚠️ este caso requer revisão do agente.",escalatecontact:"contatar:",skip:"ir direto ao formulário →"},
+ rep:{title:"declaração de representação",desc:"o viajante autoriza o agente a gerenciar sua solicitação etias.",clabel:"agente autorizado",tlabel:"seus dados como viajante",tname:"seu nome completo",temail:"seu e-mail pessoal",tpass:"seu número de passaporte",relation:"tipo de representação",relations:["adulto por si mesmo","menor sob autoridade parental","pessoa sob tutela legal"],emailwarn:"⚠ deve ser seu e-mail pessoal — acesso exclusivo seu",declare:"o viajante declara ter lido e aceita os termos de representação.",sign:"aceitar e continuar →"},
+ pass:{title:"escaneamento de passaporte",desc:"envie foto do seu passaporte. claude extrai os dados automaticamente.",drag:"arraste aqui ou clique",formats:"jpg png webp · máx 5mb",scan:"📷 escanear passaporte",processing:"lendo passaporte...",success:"✓ dados extraídos",error:"não foi possível ler — preencha manualmente",privacy:"🔒 imagem não armazenada",confirm:"confirmar e continuar →",skip:"pular — inserir manualmente →",fsurname:"sobrenome(s)",fgiven:"nome(s)",fnat:"nacionalidade",fdob:"nascimento",fsex:"sexo",fnum:"número",fexp:"validade",fcountry:"país emissor"},
+ td:{title:"seus dados de viagem",ptitle:"dados pessoais",fname:"nome(s)",lname:"sobrenome(s)",dob:"data de nascimento",nat:"nacionalidade",gender:"gênero",genders:["masculino","feminino","não especificado"],pptitle:"passaporte",pnum:"número",pissue:"emissão",pexpiry:"validade",pcountry:"país emissor",trvtitle:"sua viagem",dest:"país de destino",arrival:"data de chegada",purpose:"finalidade",purposes:["turismo","negócios","trânsito","visita familiar","estudos"],histtitle:"histórico migratório",refused:"visto já recusado?",deported:"deportação anterior?",criminal:"antecedentes criminais?",yes:"sim",no:"não",next:"continuar →"},
+ val:{title:"validação 4 d's",sub:"ai fluency framework · anthropic",dnames:{d1:"delegation",d2:"description",d3:"discernment",d4:"diligence"},ddescs:{d1:"ia auxilia · humano decide",d2:"contexto completo",d3:"dados vs fonte oficial",d4:"documentado"},checks:{d1_1:"risco reservado ao agente",d1_2:"e-mail viajante ≠ e-mail agente",d1_3:"viajante identificado",d2_1:"passaporte válido 3+ meses após chegada",d2_2:"data de chegada no futuro",d2_3:"destino na zona etias",d3_1:"sem alertas histórico migratório",d3_2:"dados consistentes com documento",d3_3:"taxa comunicada",d4_1:"cópia guardada pelo agente",d4_2:"e-mail do viajante registrado",d4_3:"expediente criado"},fail:"🚨 escalar — revisão do agente necessária",faildesc:"checks críticos falharam. contate o agente.",ok:"✅ pronto para revisÃo final",next:"continuar →"},
+ rev:{title:"revisão final",sub:"verifique seus dados antes de confirmar",warn:"⚠ você é responsável pela veracidade dos dados fornecidos.",rlabel:"agente",tlabel:"seus dados",valok:"validação 4 d's: todos os filtros aprovados",submit:"confirmar e registrar expediente →"},
+ conf:{title:"expediente registrado",sub:"sua solicitação foi documentada corretamente",idlabel:"id do expediente",pdftitle:"baixe sua declaração de representação",pdfgen:"gerando...",pdfok:"✓ pdf baixado",steps:["o agente receberá seu expediente e entrará em contato em 24h","o agente acessa travel-europe.europa.eu/etias com seu e-mail","o agente insere seus dados e processa a solicitação","você paga €20 oficial + taxa do agente","você receberá seu número de autorização etias por e-mail"],note:"simulador · não conectado à plataforma oficial · etias lança t4 2026",newbtn:"nova solicitação"}
+ }
+};
+
+// ============================================================
+// api functions
+// ============================================================
+function chatwithetias(messages, lang) {
+ var system = 'eres etias assistant de "' + config.consultant_name + '" (' + config.consultant_email + ').\n' +
+ 'idioma: ' + (lang==="es"?"español":lang==="pt"?"portugués brasileño":"inglés") + '.\n' +
+ 'objetivo: cerrar el trámite — que el viajero contrate el servicio.\n' +
+ 'tarifa: €20 oficial etias + ' + config.consultant_fee + ' tarifa del agente.\n' +
+ 'marco legal: art. 67 reg. ue 2018/1240. lanzamiento q4 2026.\n' +
+ 'flujo: 1)saluda brevemente 2)pregunta nacionalidad+destino 3)confirma elegibilidad (mx✅ br✅ ar✅ co✅) 4)explica valor en 2 líneas 5)presenta tarifa 6)si acepta→iniciar_simulador.\n' +
+ 'reglas: máx 3 líneas/respuesta. nunca prometas aprobación. si visa rechazada/deportación/antecedentes→escalar_consultor.\n' +
+ 'seÑales de cierre→iniciar_simulador: sí,quiero,contrato,yes,i want,sim,quero,acepto,ok,dale,claro,adelante,vamos,proceed.';
+ return fetch("https://api.anthropic.com/v1/messages", {
+ method: "post",
+ headers: {"content-type":"application/json"},
+ body: json.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,system:system,messages:messages})
+ }).then(function(r){return r.json();}).then(function(d){return d.content&&d.content[0]?d.content[0].text:"";});
+}
+
+function ocrpassport(base64, mediatype) {
+ return fetch("https://api.anthropic.com/v1/messages", {
+ method: "post",
+ headers: {"content-type":"application/json"},
+ body: json.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:[
+ {type:"image",source:{type:"base64",media_type:mediatype,data:base64}},
+ {type:"text",text:'extract passport fields. return only json:\n{"surname":"","given_names":"","nationality":"","date_of_birth":"yyyy-mm-dd","sex":"m or f","passport_number":"","expiry_date":"yyyy-mm-dd","issuing_country":""}'}
+ ]}]})
+ }).then(function(r){return r.json();}).then(function(d){
+ var text = d.content&&d.content[0]?d.content[0].text:"{}";
+ return json.parse(text.replace(/```json|```/g,"").trim());
+ });
+}
+
+function submittogoogleform(expid, travelerdata) {
+ var url = "https://docs.google.com/forms/d/e/" + config.google_form_id + "/formresponse";
+ var e = config.entries;
+ var body = new urlsearchparams();
+ body.append(e.exp_id, expid);
+ body.append(e.fecha, new date().toisostring().split("t")[0]);
+ body.append(e.consultor, config.consultant_name);
+ body.append(e.viajero, ((travelerdata.fname||"") + " " + (travelerdata.lname||"")).trim());
+ body.append(e.email_viajero, travelerdata.traveleremail||travelerdata.email||"");
+ body.append(e.pasaporte, travelerdata.pnum||"");
+ body.append(e.destino, travelerdata.destination||"");
+ body.append(e.llegada, travelerdata.arrival||"");
+ body.append(e.nacionalidad, travelerdata.nationality||"");
+ return fetch(url, {method:"post",mode:"no-cors",body:body});
+}
+
+function sendemailjs(expid, travelerdata) {
+ var fullname = ((travelerdata.fname||"") + " " + (travelerdata.lname||"")).trim() || travelerdata.travelername || "viajero";
+ var params = {
+ title: "nuevo expediente etias - " + expid,
+ name: fullname,
+ nombre: fullname,
+ email: travelerdata.traveleremail || travelerdata.email || "",
+ nacionalid: travelerdata.nationality || "—",
+ exp_id: expid,
+ passport: travelerdata.pnum || "—",
+ destination: travelerdata.destination || "—",
+ arrival: travelerdata.arrival || "—",
+ fee: config.consultant_fee,
+ to_email: "dggamino@gmail.com"
+ };
+ return emailjs.send("service_hxuq7gn", "template_r225rld", params);
+}
+
+function generatepdf(travelerdata, lang, expid) {
+ var jspdf = window.jspdf.jspdf;
+ var doc = new jspdf({orientation:"portrait",unit:"mm",format:"a4"});
+ var w=210,m=20,cw=w-m*2,y=20;
+ var today = new date().toisostring().split("t")[0];
+ var tx = {
+ es:{title:"declaraciÓn de representaciÓn — etias",sub:"art. 67, reglamento (ue) 2018/1240",s1:"i. intermediario comercial",s2:"ii. viajero representado",s3:"iii. declaraciÓn",s4:"iv. firmas",body:"el viajero abajo firmante autoriza expresamente al intermediario comercial identificado en la sección i para compilar y presentar, en su nombre, una solicitud de autorización de viaje etias ante las autoridades competentes de la unión europea, conforme al artículo 67 del reglamento (ue) 2018/1240.",obs:["el intermediario presentará la solicitud únicamente a través del sitio web oficial o app móvil de etias.","el email usado será el email personal de acceso exclusivo del viajero.","el intermediario conservará copia de esta declaración como prueba de representación.","el viajero es responsable de la veracidad de los datos proporcionados.","tarifa oficial etias: €20. el intermediario puede cobrar tarifa adicional de servicio."],sc:"firma del intermediario",st:"firma del viajero",legal:"documento de representación legal conforme reglamento (ue) 2018/1240. reporte intermediarios abusivos: travel-europe.europa.eu/etias",relations:["adulto por sí mismo","menor bajo patria potestad","persona bajo tutela legal"]},
+ en:{title:"declaration of representation — etias",sub:"art. 67, regulation (eu) 2018/1240",s1:"i. commercial intermediary",s2:"ii. represented traveller",s3:"iii. declaration",s4:"iv. signatures",body:"the undersigned traveller expressly authorises the commercial intermediary identified in section i to compile and submit, on their behalf, an etias travel authorisation application to the competent european union authorities, pursuant to article 67 of regulation (eu) 2018/1240.",obs:["the intermediary shall submit the application only through the official etias website or mobile app.","the email used shall be the traveller's personal email, exclusively accessible to them.","the intermediary shall retain a copy of this declaration as proof of representation.","the traveller is responsible for the accuracy of the data provided.","official etias fee: €20. the intermediary may charge an additional service fee."],sc:"intermediary signature",st:"traveller signature",legal:"legal representation document pursuant to regulation (eu) 2018/1240. report abusive intermediaries: travel-europe.europa.eu/etias",relations:["adult (self)","minor under parental authority","person under legal guardianship"]},
+ pt:{title:"declaraÇÃo de representaÇÃo — etias",sub:"art. 67, regulamento (ue) 2018/1240",s1:"i. intermediÁrio comercial",s2:"ii. viajante representado",s3:"iii. declaraÇÃo",s4:"iv. assinaturas",body:"o viajante abaixo assinado autoriza expressamente o intermediário comercial identificado na seção i a compilar e apresentar, em seu nome, uma solicitação de autorização de viagem etias perante as autoridades competentes da união europeia, conforme o artigo 67 do regulamento (ue) 2018/1240.",obs:["o intermediário enviará a solicitação apenas pelo site oficial ou aplicativo móvel do etias.","o e-mail usado será o e-mail pessoal de acesso exclusivo do viajante.","o intermediário guardará cópia desta declaração como prova de representação.","o viajante é responsável pela veracidade dos dados fornecidos.","taxa oficial etias: €20. o intermediário pode cobrar taxa adicional."],sc:"assinatura do intermediário",st:"assinatura do viajante",legal:"documento de representação legal conforme regulamento (ue) 2018/1240. reporte intermediários abusivos: travel-europe.europa.eu/etias",relations:["adulto por si mesmo","menor sob autoridade parental","pessoa sob tutela legal"]}
+ }[lang]||{};
+ var navy=[26,58,92],gold=[201,168,76],gray=[245,245,245],dark=[30,30,30],mid=[90,90,90];
+ doc.setfillcolor(navy[0],navy[1],navy[2]);doc.rect(0,0,w,38,"f");
+ doc.setfontsize(14);doc.setfont("helvetica","bold");doc.settextcolor(gold[0],gold[1],gold[2]);doc.text(tx.title,m,14);
+ doc.setfontsize(7.5);doc.setfont("helvetica","normal");doc.settextcolor(200,200,200);doc.text(tx.sub,m,21);
+ doc.setfontsize(7);doc.settextcolor(160,160,160);doc.text("expediente: "+expid+" fecha: "+today,m,28);
+ y=48;
+ function sec(t2){doc.setfillcolor(navy[0],navy[1],navy[2]);doc.rect(m,y,cw,7,"f");doc.setfontsize(8);doc.setfont("helvetica","bold");doc.settextcolor(gold[0],gold[1],gold[2]);doc.text(t2,m+3,y+5);y+=12;}
+ function row(l,v){doc.setfillcolor(gray[0],gray[1],gray[2]);doc.rect(m,y,55,6,"f");doc.setfontsize(7.5);doc.setfont("helvetica","bold");doc.settextcolor(mid[0],mid[1],mid[2]);doc.text(l,m+2,y+4.3);doc.setfont("helvetica","normal");doc.settextcolor(dark[0],dark[1],dark[2]);doc.text(string(v||"—"),m+58,y+4.3);y+=8;}
+ sec(tx.s1);row("consultor:",config.consultant_name);row("email:",config.consultant_email);row("tarifa:",config.consultant_fee);
+ y+=4;sec(tx.s2);
+ row("viajero:",((travelerdata.fname||"")+" "+(travelerdata.lname||"")).trim());
+ row("pasaporte:",travelerdata.pnum||"—");row("nacionalidad:",travelerdata.nationality||"—");row("nacimiento:",travelerdata.dob||"—");row("email:",travelerdata.traveleremail||travelerdata.email||"—");row("representación:",tx.relations[travelerdata.relation||0]);
+ y+=4;sec(tx.s3);
+ doc.setfontsize(8.5);doc.setfont("helvetica","normal");doc.settextcolor(dark[0],dark[1],dark[2]);
+ var bl=doc.splittexttosize(tx.body,cw);doc.text(bl,m,y);y+=bl.length*5+4;
+ tx.obs.foreach(function(ob,i){
+ var lines=doc.splittexttosize((i+1)+". "+ob,cw-6);
+ var bg=i%2===0?252:247;doc.setfillcolor(bg,bg,bg);doc.rect(m,y-1,cw,lines.length*4.5+2,"f");
+ doc.setfontsize(7.5);doc.settextcolor(mid[0],mid[1],mid[2]);doc.text(lines,m+3,y+3);y+=lines.length*4.5+4;
+ });
+ y+=6;sec(tx.s4);
+ var bw=(cw-10)/2;
+ [[m,tx.sc,config.consultant_name,config.consultant_email],[m+bw+10,tx.st,((travelerdata.fname||"")+" "+(travelerdata.lname||"")).trim(),travelerdata.traveleremail||travelerdata.email||""]].foreach(function(arr){
+ var x=arr[0],title2=arr[1],name=arr[2],email=arr[3];
+ doc.setdrawcolor(navy[0],navy[1],navy[2]);doc.setlinewidth(0.5);doc.rect(x,y,bw,35);
+ doc.setfontsize(7.5);doc.setfont("helvetica","bold");doc.settextcolor(navy[0],navy[1],navy[2]);doc.text(title2,x+bw/2,y+6,{align:"center"});
+ doc.setfont("helvetica","normal");doc.settextcolor(mid[0],mid[1],mid[2]);doc.setfontsize(7);
+ doc.text(string(name||""),x+bw/2,y+12,{align:"center"});doc.text(string(email||""),x+bw/2,y+17,{align:"center"});
+ doc.setdrawcolor(180,180,180);doc.line(x+8,y+28,x+bw-8,y+28);doc.text(today,x+bw/2,y+33,{align:"center"});
+ });
+ y+=42;
+ doc.setfillcolor(255,243,199);doc.rect(m,y,cw,12,"f");doc.setdrawcolor(245,158,11);doc.rect(m,y,cw,12);
+ doc.setfontsize(7);doc.setfont("helvetica","italic");doc.settextcolor(146,64,14);doc.text(doc.splittexttosize("aviso: "+tx.legal,cw-6),m+3,y+4.5);
+ doc.setfillcolor(navy[0],navy[1],navy[2]);doc.rect(0,285,w,12,"f");doc.setfontsize(6.5);doc.setfont("helvetica","normal");doc.settextcolor(180,180,180);
+ doc.text(config.consultant_name+" · "+config.consultant_email+" · etias q4 2026",w/2,292,{align:"center"});
+ doc.save("declaracion-etias-"+expid+".pdf");
+}
+
+// ============================================================
+// validation
+// ============================================================
+function runvalidation() {
+ var rep = s.rep, tv = s.tv;
+ var now = new date();
+ var arrival = new date(tv.arrival);
+ var expiry = new date(tv.pexpiry);
+ var t3m = new date(arrival);
+ t3m.setmonth(t3m.getmonth()+3);
+ return {
+ d1:[
+ {k:"d1_1",p:true},
+ {k:"d1_2",p:!!rep.traveleremail && rep.traveleremail !== config.consultant_email},
+ {k:"d1_3",p:!!rep.travelername}
+ ],
+ d2:[
+ {k:"d2_1",p:!!tv.pexpiry && expiry>t3m},
+ {k:"d2_2",p:!!tv.arrival && arrival>now},
+ {k:"d2_3",p:true}
+ ],
+ d3:[
+ {k:"d3_1",p:!tv.prev_refused && !tv.prev_deported && !tv.criminal},
+ {k:"d3_2",p:!!tv.pnum && !!tv.fname},
+ {k:"d3_3",p:true}
+ ],
+ d4:[
+ {k:"d4_1",p:true},
+ {k:"d4_2",p:!!rep.traveleremail},
+ {k:"d4_3",p:true}
+ ]
+ };
+}
+
+// ============================================================
+// render helpers
+// ============================================================
+function esc(s){ return string(s||"").replace(/&/g,"&amp;").replace(//g,"&gt;").replace(/"/g,"&quot;"); }
+
+function renderprogress() {
+ var t = t[s.lang];
+ var html = '';
+ t.steps.foreach(function(s,i){
+ var done = i < s.step;
+ var active = i === s.step;
+ var bg = done?"#c9a84c":active?"#1a3a5c":"#e5e7eb";
+ var fc = done||active?"#fff":"#9ca3af";
+ var lc = active?"#1a3a5c":"#9ca3af";
+ var fw = active?700:400;
+ html += '';
+ html += '';
+ html += ''+(done?"✓":(i+1))+'';
+ html += ''+esc(s)+'';
+ html += '';
+ if(i ';
+ html += '';
+ });
+ html += '';
+ return html;
+}
+
+function renderheader() {
+ return ''
+ + ''
+ + ''
+ + '🇪🇺etias · agente autorizado'
+ + ''
+ + ''+esc(config.consultant_name)+''
+ + '📧 '+esc(config.consultant_email)+''
+ + ''
+ + ''
+ + ['es','en','pt'].map(function(code){
+ return ''+code.touppercase()+'';
+ }).join('')
+ + '';
+}
+
+function renderexpbadge() {
+ return ''
+ + '✅'
+ + 'google form conectado · expedientes → gmail automático'
+ + '·'
+ + ''+esc(s.expid)+''
+ + '';
+}
+
+// ============================================================
+// step 0: chat
+// ============================================================
+function renderstep0() {
+ var t = t[s.lang], c = t.chat;
+ var messageshtml = s.chatmessages.map(function(m){
+ var isuser = m.role === "user";
+ return ''
+ + (isuser?"":"🤖")
+ + ''+esc(m.content)+''
+ + '';
+ }).join('');
+
+ var loadinghtml = s.chatloading?
+ ''
+ +'🤖'
+ +''
+ +''
+ +'':'' ;
+
+ var escalatehtml = s.chatescalate?
+ ''
+ +''+esc(c.escalate)+''
+ +''+esc(c.escalatecontact)+' '+esc(config.consultant_email)+''
+ +'':'';
+
+ var inputhtml = !s.chatescalate?
+ ''
+ +''
+ +'<button onclick="dochat()" '+(s.chatloading||!s.chatinput.trim()?"disabled":"")
+ +' style="background:'+(s.chatinput.trim()&&!s.chatloading?"#1a3a5c":"#d1d5db")+';color:#fff;border:none;border-radius:24px;padding:11px 20px;font-weight:700;font-size:13px;cursor:'+(s.chatinput.trim()&&!s.chatloading?"pointer":"not-allowed")+';flex-shrink:0">'+esc(c.send)+''
+ +'':'';
+
+ return ''
+ + ''
+ + '🇪🇺'
+ + ''+esc(c.title)+''+esc(c.subtitle)+''
+ + ''
+ + ''
+ + messageshtml + loadinghtml
+ + ''
+ + escalatehtml
+ + inputhtml
+ + ''+esc(c.skip)+''
+ + '';
+}
+
+// ============================================================
+// step 1: representation
+// ============================================================
+function renderstep1() {
+ var t = t[s.lang], r = t.rep, rep = s.rep;
+ var valid = rep.travelername && rep.traveleremail && rep.passportnumber;
+ return ''
+ + ''+esc(r.title)+''
+ + ''+esc(r.desc)+''
+ + ''
+ + 'id expediente'
+ + ''+esc(s.expid)+''
+ + ''
+ + ''
+ // agent box (locked)
+ + ''
+ + ''+esc(r.clabel)+' 🔒 fijo'
+ + ''
+ + 'agente registrado'
+ + ''+esc(config.consultant_name)+''
+ + '🔒 '+esc(config.consultant_email)+''
+ + 'tarifa: '+esc(config.consultant_fee)+' + €20 oficial'
+ + ''
+ + 'estos datos no son editables por el viajero'
+ + ''
+ // traveler fields
+ + ''
+ + ''+esc(r.tlabel)+''
+ + ''+esc(r.tname)+''
+ + ''+esc(r.temail)+''+esc(r.emailwarn)+''
+ + ''+esc(r.tpass)+''
+ + ''+esc(r.relation)+''
+ + r.relations.map(function(rel,i){return ''+esc(rel)+'';}).join('')
+ + ''
+ + ''
+ + ''
+ + ''+esc(r.declare)+''
+ + '<button class="btn btn-navy" '+(valid?"":"disabled")
+ +' onclick="if(this.disabled)return;setstep(2)">'+esc(r.sign)+''
+ + '';
+}
+
+// ============================================================
+// step 2: passport
+// ============================================================
+function renderstep2() {
+ var t = t[s.lang], p = t.pass;
+ var content = '';
+ if(s.passstatus === "idle") {
+ content = ''
+ + '🛂'
+ + ''+esc(p.drag)+''
+ + ''+esc(p.formats)+''
+ + ''+esc(p.scan)+''
+ + ''+esc(p.privacy)+''
+ + ''
+ + '';
+ } else if(s.passstatus === "processing") {
+ content = '⚙️'+esc(p.processing)+'';
+ } else if(s.passstatus === "error") {
+ content = '⚠️'+esc(p.error)+''
+ + '';
+ } else if(s.passstatus === "success" && s.passocr) {
+ var ocr = s.passocr;
+ var fields = [[p.fsurname,ocr.surname],[p.fgiven,ocr.given_names],[p.fnat,ocr.nationality],[p.fdob,ocr.date_of_birth],[p.fsex,ocr.sex],[p.fnum,ocr.passport_number],[p.fexp,ocr.expiry_date],[p.fcountry,ocr.issuing_country]];
+ content = ''
+ + (s.passpreview?'':'')
+ + ''
+ + '✓ '+esc(p.success)+''
+ + ''
+ + fields.map(function(f){return ''+esc(f[0])+''+esc(f[1]||"—")+'';}).join('')
+ + ''
+ + ''+esc(p.confirm)+'';
+ }
+ return ''
+ + ''+esc(p.title)+''
+ + ''+esc(p.desc)+''
+ + content
+ + ''+esc(p.skip)+''
+ + '';
+}
+
+// ============================================================
+// step 3: traveler data
+// ============================================================
+function renderstep3() {
+ var t = t[s.lang], tv = t.td, d = s.tv;
+ var valid = d.fname && d.lname && d.dob && d.pnum && d.pexpiry && d.destination && d.arrival;
+ function inp2(key, type, val, ph){
+ type = type||"text"; ph = ph||"";
+ return '';
+ }
+ var histhtml = [["prev_refused",tv.refused],["prev_deported",tv.deported],["criminal",tv.criminal]].map(function(pair){
+ var key=pair[0], label=pair[1];
+ return ''
+ +''+esc(label)+''
+ +''
+ +''+esc(tv.yes)+''
+ +''+esc(tv.no)+''
+ +'';
+ }).join('');
+ return ''
+ +''+esc(tv.title)+''
+ +''+esc(tv.ptitle)+''
+ +''
+ +''+esc(tv.fname)+''+inp2('fname','text',d.fname)+''
+ +''+esc(tv.lname)+''+inp2('lname','text',d.lname)+''
+ +''+esc(tv.dob)+''+inp2('dob','date',d.dob)+''
+ +''+esc(tv.nat)+''+inp2('nationality','text',d.nationality)+''
+ +''+esc(tv.gender)+''+tv.genders.map(function(g,i){return ''+esc(g)+'';}).join('')+''
+ +''
+ +''+esc(tv.pptitle)+''
+ +''
+ +''+esc(tv.pnum)+''+inp2('pnum','text',d.pnum)+''
+ +''+esc(tv.pissue)+''+inp2('pissue','date',d.pissue)+''
+ +''+esc(tv.pexpiry)+''+inp2('pexpiry','date',d.pexpiry)+''
+ +''+esc(tv.pcountry)+''+inp2('pcountry','text',d.pcountry)+''
+ +''
+ +''+esc(tv.trvtitle)+''
+ +''
+ +''+esc(tv.dest)+''+inp2('destination','text',d.destination)+''
+ +''+esc(tv.arrival)+''+inp2('arrival','date',d.arrival)+''
+ +''+esc(tv.purpose)+''+tv.purposes.map(function(p,i){return ''+esc(p)+'';}).join('')+''
+ +''
+ +''+esc(tv.histtitle)+''
+ +''+histhtml+''
+ +''+esc(tv.next)+''
+ +'';
+}
+
+// ============================================================
+// step 4: validation
+// ============================================================
+function renderstep4() {
+ var t = t[s.lang], v = t.val;
+ var checks = runvalidation();
+ var cols = {d1:"#3b82f6",d2:"#8b5cf6",d3:"#f59e0b",d4:"#10b981"};
+ var hasfail = false;
+ object.values(checks).foreach(function(arr){arr.foreach(function(c){if(!c.p)hasfail=true;});});
+ var cardshtml = object.keys(checks).map(function(d){
+ var items = checks[d];
+ return ''
+ +''
+ +''+esc(v.dnames[d])+''
+ +''+esc(v.ddescs[d])+''
+ +''
+ +items.map(function(item){
+ return ''
+ +''+(item.p?"✅":"❌")+''
+ +''+esc(v.checks[item.k])+''
+ +'';
+ }).join('')
+ +'';
+ }).join('');
+ return ''
+ +''+esc(v.title)+''
+ +''+esc(v.sub)+''
+ +''+cardshtml+''
+ +''
+ +''+(hasfail?esc(v.fail):esc(v.ok))+''
+ +(hasfail?''+esc(v.faildesc)+'':'')
+ +''
+ +''+esc(v.next)+''
+ +'';
+}
+
+// ============================================================
+// step 5: review
+// ============================================================
+function renderstep5() {
+ var t = t[s.lang], r = t.rev, rep = s.rep, tv = s.tv;
+ function row(l,v){return ''+esc(l)+''+esc(v||"—")+'';}
+ return ''
+ +''+esc(r.title)+''
+ +''+esc(r.sub)+''
+ +''+esc(r.warn)+''
+ +''
+ +''
+ +''+esc(r.rlabel)+''
+ +row("agente",config.consultant_name)+row("email agente",config.consultant_email)+row("tarifa",config.consultant_fee)+row("id expediente",s.expid)
+ +''
+ +''
+ +''+esc(r.tlabel)+''
+ +row("nombre",(tv.fname||"")+" "+(tv.lname||""))+row("email",rep.traveleremail)+row("dob",tv.dob)+row("nacionalidad",tv.nationality)+row("pasaporte",tv.pnum)+row("vence",tv.pexpiry)+row("destino",tv.destination)+row("llegada",tv.arrival)
+ +''
+ +''
+ +'✅'+esc(r.valok)+''
+ +''
+ +''+esc(r.submit)+''
+ +'';
+}
+
+// ============================================================
+// step 6: confirm
+// ============================================================
+function renderstep6() {
+ var t = t[s.lang], c = t.conf;
+ var badge = {
+ idle: {bg:"#fef3c7",color:"#92400e",icon:"📤",text:"preparando envío..."},
+ sending: {bg:"#fef3c7",color:"#92400e",icon:"📤",text:"enviando a google sheets..."},
+ sent: {bg:"#f0fdf4",color:"#16a34a",icon:"✅",text:"expediente registrado · notificación enviada a gmail"},
+ error: {bg:"#fef2f2",color:"#ef4444",icon:"⚠️",text:"error de envío — verifica que el form esté activo"}
+ }[s.formstatus]||{bg:"#fef3c7",color:"#92400e",icon:"📤",text:""};
+ var pdfbtntext = s.pdfstatus==="idle"?"⬇ es / en / pt":s.pdfstatus==="generating"?"⏳ "+c.pdfgen:"✓ "+c.pdfok;
+ return ''
+ +'🇪🇺'
+ +''+esc(c.title)+''
+ +''+esc(c.sub)+''
+ +''+esc(c.idlabel)+': '+esc(s.expid)+''
+ +''
+ +''+badge.icon+''
+ +''+esc(badge.text)+''
+ +(s.formstatus==="sent"?'id '+esc(s.expid)+' en tu google sheets':'')
+ +''
+ // pdf buttons
+ +''
+ +'📄 '+esc(c.pdftitle)+''
+ +''
+ +['es','en','pt'].map(function(l){
+ var label = l==="es"?"es — español":l==="en"?"en — english":"pt — português";
+ return '<button onclick="dopdf(\''+l+'\')" '+(s.pdfstatus==="generating"?"disabled":"")
+ +' style="background:'+(s.pdfstatus==="generating"?"#d1d5db":"#0369a1")+';color:#fff;border:none;border-radius:8px;padding:10px 16px;font-weight:700;font-size:12px;cursor:'+(s.pdfstatus==="generating"?"not-allowed":"pointer")+'">⬇ '+esc(label)+'';
+ }).join('')
+ +''
+ +(s.pdfstatus==="ready"?'✓ '+esc(c.pdfok)+'':'')
+ +''
+ // next steps
+ +''
+ +'next steps'
+ +c.steps.map(function(s){return ''+esc(s)+'';}).join('')
+ +''
+ +'⚠ '+esc(c.note)+''
+ +''+esc(c.newbtn)+''
+ +'';
+}
+
+// ============================================================
+// main render
+// ============================================================
+function render() {
+ var stepcontent = "";
+ if(s.step===0) stepcontent = renderstep0();
+ else if(s.step===1) stepcontent = renderstep1();
+ else if(s.step===2) stepcontent = renderstep2();
+ else if(s.step===3) stepcontent = renderstep3();
+ else if(s.step===4) stepcontent = renderstep4();
+ else if(s.step===5) stepcontent = renderstep5();
+ else if(s.step===6) stepcontent = renderstep6();
+
+ document.getelementbyid("app").innerhtml =
+ ''
+ + renderheader()
+ + renderexpbadge()
+ + ''
+ + renderprogress()
+ + stepcontent
+ + ''
+ + 'modelo b · etias agente autorizado · vanilla js · q4 2026'
+ + '';
+
+ // scroll chat to bottom
+ if(s.step===0) {
+ var box = document.getelementbyid("chat-box");
+ if(box) box.scrolltop = box.scrollheight;
+ }
+}
+
+// ============================================================
+// actions
+// ============================================================
+function setlang(l) { s.lang=l; render(); }
+
+function setstep(n) { s.step=n; render(); initstep(n); }
+
+function initstep(n) {
+ if(n===0 && s.chatmessages.length===0) {
+ // auto-greet
+ s.chatloading=true; render();
+ chatwithetias([{role:"user",content:"hola"}],s.lang).then(function(r){
+ s.chatmessages=[{role:"assistant",content:r}];
+ s.chatloading=false; render();
+ }).catch(function(){
+ s.chatmessages=[{role:"assistant",content:"¡hola! soy el asistente etias. ¿de qué país eres y a dónde quieres viajar?"}];
+ s.chatloading=false; render();
+ });
+ }
+ if(n===6 && !s.formsent) {
+ s.formsent=true;
+ s.formstatus="sending"; render();
+ var data = object.assign({},s.tv,{traveleremail:s.rep.traveleremail, travelername:s.rep.travelername});
+ promise.all([
+ submittogoogleform(s.expid, data),
+ sendemailjs(s.expid, data)
+ ])
+ .then(function(){s.formstatus="sent";render();})
+ .catch(function(){s.formstatus="error";render();});
+ }
+}
+
+function dochat() {
+ var input = s.chatinput.trim();
+ if(!input || s.chatloading) return;
+ var usermsg = {role:"user",content:input};
+ s.chatmessages.push(usermsg);
+ s.chatinput=""; s.chatloading=true; render();
+ chatwithetias(s.chatmessages, s.lang).then(function(reply){
+ if(reply.includes("iniciar_simulador")){
+ var alltext = s.chatmessages.map(function(m){return m.content;}).join(" ").tolowercase();
+ var nat = etias_nat.find(function(n){return alltext.includes(n);})||"";
+ var confirm_msg = s.lang==="es"?"¡perfecto! abriendo el formulario...":s.lang==="pt"?"perfeito! abrindo o formulário...":"perfect! opening the form...";
+ s.chatmessages.push({role:"assistant",content:confirm_msg});
+ if(nat) s.tv.nationality=nat;
+ s.chatloading=false; render();
+ settimeout(function(){setstep(1);},1200);
+ return;
+ }
+ if(reply.includes("escalar_consultor")){
+ s.chatescalate=true;
+ var esc_msg = s.lang==="es"?"este caso requiere atención directa del agente.":s.lang==="pt"?"este caso requer atenção do agente.":"this case requires direct agent attention.";
+ s.chatmessages.push({role:"assistant",content:esc_msg});
+ s.chatloading=false; render();
+ return;
+ }
+ s.chatmessages.push({role:"assistant",content:reply});
+ s.chatloading=false; render();
+ }).catch(function(){
+ s.chatmessages.push({role:"assistant",content:"lo siento, hubo un error de conexión. puedes continuar directamente al formulario."});
+ s.chatloading=false; render();
+ });
+}
+
+function handlepassfile(file) {
+ if(!file) return;
+ s.passstatus="processing"; s.passpreview=null; s.passocr=null; render();
+ var reader = new filereader();
+ reader.onload = function(e){
+ var dataurl = e.target.result;
+ s.passpreview = dataurl;
+ ocrpassport(dataurl.split(",")[1], file.type)
+ .then(function(ocr){
+ s.passocr=ocr; s.passstatus="success";
+ // pre-fill traveler data
+ if(ocr.given_names) s.tv.fname=ocr.given_names;
+ if(ocr.surname) s.tv.lname=ocr.surname;
+ if(ocr.date_of_birth) s.tv.dob=ocr.date_of_birth;
+ if(ocr.nationality) s.tv.nationality=ocr.nationality;
+ if(ocr.passport_number) { s.tv.pnum=ocr.passport_number; s.rep.passportnumber=ocr.passport_number; }
+ if(ocr.expiry_date) s.tv.pexpiry=ocr.expiry_date;
+ if(ocr.issuing_country) s.tv.pcountry=ocr.issuing_country;
+ if(ocr.sex) s.tv.gender = ocr.sex==="m"?0:1;
+ render();
+ })
+ .catch(function(){ s.passstatus="error"; render(); });
+ };
+ reader.readasdataurl(file);
+}
+
+function confirmpassport() {
+ setstep(3);
+}
+
+function confirmandsubmit() {
+ setstep(6);
+}
+
+function dopdf(lang) {
+ s.pdfstatus="generating"; render();
+ try {
+ var data = object.assign({},s.tv,{traveleremail:s.rep.traveleremail,relation:s.rep.relation});
+ generatepdf(data, lang, s.expid);
+ s.pdfstatus="ready"; render();
+ settimeout(function(){s.pdfstatus="idle";render();},4000);
+ } catch(e) {
+ console.error(e);
+ s.pdfstatus="idle"; render();
+ }
+}
+
+function resetall() {
+ s.step=0; s.expid="etias-"+date.now().tostring(36).touppercase();
+ s.chatmessages=[]; s.chatinput=""; s.chatloading=false; s.chatescalate=false; s.chatstarted=false;
+ s.rep={travelername:"",traveleremail:"",passportnumber:"",relation:0};
+ s.passstatus="idle"; s.passpreview=null; s.passocr=null;
+ s.tv={fname:"",lname:"",dob:"",nationality:"",gender:0,pnum:"",pissue:"",pexpiry:"",pcountry:"",destination:"",arrival:"",purpose:0,prev_refused:false,prev_deported:false,criminal:false};
+ s.pdfstatus="idle"; s.formstatus="idle"; s.formsent=false;
+ render(); initstep(0);
+}
+
+// ============================================================
+// boot — url params (captura búsqueda larga desde páginas programáticas)
+// ============================================================
+(function(){
+ var params = new urlsearchparams(window.location.search);
+ var q = params.get("q");
+ var pais = params.get("pais");
+ var destino = params.get("destino");
+ var lang = params.get("lang");
+
+ // idioma por parámetro (para páginas brasil en pt)
+ if(lang && ["es","en","pt"].indexof(lang) > -1) s.lang = lang;
+
+ // pre-cargar nacionalidad y destino en el estado de viaje
+ if(pais) s.tv.nationality = pais.tolowercase();
+ if(destino) s.tv.destination = destino.tolowercase();
+
+ // si viene con consulta libre (búsqueda larga), inyectarla como mensaje del usuario
+ if(q) {
+ s.chatstarted = true;
+ render();
+ s.chatloading = true; render();
+ // construir historial: saludo del bot + mensaje del usuario
+ var initmsg = [{role:"user", content:"hola"}];
+ chatwithetias(initmsg, s.lang).then(function(greet){
+ s.chatmessages = [
+ {role:"assistant", content: greet},
+ {role:"user", content: q}
+ ];
+ render();
+ // responder automáticamente a la consulta del usuario
+ return chatwithetias(s.chatmessages, s.lang);
+ }).then(function(reply){
+ if(reply.includes("iniciar_simulador")){
+ var alltext = s.chatmessages.map(function(m){return m.content;}).join(" ").tolowercase();
+ var nat = etias_nat.find(function(n){return alltext.includes(n);}) || s.tv.nationality || "";
+ var confirm_msg = s.lang==="es"?"¡perfecto! abriendo el formulario...":s.lang==="pt"?"perfeito! abrindo o formulário...":"perfect! opening the form...";
+ s.chatmessages.push({role:"assistant", content: confirm_msg});
+ if(nat) s.tv.nationality = nat;
+ s.chatloading = false; render();
+ settimeout(function(){ setstep(1); }, 1200);
+ } else if(reply.includes("escalar_consultor")){
+ s.chatescalate = true;
+ s.chatmessages.push({role:"assistant", content: reply.replace("escalar_consultor","").trim()});
+ s.chatloading = false; render();
+ } else {
+ s.chatmessages.push({role:"assistant", content: reply});
+ s.chatloading = false; render();
+ }
+ }).catch(function(){
+ s.chatmessages = [
+ {role:"assistant", content:"¡hola! soy el asistente etias. ¿de qué país eres y a dónde quieres viajar?"},
+ {role:"user", content: q}
+ ];
+ s.chatloading = false; render();
+ });
+ return; // no llamar initstep(0) normal — ya se maneja arriba
+ }
+
+ // boot normal sin parámetros
+ render();
+ initstep(0);
+})();
+
+
+

@@ -1,0 +1,123 @@
+<!--
+ etias widget de captura v1.0
+ embeber en cada página programática: etias-[pais]-[destino].html
+ 
+ parÁmetros soportados por el simulador:
+ ?q= → consulta libre (búsqueda larga completa)
+ ?pais= → nacionalidad pre-cargada
+ ?destino= → destino pre-cargado
+ ?lang= → idioma (es|en|pt)
+ 
+ ejemplos de url generada:
+ ?q=soy mexicano y viajo a españa en julio
+ ?pais=brasil&destino=portugal&lang=pt
+ ?q=necesito etias para viajar con mi hijo menor
+-->
+
+
+<div style="
+ background: linear-gradient(135deg, #0c1e35 0%, #1a3a5c 100%);
+ border-radius: 14px;
+ padding: 22px 20px;
+ max-width: 480px;
+ margin: 28px auto;
+ box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+ font-family: georgia, serif;
+">
+ 
+ asistente etias · consulta gratuita
+ 
+ 
+ cuéntanos tu caso y verificamos tu elegibilidad en segundos.
+ 
+ <input
+ id="etias-widget-q"
+ type="text"
+ placeholder="ej: soy mexicano y viajo a españa en julio"
+ style="
+ width: 100%;
+ padding: 11px 13px;
+ border-radius: 8px;
+ border: 1.5px solid #c9a84c;
+ font-size: 14px;
+ font-family: georgia, serif;
+ color: #1f2937;
+ background: #f9fafb;
+ box-sizing: border-box;
+ margin-bottom: 10px;
+ "
+ onkeydown="if(event.key==='enter') etiaswidgetabrir()"
+ />
+ <button
+ onclick="etiaswidgetabrir()"
+ style="
+ width: 100%;
+ background: #c9a84c;
+ color: #fff;
+ border: none;
+ border-radius: 8px;
+ padding: 12px;
+ font-size: 14px;
+ font-weight: 700;
+ cursor: pointer;
+ font-family: georgia, serif;
+ letter-spacing: 0.03em;
+ "
+ >
+ verificar elegibilidad →
+ 
+ 
+ 🔒 art. 67 reg. ue 2018/1240 · etias lanza q4 2026
+ 
+
+
+
+function etiaswidgetabrir() {
+ var q = document.getelementbyid("etias-widget-q").value.trim();
+ if (!q) return;
+ var base = "https://consultoretias.github.io/simulador-etias-/";
+ window.location.href = base + "?q=" + encodeuricomponent(q);
+}
+
+
+
+<!-- =====================================================
+ variante brasil (pt) — para páginas etias-brasil-*.html
+ cambiar el div + script por este bloque
+ ===================================================== -->
+<!--
+
+ 
+ verificar elegibilidade →
+
+
+function etiaswidgetabrirpt() {
+ var q = document.getelementbyid("etias-widget-q-pt").value.trim();
+ if (!q) return;
+ var base = "https://consultoretias.github.io/simulador-etias-/";
+ window.location.href = base + "?q=" + encodeuricomponent(q) + "&lang=pt";
+}
+
+-->
+
+
+<!-- =====================================================
+ variante con pais+destino pre-cargado
+ usar cuando la página ya sabe el país y destino
+ ej: etias-mexico-espana.html
+ ===================================================== -->
+<!--
+
+function etiaswidgetcontextual(pais, destino, lang) {
+ var q = document.getelementbyid("etias-widget-q").value.trim();
+ var base = "https://consultoretias.github.io/simulador-etias-/";
+ var url = base + "?pais=" + encodeuricomponent(pais)
+ + "&destino=" + encodeuricomponent(destino);
+ if (lang) url += "&lang=" + lang;
+ if (q) url += "&q=" + encodeuricomponent(q);
+ window.location.href = url;
+}
+
+// ejemplo de uso en etias-mexico-espana.html:
+// tramitar etias →
+-->

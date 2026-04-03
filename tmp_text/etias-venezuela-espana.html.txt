@@ -1,0 +1,47 @@
+
+
+
+
+
+etias venezuela a españa 2026
+
+
+
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,sans-serif;color:#1a1a2e;background:#f8f9fa;line-height:1.6}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;padding:2rem 1rem;text-align:center}
+header h1{font-size:1.8rem;margin-bottom:.5rem}
+.badge{display:inline-block;background:#e94560;color:white;padding:.25rem .75rem;border-radius:20px;font-size:.85rem;margin-top:.5rem}
+.container{max-width:800px;margin:0 auto;padding:2rem 1rem}
+.card{background:white;border-radius:12px;padding:2rem;margin-bottom:2rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.cta-box{background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;border-radius:12px;padding:2rem;text-align:center;margin-bottom:2rem}
+.cta-btn{display:inline-block;background:#e94560;color:white;padding:.875rem 2rem;border-radius:8px;text-decoration:none;font-weight:bold}
+nav.breadcrumb{background:white;padding:.75rem 1rem;font-size:.875rem;border-bottom:1px solid #eee}
+nav.breadcrumb a{color:#e94560;text-decoration:none}
+footer{background:#1a1a2e;color:#aaa;text-align:center;padding:2rem 1rem;font-size:.875rem}
+
+
+
+inicio › etias venezuela › etias para venezolanos que viajan a españa
+etias para venezolanos que viajan a españaobligatorio desde q4 2026
+
+españa es el destino europeo más visitado por venezolanos. desde q4 2026, viajar a madrid o barcelona con pasaporte venezolano requerirá etias.venezuela tiene exención de visa schengen desde 2004. con pasaporte venezolano vigente puedes viajar a europa sin visa. etias será obligatorio desde q4 2026.
+
+¿eres elegible para etias?
+verifica tu elegibilidad en 2 minutos — gratis
+usar simulador etias →
+
+
+guías relacionadas
+
+etias venezuela — guía completa
+requisitos etias venezuela
+costo etias venezuela
+etias colombia
+etias argentina
+
+
+
+© 2026 consultor etias · simulador etias
+
