@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Costo ETIAS 2026: precio oficial y cálculo total</title>
+  <meta name="description" content="Calcula cuánto pagarás por ETIAS en 2026, detecta sobrecostos y recibe tu estimación personalizada.">
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("TU_PUBLIC_KEY");
+    })();
+  </script>
+</head>
+
+<body>
+
+<h1>Costo ETIAS 2026: cuánto pagarás realmente</h1>
+
+<p>El ETIAS tendrá un costo oficial, pero muchos viajeros terminan pagando más por errores o intermediarios. Calcula tu costo real antes de aplicar.</p>
+
+<hr>
+
+<h2>Simulador de costo ETIAS</h2>
+
+<form id="formulario">
+
+<label>Email:</label><br>
+<input type="email" id="email" required><br><br>
+
+<label>Edad:</label><br>
+<input type="number" id="edad" required><br><br>
+
+<label>¿Usarás intermediario?</label><br>
+<select id="intermediario">
+  <option value="no">No</option>
+  <option value="si">Sí</option>
+</select><br><br>
+
+<label>¿Has tenido errores en solicitudes previas?</label><br>
+<select id="errores">
+  <option value="no">No</option>
+  <option value="si">Sí</option>
+</select><br><br>
+
+<button type="button" onclick="calcular()">Calcular costo</button>
+
+</form>
+
+<h3>Resultado:</h3>
+<p id="resultado">Pendiente</p>
+
+<hr>
+
+<h2>Precio oficial ETIAS</h2>
+<ul>
+  <li>20 euros (adultos 18–70)</li>
+  <li>Gratis: menores de 18 y mayores de 70</li>
+</ul>
+
+<hr>
+
+<h2>Riesgos de pagar de más</h2>
+<ul>
+  <li>Intermediarios cobran comisiones innecesarias</li>
+  <li>Errores generan pagos duplicados</li>
+  <li>Sitios no oficiales inflan precios</li>
+</ul>
+
+<p><a href="etias-error-formulario.html">Evitar errores comunes</a></p>
+
+<hr>
+
+<h2>Antes de pagar</h2>
+
+<p>Valida tu caso completo para evitar pérdidas económicas.</p>
+
+<p><a href="etias-simulador-nuevo.html">Ir al simulador completo</a></p>
+
+<hr>
+
+<h2>Canal seguro</h2>
+
+<p>
+<a href="mailto:consultor.etias@proton.me?subject=Costo ETIAS&body=Consulta sobre costo">
+consultor.etias@proton.me
+</a>
+</p>
+
+<pre>
+[ETIAS_COST_ENGINE_v1]
+Base: Official Fee
+Extras: Risk-adjusted
+Modelo: Predictive Cost Layer
+Estado: Activo
+</pre>
+
+<hr>
+
+<script>
+function calcular() {
+
+  let email = document.getElementById("email").value;
+  let edad = document.getElementById("edad").value;
+  let intermediario = document.getElementById("intermediario").value;
+  let errores = document.getElementById("errores").value;
+
+  let costo = 20;
+  let diagnostico = "";
+
+  if (edad < 18 || edad > 70) {
+    costo = 0;
+    diagnostico = "EXENTO DE PAGO";
+  } else {
+    if (intermediario === "si") costo += 30;
+    if (errores === "si") costo += 20;
+
+    if (costo === 20) {
+      diagnostico = "COSTO ÓPTIMO (sin sobrecostos)";
+    } else if (costo <= 50) {
+      diagnostico = "COSTO MODERADO (posibles extras)";
+    } else {
+      diagnostico = "COSTO ELEVADO (riesgo de sobrepago)";
+    }
+  }
+
+  document.getElementById("resultado").innerText =
+    "Estimación: " + costo + " EUR | " + diagnostico;
+
+  emailjs.send("service_hxuq7gn", "template_r225rld", {
+    to_email: email,
+    costo: costo,
+    diagnostico: diagnostico,
+    tipo: "costo_etias",
+    timestamp: new Date().toISOString()
+  });
+
+  if (diagnostico === "COSTO ELEVADO (riesgo de sobrepago)") {
+    window.open(
+      "mailto:consultor.etias@proton.me?subject=Sobrepago ETIAS&body=Costo estimado:%20" 
+      + costo + "%20EUR"
+    );
+  }
+
+}
+</script>
+
+<div style="margin-top:40px;padding:20px;border-top:1px solid #ccc;">
+<a href="/Simulador-ETIAS-/etias-requisitos-2026.html">Requisitos ETIAS</a> | 
+<a href="/Simulador-ETIAS-/etias-rechazo-apelar.html">Rechazo ETIAS</a> | 
+<a href="/Simulador-ETIAS-/etias-costo.html">Costo ETIAS</a>
+</div>
+</body>
+</html>

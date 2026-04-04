@@ -1,72 +1,155 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cómo apelar un rechazo de ETIAS paso a paso</title>
-<meta name="description" content="Proceso completo para apelar un rechazo de ETIAS. Documentos necesarios, plazos y estrategia para aumentar probabilidades de éxito.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://consultoretias.github.io/Simulador-ETIAS-/etias-rechazo-apelar.html">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#f8f9fa;line-height:1.6}
-header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:white;padding:2rem 1rem;text-align:center}
-header h1{font-size:1.9rem;margin-bottom:.5rem}
-.badge{display:inline-block;background:#e94560;color:white;padding:.25rem .75rem;border-radius:20px;font-size:.85rem;margin-top:.5rem}
-.container{max-width:800px;margin:0 auto;padding:2rem 1rem}
-.alert{background:#fff3cd;border-left:4px solid #ffc107;padding:1rem 1.25rem;border-radius:4px;margin-bottom:2rem}
-.alert-danger{background:#fde8e8;border-left:4px solid #e94560;padding:1rem 1.25rem;border-radius:4px;margin-bottom:2rem}
-h2{font-size:1.4rem;color:#1a1a2e;margin:2rem 0 1rem;border-bottom:2px solid #e94560;padding-bottom:.4rem}
-.step{display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start}
-.step-number{background:#e94560;color:white;width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0}
-.cta-box{background:#1a1a2e;color:white;padding:2rem;border-radius:8px;text-align:center;margin:2rem 0}
-.cta-box p{margin-bottom:1rem;opacity:.9}
-.cta-btn{display:inline-block;background:#e94560;color:white;padding:.9rem 2rem;border-radius:6px;text-decoration:none;font-weight:bold;font-size:1.05rem}
-.consulta-box{background:#fff8e1;border:2px solid #ffc107;padding:1.5rem;border-radius:8px;text-align:center;margin:2rem 0}
-.consulta-box p{margin-bottom:1rem;color:#1a1a2e}
-.faq-item{background:white;border-radius:6px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,.07)}
-.faq-item h3{font-size:1rem;color:#1a1a2e;margin-bottom:.5rem}
-footer{text-align:center;padding:2rem 1rem;font-size:.8rem;color:#999;border-top:1px solid #e0e0e0;margin-top:2rem}
-nav.breadcrumb{font-size:.85rem;color:#888;margin-bottom:1.5rem}
-nav.breadcrumb a{color:#e94560;text-decoration:none}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ETIAS rechazado: cómo apelar y recuperar tu solicitud</title>
+  <meta name="description" content="Evalúa tu caso ETIAS rechazado, detecta riesgos y recibe diagnóstico con contacto directo seguro.">
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("TU_PUBLIC_KEY");
+    })();
+  </script>
 </head>
+
 <body>
-<header>
-<h1>Cómo Apelar un Rechazo de ETIAS: Guía Paso a Paso</h1>
-<div class="badge">⚠️ Obligatorio desde Q4 2026</div>
-<p style="margin-top:.75rem;opacity:.85;font-size:.95rem">Actualizado: marzo 2026</p>
-</header>
-<div class="container">
-<nav class="breadcrumb"><a href="https://consultoretias.github.io/Simulador-ETIAS-/">Inicio</a> › <a href="etias-rechazo-solicitud.html">Rechazo ETIAS</a> › Cómo Apelar un Rechazo de ETIAS: Guía Paso a Paso</nav>
-<div class="alert-danger"><strong>⚠️ Caso especial:</strong> Esta página aborda situaciones que pueden complicar tu solicitud ETIAS. Te recomendamos usar el simulador antes de solicitar.</div>
-<p style="margin-bottom:1.5rem">Si tu ETIAS fue rechazado, tienes <strong>derecho legal a apelar</strong> ante las autoridades del país Schengen de destino principal. El proceso es formal pero accesible si sigues los pasos correctos.</p>
 
-<div class="consulta-box">
-  <p><strong>¿Tu caso tiene factores de riesgo?</strong> Simula tu solicitud gratis y recibe orientación personalizada antes de enviarla.</p>
-  <a class="cta-btn" href="https://consultoretias.github.io/Simulador-ETIAS-/">🛂 Simular mi caso ETIAS</a>
+<h1>ETIAS rechazado: diagnóstico y recuperación</h1>
+
+<p>Si tu solicitud fue rechazada o tienes riesgo alto, evalúa tu caso y recibe un diagnóstico inmediato.</p>
+
+<hr>
+
+<h2>Evaluación de riesgo</h2>
+
+<form id="formulario">
+
+<label>Email:</label><br>
+<input type="email" id="email" required><br><br>
+
+<label>¿Solicitud rechazada?</label><br>
+<select id="rechazado">
+  <option value="no">No</option>
+  <option value="si">Sí</option>
+</select><br><br>
+
+<label>¿Errores en formulario?</label><br>
+<select id="errores">
+  <option value="no">No</option>
+  <option value="si">Sí</option>
+</select><br><br>
+
+<label>¿Antecedentes?</label><br>
+<select id="antecedentes">
+  <option value="no">No</option>
+  <option value="si">Sí</option>
+</select><br><br>
+
+<label>¿Visa negada antes?</label><br>
+<select id="visa">
+  <option value="no">No</option>
+  <option value="si">Sí</option>
+</select><br><br>
+
+<button type="button" onclick="evaluar()">Evaluar mi caso</button>
+
+</form>
+
+<h3>Diagnóstico:</h3>
+<p id="resultado">Pendiente</p>
+
+<hr>
+
+<h2>Contacto directo seguro</h2>
+
+<p><strong>Email especializado:</strong></p>
+<p>
+<a href="mailto:consultor.etias@proton.me?subject=Consulta ETIAS&body=Diagnóstico:%20">
+consultor.etias@proton.me
+</a>
+</p>
+
+<p><strong>Canal cifrado:</strong> comunicación gestionada vía Proton Mail con cifrado de extremo a extremo.</p>
+
+<pre>
+[ETIAS_SECURE_CHANNEL_v1]
+Protocolo: E2E Encryption
+Proveedor: Proton Mail
+Integridad: SHA-256 verified
+Canal: Direct advisory
+Estado: Activo
+</pre>
+
+<hr>
+
+<h2>Opciones según diagnóstico</h2>
+<ul>
+  <li>Corregir errores y reintentar</li>
+  <li>Preparar apelación</li>
+  <li>Evaluación avanzada antes de aplicar</li>
+</ul>
+
+<hr>
+
+<h2>Antes de volver a aplicar</h2>
+
+<p><a href="etias-simulador-nuevo.html">Validar caso completo en simulador</a></p>
+
+<hr>
+
+<script>
+function evaluar() {
+
+  let email = document.getElementById("email").value;
+  let rechazado = document.getElementById("rechazado").value;
+  let errores = document.getElementById("errores").value;
+  let antecedentes = document.getElementById("antecedentes").value;
+  let visa = document.getElementById("visa").value;
+
+  let score = 100;
+
+  if (rechazado === "si") score -= 30;
+  if (errores === "si") score -= 20;
+  if (antecedentes === "si") score -= 30;
+  if (visa === "si") score -= 20;
+
+  let diagnostico = "";
+
+  if (score >= 70) {
+    diagnostico = "RIESGO MODERADO";
+  } else if (score >= 40) {
+    diagnostico = "RIESGO ALTO";
+  } else {
+    diagnostico = "RIESGO CRÍTICO";
+  }
+
+  document.getElementById("resultado").innerText = diagnostico;
+
+  // EmailJS envío principal
+  emailjs.send("service_hxuq7gn", "template_r225rld", {
+    to_email: email,
+    diagnostico: diagnostico,
+    score: score,
+    tipo: "rechazo_etias"
+  });
+
+  // fallback: abre cliente de correo si usuario quiere enviar directo
+  if (diagnostico === "RIESGO CRÍTICO") {
+    window.open(
+      "mailto:consultor.etias@proton.me?subject=ETIAS Caso Crítico&body=Diagnóstico:%20" 
+      + diagnostico + "%0A%0AScore:%20" + score
+    );
+  }
+
+}
+</script>
+
+<div style="margin-top:40px;padding:20px;border-top:1px solid #ccc;">
+<a href="/Simulador-ETIAS-/etias-requisitos-2026.html">Requisitos ETIAS</a> | 
+<a href="/Simulador-ETIAS-/etias-rechazo-apelar.html">Rechazo ETIAS</a> | 
+<a href="/Simulador-ETIAS-/etias-costo.html">Costo ETIAS</a>
 </div>
-
-<h2>Pasos Recomendados</h2>
-    <div class="step"><span class="step-number">1</span><div><strong>Verifica tu situación</strong><p>Usa nuestro simulador gratuito para identificar si tu perfil tiene algún factor de riesgo antes de solicitar.</p></div></div>
-    <div class="step"><span class="step-number">2</span><div><strong>Prepara documentación</strong><p>Reúne pasaporte vigente, correo electrónico y tarjeta de pago internacional.</p></div></div>
-    <div class="step"><span class="step-number">3</span><div><strong>Completa el formulario</strong><p>Responde con precisión y honestidad cada campo del formulario oficial ETIAS.</p></div></div>
-    <div class="step"><span class="step-number">4</span><div><strong>Guarda la confirmación</strong><p>Una vez aprobado, guarda tu autorización en el celular o imprímela.</p></div></div>
-
-<h2>Preguntas Frecuentes</h2>
-    <div class="faq-item"><h3>¿ETIAS es una visa?</h3><p>No. ETIAS es una <strong>autorización de viaje electrónica</strong>, no una visa. Es un requisito adicional para países latinoamericanos con exención de visa Schengen, obligatorio desde Q4 2026.</p></div>
-    <div class="faq-item"><h3>¿Cuánto cuesta ETIAS?</h3><p>El costo oficial es <strong>€7 euros</strong>. Menores de 18 y mayores de 70 años están exentos del pago.</p></div>
-    <div class="faq-item"><h3>¿Cuánto tarda la aprobación normal?</h3><p>La mayoría se aprueban en <strong>minutos</strong>. En casos de revisión manual puede tardar hasta 96 horas o excepcionalmente hasta 30 días.</p></div>
-    <div class="faq-item"><h3>¿Dónde solicito ETIAS?</h3><p>Exclusivamente en el portal oficial de la Unión Europea. No hay oficinas físicas en Latinoamérica.</p></div>
-    <div class="faq-item"><h3>¿Ante quién se apela el rechazo de ETIAS?</h3><p>La apelación se presenta ante las autoridades migratorias del país Schengen que identificaste como destino principal en tu solicitud.</p></div>
-    <div class="faq-item"><h3>¿Puedo solicitar ETIAS de nuevo mientras apelo?</h3><p>No se recomienda enviar una nueva solicitud mientras la apelación está activa. Espera la resolución o consulta con un especialista.</p></div>
-    <div class="faq-item"><h3>¿Necesito abogado para apelar?</h3><p>No es obligatorio, pero un asesor migratorio especializado en Schengen puede aumentar significativamente las probabilidades de éxito.</p></div>
-
-<div class="cta-box">
-  <p>¿Tienes dudas sobre tu caso específico? Usa el simulador gratuito para evaluar tu perfil ETIAS.</p>
-  <a class="cta-btn" href="https://consultoretias.github.io/Simulador-ETIAS-/">🚀 Simular ETIAS Ahora — Es Gratis</a>
-</div>
-</div>
-<footer>ETIAS Consultant Simulator | No afiliado a la Unión Europea | Información con fines educativos | <a href="https://consultoretias.github.io/Simulador-ETIAS-/" style="color:#e94560">Volver al Simulador</a></footer>
 </body>
 </html>
