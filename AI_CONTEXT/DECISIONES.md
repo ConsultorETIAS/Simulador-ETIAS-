@@ -218,3 +218,48 @@ Submit a Google Search Console para iniciar indexación
 - Mercado objetivo: viajeros latinoamericanos a Europa
 
 **Commit:** ca3e5bc
+# DECISIONES DEL PROYECTO ETIAS
+*(Solo se agrega la entrada nueva. Pega esto al final de tu AI_CONTEXT/DECISIONES.md existente)*
+
+---
+
+## 2026-03-25 — Sitemap estable + Chile + Venezuela
+
+### ✅ DECISIÓN: generar_sitemap.py como script maestro permanente
+
+**Problema identificado**:
+- sitemap.xml se estaba editando manualmente o parcialmente
+- Estructura XML rota: etiquetas mezcladas, URLs sin cerrar
+- Google descartaba el sitemap completo en cada rastreo
+- Resultado: 0 indexación a pesar de 174 páginas deployadas
+
+**Solución implementada**:
+- `generar_sitemap.py` genera sitemap desde archivos .html reales del repo
+- Excluye automáticamente googleb3774603a75b32a8.html
+- Asigna priority 1.0 a index.html y 0.7 al resto
+- Se ejecuta SIEMPRE al final de cada batch
+
+**Regla nueva**:
+- Flujo fijo: generar_[país].py → generar_sitemap.py → git push
+- NO editar sitemap.xml manualmente jamás
+
+---
+
+### ✅ DECISIÓN: NO tocar sitemap hasta 8 abril 2026
+
+**Contexto**:
+- Sitemap enviado a GSC el 25 marzo con 207 URLs limpias
+- Google necesita 2-3 semanas de sitemap estable para indexar
+- El problema anterior era cambios diarios que impedían indexación
+
+**Implicación**:
+- Próximo batch (Perú, Nuevo León, Puebla) se ejecuta DESPUÉS del 8 abril
+- Verificación agendada: 8 abril y 15 abril en calendario
+
+---
+
+### ✅ HITO: 207 URLs en producción — 25 marzo 2026
+
+**Países con cobertura profunda**: México, Argentina, Brasil, Colombia, Chile, Venezuela
+**Países con solo hub**: Bolivia, Ecuador, Costa Rica, Honduras, Guatemala, El Salvador, Panamá, Paraguay, Cuba, Nicaragua, Rep. Dominicana, Uruguay
+**Próximo**: Perú (hub + spokes completos)

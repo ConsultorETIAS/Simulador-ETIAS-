@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ETIAS México 2026 — Tramita tu autorización de viaje a Europa</title>
-<meta name="description" content="Tramita tu ETIAS para viajar a Europa desde México, Argentina, Brasil, Colombia y Uruguay. Simulador · Pase Electrónico de Viaje ✈️ Art. 67 Reg. UE 2018/1240. Tarifa oficial €20. Lanzamiento Q4 2026."/>
+<title>ETIAS Agente Autorizado</title>
+<meta name="description" content="Gestión de solicitudes ETIAS · Agente Autorizado · Art. 67 Reglamento UE 2018/1240"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -52,7 +52,7 @@ input:focus,select:focus{outline:none;border-color:#1a3a5c}
 // CONFIG
 // ============================================================
 var CONFIG = {
-  CONSULTANT_NAME:  "ETIAS Simulador · Pase Electrónico de Viaje ✈️",
+  CONSULTANT_NAME:  "ETIAS Agente Autorizado",
   CONSULTANT_EMAIL: "consultor.etias@proton.me",
   CONSULTANT_FEE:   "MXN 400 / R$120",
   GOOGLE_FORM_ID:   "1FAIpQLSf67D6xL62Dfhi2v0SDh8P8DTtXFlxpVogu2DcovxSnMQS1Gw",
@@ -99,8 +99,8 @@ var S = {
 var T = {
   es:{
     steps:["Asistente","Representación","Pasaporte","Datos","Validación 4D","Revisión","Confirmación"],
-    chat:{title:"Asistente ETIAS",subtitle:"Simulador · Pase Electrónico de Viaje ✈️ · Art. 67 Reg. UE 2018/1240",placeholder:"Ej: 'Soy mexicano y viajo a Francia'",send:"Enviar",escalate:"⚠️ Este caso requiere revisión del agente.",escalateContact:"Contactar:",skip:"Ir directamente al formulario →"},
-    rep:{title:"Declaración de Representación",desc:"El viajero autoriza al agente a gestionar su solicitud ETIAS.",cLabel:"Consultor ETIAS",tLabel:"Tus datos como viajero",tname:"Tu nombre completo",temail:"Tu email personal",tpass:"Tu número de pasaporte",relation:"Tipo de representación",relations:["Adulto por sí mismo","Menor bajo patria potestad","Persona bajo tutela legal"],emailWarn:"⚠ Debe ser tu email personal — acceso exclusivo tuyo",declare:"El viajero declara haber leído y acepta los términos de representación.",sign:"Aceptar y continuar →"},
+    chat:{title:"Asistente ETIAS",subtitle:"Agente autorizado · Art. 67 Reg. UE 2018/1240",placeholder:"Ej: 'Soy mexicano y viajo a Francia'",send:"Enviar",escalate:"⚠️ Este caso requiere revisión del agente.",escalateContact:"Contactar:",skip:"Ir directamente al formulario →"},
+    rep:{title:"Declaración de Representación",desc:"El viajero autoriza al agente a gestionar su solicitud ETIAS.",cLabel:"Agente Autorizado",tLabel:"Tus datos como viajero",tname:"Tu nombre completo",temail:"Tu email personal",tpass:"Tu número de pasaporte",relation:"Tipo de representación",relations:["Adulto por sí mismo","Menor bajo patria potestad","Persona bajo tutela legal"],emailWarn:"⚠ Debe ser tu email personal — acceso exclusivo tuyo",declare:"El viajero declara haber leído y acepta los términos de representación.",sign:"Aceptar y continuar →"},
     pass:{title:"Escaneo de Pasaporte",desc:"Sube foto de tu pasaporte. Claude extrae los datos automáticamente.",drag:"Arrastra aquí o haz clic",formats:"JPG PNG WEBP · Máx 5MB",scan:"📷 Escanear pasaporte",processing:"Leyendo pasaporte...",success:"✓ Datos extraídos",error:"No se pudo leer — completa manualmente",privacy:"🔒 Imagen no almacenada",confirm:"Confirmar y continuar →",skip:"Omitir — ingresar manualmente →",fSurname:"Apellido(s)",fGiven:"Nombre(s)",fNat:"Nacionalidad",fDob:"Nacimiento",fSex:"Sexo",fNum:"Número",fExp:"Vencimiento",fCountry:"País emisor"},
     td:{title:"Tus Datos de Viaje",pTitle:"Datos Personales",fname:"Nombre(s)",lname:"Apellido(s)",dob:"Fecha nacimiento",nat:"Nacionalidad",gender:"Género",genders:["Masculino","Femenino","No especificado"],ppTitle:"Pasaporte",pnum:"Número",pissue:"Emisión",pexpiry:"Vencimiento",pcountry:"País emisor",trvTitle:"Tu Viaje",dest:"País de destino",arrival:"Fecha de llegada",purpose:"Propósito",purposes:["Turismo","Negocios","Tránsito","Visita familiar","Estudios"],histTitle:"Historial Migratorio",refused:"¿Visa rechazada alguna vez?",deported:"¿Deportación previa?",criminal:"¿Antecedentes penales?",yes:"Sí",no:"No",next:"Continuar →"},
     val:{title:"Validación 4 D's",sub:"AI Fluency Framework · Anthropic",dNames:{d1:"DELEGATION",d2:"DESCRIPTION",d3:"DISCERNMENT",d4:"DILIGENCE"},dDescs:{d1:"IA asiste · humano decide",d2:"Contexto completo",d3:"Datos vs fuente oficial",d4:"Participación documentada"},checks:{d1_1:"Riesgo reservado al agente",d1_2:"Email viajero ≠ email agente",d1_3:"Viajero identificado",d2_1:"Pasaporte vigente 3+ meses post-llegada",d2_2:"Fecha de llegada futura",d2_3:"Destino en zona ETIAS",d3_1:"Sin alertas historial migratorio",d3_2:"Datos consistentes con documento",d3_3:"Tarifa comunicada",d4_1:"Copia guardada por agente",d4_2:"Email viajero registrado",d4_3:"Expediente creado"},fail:"🚨 ESCALAR — Revisión del agente requerida",failDesc:"Checks críticos fallaron. Contacta al agente.",ok:"✅ LISTO PARA REVISIÓN FINAL",next:"Continuar →"},
@@ -119,8 +119,8 @@ var T = {
   },
   pt:{
     steps:["Assistente","Representação","Passaporte","Dados","Validação 4D","Revisão","Confirmação"],
-    chat:{title:"Assistente ETIAS",subtitle:"Simulador · Pase Electrónico de Viaje ✈️ · Art. 67 Reg. UE 2018/1240",placeholder:"Ex: 'Sou brasileiro e vou para Portugal'",send:"Enviar",escalate:"⚠️ Este caso requer revisão do agente.",escalateContact:"Contatar:",skip:"Ir direto ao formulário →"},
-    rep:{title:"Declaração de Representação",desc:"O viajante autoriza o agente a gerenciar sua solicitação ETIAS.",cLabel:"Consultor ETIAS",tLabel:"Seus dados como viajante",tname:"Seu nome completo",temail:"Seu e-mail pessoal",tpass:"Seu número de passaporte",relation:"Tipo de representação",relations:["Adulto por si mesmo","Menor sob autoridade parental","Pessoa sob tutela legal"],emailWarn:"⚠ Deve ser seu e-mail pessoal — acesso exclusivo seu",declare:"O viajante declara ter lido e aceita os termos de representação.",sign:"Aceitar e continuar →"},
+    chat:{title:"Assistente ETIAS",subtitle:"Agente autorizado · Art. 67 Reg. UE 2018/1240",placeholder:"Ex: 'Sou brasileiro e vou para Portugal'",send:"Enviar",escalate:"⚠️ Este caso requer revisão do agente.",escalateContact:"Contatar:",skip:"Ir direto ao formulário →"},
+    rep:{title:"Declaração de Representação",desc:"O viajante autoriza o agente a gerenciar sua solicitação ETIAS.",cLabel:"Agente Autorizado",tLabel:"Seus dados como viajante",tname:"Seu nome completo",temail:"Seu e-mail pessoal",tpass:"Seu número de passaporte",relation:"Tipo de representação",relations:["Adulto por si mesmo","Menor sob autoridade parental","Pessoa sob tutela legal"],emailWarn:"⚠ Deve ser seu e-mail pessoal — acesso exclusivo seu",declare:"O viajante declara ter lido e aceita os termos de representação.",sign:"Aceitar e continuar →"},
     pass:{title:"Escaneamento de Passaporte",desc:"Envie foto do seu passaporte. Claude extrai os dados automaticamente.",drag:"Arraste aqui ou clique",formats:"JPG PNG WEBP · Máx 5MB",scan:"📷 Escanear passaporte",processing:"Lendo passaporte...",success:"✓ Dados extraídos",error:"Não foi possível ler — preencha manualmente",privacy:"🔒 Imagem não armazenada",confirm:"Confirmar e continuar →",skip:"Pular — inserir manualmente →",fSurname:"Sobrenome(s)",fGiven:"Nome(s)",fNat:"Nacionalidade",fDob:"Nascimento",fSex:"Sexo",fNum:"Número",fExp:"Validade",fCountry:"País emissor"},
     td:{title:"Seus Dados de Viagem",pTitle:"Dados Pessoais",fname:"Nome(s)",lname:"Sobrenome(s)",dob:"Data de nascimento",nat:"Nacionalidade",gender:"Gênero",genders:["Masculino","Feminino","Não especificado"],ppTitle:"Passaporte",pnum:"Número",pissue:"Emissão",pexpiry:"Validade",pcountry:"País emissor",trvTitle:"Sua Viagem",dest:"País de destino",arrival:"Data de chegada",purpose:"Finalidade",purposes:["Turismo","Negócios","Trânsito","Visita familiar","Estudos"],histTitle:"Histórico Migratório",refused:"Visto já recusado?",deported:"Deportação anterior?",criminal:"Antecedentes criminais?",yes:"Sim",no:"Não",next:"Continuar →"},
     val:{title:"Validação 4 D's",sub:"AI Fluency Framework · Anthropic",dNames:{d1:"DELEGATION",d2:"DESCRIPTION",d3:"DISCERNMENT",d4:"DILIGENCE"},dDescs:{d1:"IA auxilia · humano decide",d2:"Contexto completo",d3:"Dados vs fonte oficial",d4:"Documentado"},checks:{d1_1:"Risco reservado ao agente",d1_2:"E-mail viajante ≠ e-mail agente",d1_3:"Viajante identificado",d2_1:"Passaporte válido 3+ meses após chegada",d2_2:"Data de chegada no futuro",d2_3:"Destino na zona ETIAS",d3_1:"Sem alertas histórico migratório",d3_2:"Dados consistentes com documento",d3_3:"Taxa comunicada",d4_1:"Cópia guardada pelo agente",d4_2:"E-mail do viajante registrado",d4_3:"Expediente criado"},fail:"🚨 ESCALAR — Revisão do agente necessária",failDesc:"Checks críticos falharam. Contate o agente.",ok:"✅ PRONTO PARA REVISÃO FINAL",next:"Continuar →"},
@@ -133,48 +133,19 @@ var T = {
 // API FUNCTIONS
 // ============================================================
 function chatWithETIAS(messages, lang) {
-  var last = messages[messages.length-1]||{};
-  var input = (last.content||"").toLowerCase();
-  var T = {
-    es: {
-      greet: "¡Hola! Soy el Asistente ETIAS. ¿De qué país eres y a dónde quieres viajar en Europa?",
-      eligible: "✅ ¡Buenas noticias! Tu nacionalidad necesitará ETIAS en Q4 2026. Trámite rápido: tarifa oficial €20 + tarifa del agente. ¿Te ayudo?",
-      tarifa: "Tarifa oficial ETIAS: €20. Nuestro servicio de agente autorizado tiene costo adicional. ¿Quieres continuar?",
-      escalar: "ESCALAR_CONSULTOR",
-      iniciar: "INICIAR_SIMULADOR",
-      noentiendo: "Puedo ayudarte con ETIAS para viajar a Europa. ¿De qué país eres?"
-    },
-    en: {
-      greet: "Hi! I'm the ETIAS Assistant. What country are you from and where do you want to travel in Europe?",
-      eligible: "✅ Good news! Your nationality will need ETIAS in Q4 2026. Official fee €20 + agent fee. Shall I help you prepare your file?",
-      tarifa: "Official ETIAS fee: €20. Our authorized agent service has an additional fee. Would you like to continue?",
-      escalar: "ESCALAR_CONSULTOR",
-      iniciar: "INICIAR_SIMULADOR",
-      noentiendo: "I can help you with ETIAS for traveling to Europe. What country are you from?"
-    },
-    pt: {
-      greet: "Olá! Sou o Assistente ETIAS. De que país você é e para onde quer viajar na Europa?",
-      eligible: "✅ Boas notícias! Sua nacionalidade precisará do ETIAS no Q4 2026. Taxa oficial €20 + taxa do agente. Posso ajudá-lo?",
-      tarifa: "Taxa oficial ETIAS: €20. Nosso serviço de agente autorizado tem taxa adicional. Deseja continuar?",
-      escalar: "ESCALAR_CONSULTOR",
-      iniciar: "INICIAR_SIMULADOR",
-      noentiendo: "Posso ajudá-lo com o ETIAS para viajar à Europa. De que país você é?"
-    }
-  };
-  var R = T[lang]||T.es;
-  if(messages.length<=1) return Promise.resolve(R.greet);
-  var cierres = ["quiero","contrato","yes","i want","quero","acepto","dale","claro","adelante","vamos","proceed","empezar","start","registrar","tramitar","afirm","correcto","exacto","listo"];
-  var esAfirmSi = input.trim()==="si" || input.trim()==="sí" || input.trim()==="ok" || input.trim()==="eso";
-  if(esAfirmSi) return Promise.resolve(R.iniciar);
-  if(cierres.some(function(c){return input.includes(c);})) return Promise.resolve(R.iniciar);
-  var escalares = ["rechaz","deport","antecedent","criminal","condena","arrest","refused","convicted"];
-  if(escalares.some(function(c){return input.includes(c);})) return Promise.resolve(R.escalar);
-  var precio = ["precio","costo","cuanto","tarifa","fee","cost","price","quanto","valor"];
-  if(precio.some(function(c){return input.includes(c);})) return Promise.resolve(R.tarifa);
-  var nats = ["mexico","brasil","brazil","argentina","colombia","peru","uruguay","chile","venezuela","ecuador","bolivia","paraguay","panama","costa rica"];
-  var dests = ["europa","spain","france","italia","germany","alemania","portugal","europe","schengen"];
-  if(nats.some(function(c){return input.includes(c);})||dests.some(function(c){return input.includes(c);})) return Promise.resolve(R.eligible);
-  return Promise.resolve(R.noentiendo);
+  var system = 'Eres ETIAS Assistant de "' + CONFIG.CONSULTANT_NAME + '" (' + CONFIG.CONSULTANT_EMAIL + ').\n' +
+    'IDIOMA: ' + (lang==="es"?"español":lang==="pt"?"portugués brasileño":"inglés") + '.\n' +
+    'OBJETIVO: Cerrar el trámite — que el viajero contrate el servicio.\n' +
+    'TARIFA: €20 oficial ETIAS + ' + CONFIG.CONSULTANT_FEE + ' tarifa del agente.\n' +
+    'MARCO LEGAL: Art. 67 Reg. UE 2018/1240. Lanzamiento Q4 2026.\n' +
+    'FLUJO: 1)Saluda brevemente 2)Pregunta nacionalidad+destino 3)Confirma elegibilidad (MX✅ BR✅ AR✅ CO✅) 4)Explica valor en 2 líneas 5)Presenta tarifa 6)Si acepta→INICIAR_SIMULADOR.\n' +
+    'REGLAS: Máx 3 líneas/respuesta. Nunca prometas aprobación. Si visa rechazada/deportación/antecedentes→ESCALAR_CONSULTOR.\n' +
+    'SEÑALES DE CIERRE→INICIAR_SIMULADOR: sí,quiero,contrato,yes,I want,sim,quero,acepto,ok,dale,claro,adelante,vamos,proceed.';
+  return fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,system:system,messages:messages})
+  }).then(function(r){return r.json();}).then(function(d){return d.content&&d.content[0]?d.content[0].text:"";});
 }
 
 function ocrPassport(base64, mediaType) {
@@ -338,7 +309,7 @@ function renderHeader() {
   return '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">'
     + '<div>'
     + '<div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.35);border-radius:20px;padding:5px 14px;margin-bottom:6px">'
-    + '<span>🇪🇺</span><span style="font-size:9px;font-weight:800;color:#C9A84C;letter-spacing:0.15em;text-transform:uppercase">ETIAS · Simulador · Pase Electrónico de Viaje ✈️</span>'
+    + '<span>🇪🇺</span><span style="font-size:9px;font-weight:800;color:#C9A84C;letter-spacing:0.15em;text-transform:uppercase">ETIAS · Agente Autorizado</span>'
     + '</div>'
     + '<h1 style="font-size:20px;font-weight:800;color:#fff;margin:0">'+esc(CONFIG.CONSULTANT_NAME)+'</h1>'
     + '<p style="font-size:10px;color:rgba(255,255,255,0.4);margin:2px 0 0">📧 '+esc(CONFIG.CONSULTANT_EMAIL)+'</p>'
@@ -387,7 +358,7 @@ function renderStep0() {
 
   var inputHtml = !S.chatEscalate?
     '<div style="display:flex;gap:8px;margin-bottom:14px">'
-    +'<input id="chat-input" style="flex:1;padding:11px 16px;border:1.5px solid #d1d5db;border-radius:24px;font-size:13px;font-family:inherit" placeholder="'+esc(c.placeholder)+'" value="'+esc(S.chatInput)+'" oninput="S.chatInput=this.value;render()" onchange="S.chatInput=this.value;render()" onkeyup="S.chatInput=this.value;render()" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();doChat();}" '+(S.chatLoading?"disabled":"")+'>'
+    +'<input id="chat-input" style="flex:1;padding:11px 16px;border:1.5px solid #d1d5db;border-radius:24px;font-size:13px;font-family:inherit" placeholder="'+esc(c.placeholder)+'" value="'+esc(S.chatInput)+'" oninput="S.chatInput=this.value" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();doChat();}" '+(S.chatLoading?"disabled":"")+'>'
     +'<button onclick="doChat()" '+(S.chatLoading||!S.chatInput.trim()?"disabled":"")
     +' style="background:'+(S.chatInput.trim()&&!S.chatLoading?"#1a3a5c":"#d1d5db")+';color:#fff;border:none;border-radius:24px;padding:11px 20px;font-weight:700;font-size:13px;cursor:'+(S.chatInput.trim()&&!S.chatLoading?"pointer":"not-allowed")+';flex-shrink:0">'+esc(c.send)+'</button>'
     +'</div>':'';
@@ -663,7 +634,7 @@ function render() {
     + renderProgress()
     + stepContent
     + '</div>'
-    + '<p style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);margin-top:12px">Modelo B · ETIAS Simulador · Pase Electrónico de Viaje ✈️ · Vanilla JS · Q4 2026</p>'
+    + '<p style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);margin-top:12px">Modelo B · ETIAS Agente Autorizado · Vanilla JS · Q4 2026</p>'
     + '</div>';
 
   // Scroll chat to bottom
@@ -795,15 +766,68 @@ function resetAll() {
 }
 
 // ============================================================
-// BOOT
+// BOOT — URL PARAMS (captura búsqueda larga desde páginas programáticas)
 // ============================================================
-render();
-initStep(0);
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var q       = params.get("q");
+  var pais    = params.get("pais");
+  var destino = params.get("destino");
+  var lang    = params.get("lang");
+
+  // Idioma por parámetro (para páginas Brasil en PT)
+  if(lang && ["es","en","pt"].indexOf(lang) > -1) S.lang = lang;
+
+  // Pre-cargar nacionalidad y destino en el estado de viaje
+  if(pais)    S.tv.nationality  = pais.toLowerCase();
+  if(destino) S.tv.destination  = destino.toLowerCase();
+
+  // Si viene con consulta libre (búsqueda larga), inyectarla como mensaje del usuario
+  if(q) {
+    S.chatStarted = true;
+    render();
+    S.chatLoading = true; render();
+    // Construir historial: saludo del bot + mensaje del usuario
+    var initMsg = [{role:"user", content:"Hola"}];
+    chatWithETIAS(initMsg, S.lang).then(function(greet){
+      S.chatMessages = [
+        {role:"assistant", content: greet},
+        {role:"user",      content: q}
+      ];
+      render();
+      // Responder automáticamente a la consulta del usuario
+      return chatWithETIAS(S.chatMessages, S.lang);
+    }).then(function(reply){
+      if(reply.includes("INICIAR_SIMULADOR")){
+        var allText = S.chatMessages.map(function(m){return m.content;}).join(" ").toLowerCase();
+        var nat = ETIAS_NAT.find(function(n){return allText.includes(n);}) || S.tv.nationality || "";
+        var confirm_msg = S.lang==="es"?"¡Perfecto! Abriendo el formulario...":S.lang==="pt"?"Perfeito! Abrindo o formulário...":"Perfect! Opening the form...";
+        S.chatMessages.push({role:"assistant", content: confirm_msg});
+        if(nat) S.tv.nationality = nat;
+        S.chatLoading = false; render();
+        setTimeout(function(){ setStep(1); }, 1200);
+      } else if(reply.includes("ESCALAR_CONSULTOR")){
+        S.chatEscalate = true;
+        S.chatMessages.push({role:"assistant", content: reply.replace("ESCALAR_CONSULTOR","").trim()});
+        S.chatLoading = false; render();
+      } else {
+        S.chatMessages.push({role:"assistant", content: reply});
+        S.chatLoading = false; render();
+      }
+    }).catch(function(){
+      S.chatMessages = [
+        {role:"assistant", content:"¡Hola! Soy el Asistente ETIAS. ¿De qué país eres y a dónde quieres viajar?"},
+        {role:"user",      content: q}
+      ];
+      S.chatLoading = false; render();
+    });
+    return; // No llamar initStep(0) normal — ya se maneja arriba
+  }
+
+  // Boot normal sin parámetros
+  render();
+  initStep(0);
+})();
 </script>
-<div style="margin-top:40px;padding:20px;border-top:1px solid #ccc;">
-<a href="/Simulador-ETIAS-/etias-requisitos-2026.html">Requisitos ETIAS</a> | 
-<a href="/Simulador-ETIAS-/etias-rechazo-apelar.html">Rechazo ETIAS</a> | 
-<a href="/Simulador-ETIAS-/etias-costo.html">Costo ETIAS</a>
-</div>
 </body>
 </html>
