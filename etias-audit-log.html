@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETIAS · Audit Log — Trazabilidad de Expedientes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #070809;
+    --surface:  #0d1014;
+    --border:   #1a1f24;
+    --border2:  #252b32;
+    --ink:      #e2e8f0;
+    --muted:    #4a5568;
+    --dim:      #2d3748;
+    --gold:     #d4a017;
+    --gold-dim: #6b5010;
+    --green:    #22c55e;
+    --green-dim:#14532d;
+    --red:      #ef4444;
+    --red-dim:  #7f1d1d;
+    --blue:     #3b82f6;
+    --blue-dim: #1e3a5f;
+    --amber:    #f59e0b;
+    --mono:     'Courier New', monospace;
+    --sans:     system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    font-family: var(--mono);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border2);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .sys-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 2px 8px;
+  }
+
+  .sys-name {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .topbar-status {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .status-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 48px);
+  }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 48px;
+    height: calc(100vh - 48px);
+    overflow-y: auto;
+  }
+
+  .sidebar-section {
+    padding: 0 16px;
+    margin-bottom: 24px;
+  }
+
+  .sidebar-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 0 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+
+  .sidebar-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 4px 0;
+  }
+
+  .sidebar-stat-key { font-size: 11px; color: var(--muted); }
+  .sidebar-stat-val { font-size: 13px; color: var(--ink); }
+  .sidebar-stat-val.gold { color: var(--gold); }
+  .sidebar-stat-val.green { color: var(--green); }
+  .sidebar-stat-val.red { color: var(--red); }
+
+  .filter-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 7px 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 2px;
+    letter-spacing: 0.03em;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+
+  .filter-btn:hover { background: var(--border); color: var(--ink); }
+  .filter-btn.active { background: var(--border2); color: var(--gold); }
+
+  .filter-btn::before {
+    content: '› ';
+    opacity: 0.4;
+  }
+
+  .filter-btn.active::before { opacity: 1; }
+
+  /* ── MAIN ── */
+  .main {
+    padding: 24px;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER MAIN ── */
+  .main-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .main-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .main-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .btn-new {
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 10px 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-new:hover { background: #e8b820; }
+
+  /* ── FORM NUEVO EXPEDIENTE ── */
+  .new-form {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    padding: 24px;
+    margin-bottom: 24px;
+    display: none;
+    animation: slideDown 0.2s ease;
+  }
+
+  .new-form.open { display: block; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .form-title-bar span {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .btn-close {
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-close:hover { border-color: var(--red); color: var(--red); }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .field label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .field input, .field select, .field textarea {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 8px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--gold);
+  }
+
+  .field textarea { resize: vertical; min-height: 64px; }
+
+  .field.full { grid-column: 1 / -1; }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 4px;
+  }
+
+  .btn-submit {
+    background: var(--green);
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-submit:hover { background: #16a34a; }
+
+  /* ── LOG TABLE ── */
+  .log-header {
+    display: grid;
+    grid-template-columns: 140px 160px 1fr 100px 110px 80px;
+    gap: 0;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom: 2px solid var(--border2);
+    margin-bottom: 2px;
+  }
+
+  .log-header span {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .log-header { display: none; }
+  }
+
+  /* ── ENTRADA DE LOG ── */
+  .log-entry {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 2px;
+    transition: border-color 0.15s;
+    cursor: pointer;
+  }
+
+  .log-entry:hover { border-color: var(--border2); }
+  .log-entry.expanded { border-color: var(--gold-dim); }
+
+  .log-row {
+    display: grid;
+    grid-template-columns: 140px 160px 1fr 100px 110px 80px;
+    gap: 0;
+    padding: 12px 16px;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .log-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  }
+
+  .log-cell { font-size: 12px; padding-right: 12px; overflow: hidden; }
+
+  .log-ts {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  .log-id {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .log-nombre { color: var(--ink); }
+
+  .log-tipo {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ESTADO BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .badge-pendiente { color: var(--amber); border-color: #78350f; background: #1c0f00; }
+  .badge-validado  { color: var(--green); border-color: var(--green-dim); background: #0a1a0a; }
+  .badge-enviado   { color: var(--blue);  border-color: var(--blue-dim);  background: #0a0f1a; }
+  .badge-aprobado  { color: #a855f7;      border-color: #4c1d95;          background: #0e0a1a; }
+  .badge-rechazado { color: var(--red);   border-color: var(--red-dim);   background: #1a0a0a; }
+
+  .log-hash {
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.03em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── DETALLE EXPANDIDO ── */
+  .log-detail {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 20px 16px;
+    background: var(--bg);
+  }
+
+  .log-entry.expanded .log-detail { display: block; }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 700px) {
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+
+  .detail-block {}
+
+  .detail-block-title {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid var(--gold-dim);
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+
+  .detail-key {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .detail-val {
+    font-size: 11px;
+    color: var(--ink);
+    text-align: right;
+    word-break: break-all;
+  }
+
+  /* TIMELINE DE EVENTOS */
+  .events-timeline {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 4px;
+  }
+
+  .events-title {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .event-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .event-ts {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: 120px;
+  }
+
+  .event-type {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .event-type.gen  { color: var(--blue);  border-color: var(--blue-dim); }
+  .event-type.val  { color: var(--green); border-color: var(--green-dim); }
+  .event-type.env  { color: var(--amber); border-color: #78350f; }
+  .event-type.apr  { color: #a855f7;      border-color: #4c1d95; }
+  .event-type.rej  { color: var(--red);   border-color: var(--red-dim); }
+
+  .event-desc {
+    font-size: 11px;
+    color: var(--ink);
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  .event-hash {
+    font-size: 9px;
+    color: var(--dim);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  /* VALIDATION CHECKS */
+  .checks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 10px;
+  }
+
+  .check-item.ok  { border-left: 2px solid var(--green); }
+  .check-item.warn{ border-left: 2px solid var(--amber); }
+  .check-item.fail{ border-left: 2px solid var(--red); }
+
+  .check-icon { font-size: 11px; flex-shrink: 0; }
+  .check-text { color: var(--ink); }
+
+  /* DETAIL ACTIONS */
+  .detail-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-action {
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-action:hover { border-color: var(--gold-dim); color: var(--gold); }
+  .btn-action.primary { border-color: var(--green-dim); color: var(--green); }
+  .btn-action.primary:hover { background: var(--green-dim); }
+  .btn-action.danger { border-color: var(--red-dim); color: var(--red); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--muted);
+  }
+
+  .empty-icon { font-size: 40px; margin-bottom: 16px; display: block; opacity: 0.3; }
+  .empty-state p { font-size: 12px; letter-spacing: 0.05em; }
+
+  /* ── FOOTER ── */
+  .log-footer {
+    margin-top: 24px;
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .log-footer p {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+  }
+
+  .integrity-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.08em;
+  }
+
+  /* NOTIFICATION */
+  .notif {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--surface);
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 12px 20px;
+    z-index: 999;
+    display: none;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="sys-label">RMP v1.0</span>
+    <span class="sys-name">ETIAS · Audit Log — Sistema de Trazabilidad de Expedientes</span>
+  </div>
+  <div class="topbar-status">
+    <span class="status-dot"><span class="dot"></span> Log activo</span>
+    <span class="status-dot" id="ts-live" style="color:#4a5568">--:--:--</span>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Resumen</div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-key">Total expedientes</span>
+        <span class="sidebar-stat-val gold" id="stat-total">0</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-key">Validados</span>
+        <span class="sidebar-stat-val green" id="stat-validados">0</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-key">Enviados</span>
+        <span class="sidebar-stat-val" id="stat-enviados">0</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-key">Aprobados</span>
+        <span class="sidebar-stat-val green" id="stat-aprobados">0</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-key">Pendientes</span>
+        <span class="sidebar-stat-val" id="stat-pendientes">0</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Filtrar por estado</div>
+      <button class="filter-btn active" onclick="filtrar('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filtrar('PENDIENTE', this)">Pendiente</button>
+      <button class="filter-btn" onclick="filtrar('VALIDADO', this)">Validado</button>
+      <button class="filter-btn" onclick="filtrar('ENVIADO', this)">Enviado</button>
+      <button class="filter-btn" onclick="filtrar('APROBADO', this)">Aprobado</button>
+      <button class="filter-btn" onclick="filtrar('RECHAZADO', this)">Rechazado</button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Integridad del log</div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-key">Algoritmo</span>
+        <span class="sidebar-stat-val" style="font-size:11px">SHA-256</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-key">Modo</span>
+        <span class="sidebar-stat-val" style="font-size:11px">Append-only</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-key">Cadena</span>
+        <span class="sidebar-stat-val green" style="font-size:11px" id="chain-status">Íntegra</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Normativa</div>
+      <p style="font-size:10px; color:#4a5568; line-height:1.7; letter-spacing:0.02em;">
+        Reglamento (UE) 2018/1240<br>
+        Art. 16 · Representación<br>
+        de terceros<br><br>
+        Runtime Master Prompt<br>
+        v1.0 · Nodo Curador<br>
+        Bloque E · Autorización
+      </p>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <div class="main-header">
+      <div>
+        <p class="main-title">Audit Log · Expedientes ETIAS</p>
+        <p class="main-sub">Registro append-only · Cada entrada es inmutable · Hash SHA-256 por expediente</p>
+      </div>
+      <button class="btn-new" onclick="toggleForm()">+ Nuevo expediente</button>
+    </div>
+
+    <!-- FORM NUEVO EXPEDIENTE -->
+    <div class="new-form" id="new-form">
+      <div class="form-title-bar">
+        <span>Registrar expediente · Nodo Generador → Curador</span>
+        <button class="btn-close" onclick="toggleForm()">Cancelar</button>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Nombre completo (como en pasaporte)</label>
+          <input type="text" id="f-nombre" placeholder="APELLIDO APELLIDO, Nombre">
+        </div>
+        <div class="field">
+          <label>Nacionalidad</label>
+          <select id="f-nac">
+            <option value="">Selecciona...</option>
+            <option>México</option><option>Colombia</option><option>Argentina</option>
+            <option>Chile</option><option>Perú</option><option>Brasil</option>
+            <option>Venezuela</option><option>Ecuador</option><option>Bolivia</option>
+            <option>Uruguay</option><option>Paraguay</option><option>Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Número de pasaporte</label>
+          <input type="text" id="f-pasaporte" placeholder="G12345678">
+        </div>
+        <div class="field">
+          <label>Email del viajero (uso personal)</label>
+          <input type="email" id="f-email" placeholder="viajero@email.com">
+        </div>
+        <div class="field">
+          <label>Destino principal en Europa</label>
+          <select id="f-destino">
+            <option value="">Selecciona...</option>
+            <option>España</option><option>Francia</option><option>Italia</option>
+            <option>Alemania</option><option>Portugal</option><option>Países Bajos</option>
+            <option>Grecia</option><option>Otro país Schengen</option>
+            <option>Múltiples destinos</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tipo de expediente</label>
+          <select id="f-tipo">
+            <option value="">Selecciona...</option>
+            <option>Individual</option>
+            <option>Familiar (grupo)</option>
+            <option>Agencia B2B</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Fecha estimada de viaje</label>
+          <input type="date" id="f-fecha">
+        </div>
+        <div class="field">
+          <label>Tarifa acordada (MXN)</label>
+          <input type="number" id="f-tarifa" placeholder="599">
+        </div>
+        <div class="field full">
+          <label>Notas del curador / observaciones de validación</label>
+          <textarea id="f-notas" placeholder="Ej: Pasaporte verificado. Email personal confirmado diferente al del intermediario. Borrador enviado para revisión del viajero."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-submit" onclick="crearExpediente()">
+          Registrar en log → Generar hash
+        </button>
+      </div>
+    </div>
+
+    <!-- COLUMN HEADERS -->
+    <div class="log-header">
+      <span>Timestamp</span>
+      <span>ID Expediente</span>
+      <span>Viajero</span>
+      <span>Tipo</span>
+      <span>Estado</span>
+      <span>Hash</span>
+    </div>
+
+    <!-- LOG ENTRIES -->
+    <div id="log-container">
+      <div class="empty-state">
+        <span class="empty-icon">📋</span>
+        <p>Ningún expediente registrado.</p>
+        <p style="margin-top:8px; font-size:11px; opacity:0.6;">Haz clic en "Nuevo expediente" para comenzar.</p>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="log-footer" id="log-footer" style="display:none">
+      <div>
+        <p>Runtime Master Prompt v1.0 · Nodo: Curador · Bloque E — Autorización</p>
+        <p>Reglamento (UE) 2018/1240 · Art. 16 · Intermediario Comercial · Consultor ETIAS · México</p>
+      </div>
+      <div class="integrity-badge">
+        <span>●</span>
+        <span id="integrity-text">Cadena íntegra · <span id="total-entries">0</span> entradas</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- NOTIFICACIÓN -->
+<div class="notif" id="notif"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// ESTADO DEL SISTEMA
+// ══════════════════════════════════════════════
+
+let expedientes = [];
+let filtroActivo = 'todos';
+
+// Cargar datos persistentes
+function cargarDatos() {
+  try {
+    const raw = localStorage.getItem('etias_audit_log');
+    if (raw) expedientes = JSON.parse(raw);
+  } catch(e) { expedientes = []; }
+  renderLog();
+  actualizarStats();
+}
+
+function guardarDatos() {
+  try {
+    localStorage.setItem('etias_audit_log', JSON.stringify(expedientes));
+  } catch(e) { console.error('Storage error:', e); }
+}
+
+// ══════════════════════════════════════════════
+// HASH SHA-256 (Web Crypto API — nativo en browser)
+// ══════════════════════════════════════════════
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(str)
+  );
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+// ══════════════════════════════════════════════
+// GENERADOR DE IDs
+// ══════════════════════════════════════════════
+
+function genId() {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const rnd = Math.random().toString(36).slice(2, 6).toUpperCase();
+  return `EXP-${yy}${mm}-${rnd}`;
+}
+
+// ══════════════════════════════════════════════
+// VALIDACIONES (Bloque B del RMP — adaptado ETIAS)
+// ══════════════════════════════════════════════
+
+function validarExpediente(data) {
+  const checks = [];
+
+  // B1 — Integridad de identidad
+  checks.push({
+    id: 'B1', ok: data.nombre && data.nombre.length > 4,
+    label: 'Nombre completo registrado'
+  });
+
+  // B2 — Documento de viaje
+  checks.push({
+    id: 'B2', ok: data.pasaporte && data.pasaporte.length >= 6,
+    label: 'Nº pasaporte mínimo 6 chars'
+  });
+
+  // B3 — Email personal
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  checks.push({
+    id: 'B3', ok: emailRegex.test(data.email),
+    label: 'Email en formato válido'
+  });
+
+  // B4 — Destino declarado
+  checks.push({
+    id: 'B4', ok: !!data.destino,
+    label: 'Destino Schengen declarado'
+  });
+
+  // B5 — Nacionalidad elegible ETIAS
+  const elegibles = ['México','Colombia','Argentina','Chile','Perú','Brasil',
+                     'Venezuela','Ecuador','Bolivia','Uruguay','Paraguay','Otro'];
+  checks.push({
+    id: 'B5', ok: elegibles.includes(data.nac),
+    label: 'Nacionalidad en lista elegible'
+  });
+
+  // B6 — Fecha de viaje futura
+  const hoy = new Date();
+  const viaje = data.fecha ? new Date(data.fecha) : null;
+  checks.push({
+    id: 'B6', ok: viaje && viaje > hoy,
+    label: 'Fecha de viaje en el futuro'
+  });
+
+  // B7 — Tipo de expediente definido
+  checks.push({
+    id: 'B7', ok: !!data.tipo,
+    label: 'Tipo de expediente clasificado'
+  });
+
+  // B8 — Declaración de representación (custodio humano)
+  checks.push({
+    id: 'B8', ok: true, warn: true,
+    label: 'Declaración de representación pendiente firma'
+  });
+
+  return checks;
+}
+
+// ══════════════════════════════════════════════
+// CREAR EXPEDIENTE
+// ══════════════════════════════════════════════
+
+async function crearExpediente() {
+  const data = {
+    nombre:    document.getElementById('f-nombre').value.trim(),
+    nac:       document.getElementById('f-nac').value,
+    pasaporte: document.getElementById('f-pasaporte').value.trim(),
+    email:     document.getElementById('f-email').value.trim(),
+    destino:   document.getElementById('f-destino').value,
+    tipo:      document.getElementById('f-tipo').value,
+    fecha:     document.getElementById('f-fecha').value,
+    tarifa:    document.getElementById('f-tarifa').value,
+    notas:     document.getElementById('f-notas').value.trim(),
+  };
+
+  if (!data.nombre || !data.email || !data.nac) {
+    notificar('⚠ Nombre, email y nacionalidad son requeridos', 'warn');
+    return;
+  }
+
+  const ts = new Date().toISOString();
+  const id = genId();
+  const checks = validarExpediente(data);
+  const checksOk = checks.filter(c => c.ok && !c.warn).length;
+  const checksFail = checks.filter(c => !c.ok).length;
+
+  // Hash del expediente (encadena con hash anterior = append-only chain)
+  const prevHash = expedientes.length > 0
+    ? expedientes[expedientes.length - 1].hash
+    : '0000000000000000';
+
+  const payload = JSON.stringify({ id, ts, data, prevHash });
+  const hash = await sha256(payload);
+
+  const expediente = {
+    id,
+    ts,
+    data,
+    estado: 'PENDIENTE',
+    checks,
+    checksOk,
+    checksFail,
+    hash: hash.slice(0, 16),
+    hashFull: hash,
+    prevHash: prevHash.slice(0, 16),
+    eventos: [
+      {
+        ts,
+        tipo: 'GEN',
+        desc: `Expediente generado por Nodo Generador. ${checksOk}/8 validaciones pasadas.`,
+        actor: 'intermediario',
+        hash: hash.slice(0, 8)
+      }
+    ]
+  };
+
+  expedientes.unshift(expediente); // append al inicio (más reciente primero)
+  guardarDatos();
+  renderLog();
+  actualizarStats();
+  toggleForm();
+  limpiarForm();
+  notificar(`✓ Expediente ${id} registrado en log`, 'ok');
+}
+
+// ══════════════════════════════════════════════
+// ACTUALIZAR ESTADO
+// ══════════════════════════════════════════════
+
+async function actualizarEstado(idx, nuevoEstado, descEvento) {
+  const exp = expedientes[idx];
+  if (!exp) return;
+
+  const ts = new Date().toISOString();
+  const payload = JSON.stringify({ id: exp.id, ts, nuevoEstado, prevHash: exp.hash });
+  const hash = await sha256(payload);
+
+  const tipoMap = {
+    'VALIDADO':  'VAL',
+    'ENVIADO':   'ENV',
+    'APROBADO':  'APR',
+    'RECHAZADO': 'REJ',
+  };
+
+  exp.estado = nuevoEstado;
+  exp.prevHash = exp.hash;
+  exp.hash = hash.slice(0, 16);
+  exp.hashFull = hash;
+
+  exp.eventos.push({
+    ts,
+    tipo: tipoMap[nuevoEstado] || 'UPD',
+    desc: descEvento || `Estado actualizado a ${nuevoEstado}`,
+    actor: 'curador',
+    hash: hash.slice(0, 8)
+  });
+
+  guardarDatos();
+  renderLog();
+  actualizarStats();
+  notificar(`✓ ${exp.id} → ${nuevoEstado}`, 'ok');
+}
+
+// ══════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════
+
+function renderLog() {
+  const container = document.getElementById('log-container');
+  const footer = document.getElementById('log-footer');
+
+  const filtrados = filtroActivo === 'todos'
+    ? expedientes
+    : expedientes.filter(e => e.estado === filtroActivo);
+
+  if (filtrados.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-icon">📋</span>
+        <p>${filtroActivo === 'todos' ? 'Ningún expediente registrado.' : `Sin expedientes en estado "${filtroActivo}".`}</p>
+        ${filtroActivo === 'todos' ? '<p style="margin-top:8px;font-size:11px;opacity:0.6">Haz clic en "Nuevo expediente" para comenzar.</p>' : ''}
+      </div>`;
+    footer.style.display = 'none';
+    return;
+  }
+
+  footer.style.display = 'flex';
+  document.getElementById('total-entries').textContent = expedientes.length;
+
+  container.innerHTML = filtrados.map((exp, i) => {
+    const realIdx = expedientes.indexOf(exp);
+    const badgeClass = {
+      PENDIENTE: 'badge-pendiente',
+      VALIDADO:  'badge-validado',
+      ENVIADO:   'badge-enviado',
+      APROBADO:  'badge-aprobado',
+      RECHAZADO: 'badge-rechazado',
+    }[exp.estado] || 'badge-pendiente';
+
+    const checksHtml = exp.checks.map(c => {
+      const cls = c.warn ? 'warn' : (c.ok ? 'ok' : 'fail');
+      const icon = c.warn ? '⚠' : (c.ok ? '✓' : '✗');
+      return `<div class="check-item ${cls}">
+        <span class="check-icon">${icon}</span>
+        <span class="check-text">${c.id} · ${c.label}</span>
+      </div>`;
+    }).join('');
+
+    const eventosHtml = exp.eventos.map(ev => {
+      const tcls = { GEN:'gen', VAL:'val', ENV:'env', APR:'apr', REJ:'rej' }[ev.tipo] || '';
+      return `<div class="event-item">
+        <span class="event-ts">${ev.ts.replace('T',' ').slice(0,19)}</span>
+        <span class="event-type ${tcls}">${ev.tipo}</span>
+        <span class="event-desc">${ev.desc}</span>
+        <span class="event-hash">${ev.hash}</span>
+      </div>`;
+    }).join('');
+
+    const acciones = {
+      PENDIENTE: `
+        <button class="btn-action primary" onclick="actualizarEstado(${realIdx},'VALIDADO','Curador validó datos. Borrador enviado al viajero para revisión. Email personal confirmado.')">
+          → Marcar validado
+        </button>
+        <button class="btn-action danger" onclick="actualizarEstado(${realIdx},'RECHAZADO','Curador rechazó expediente en validación inicial.')">
+          Rechazar
+        </button>`,
+      VALIDADO: `
+        <button class="btn-action primary" onclick="actualizarEstado(${realIdx},'ENVIADO','Solicitud presentada en portal oficial ETIAS. Declaración de representación firmada archivada.')">
+          → Marcar enviado a ETIAS
+        </button>`,
+      ENVIADO: `
+        <button class="btn-action primary" onclick="actualizarEstado(${realIdx},'APROBADO','Autorización ETIAS aprobada por sistema UE. Notificación enviada al viajero.')">
+          → Marcar aprobado
+        </button>
+        <button class="btn-action danger" onclick="actualizarEstado(${realIdx},'RECHAZADO','ETIAS rechazó la solicitud. Viajero notificado.')">
+          Marcar rechazado por ETIAS
+        </button>`,
+      APROBADO: '',
+      RECHAZADO: '',
+    };
+
+    return `
+    <div class="log-entry" id="entry-${realIdx}">
+      <div class="log-row" onclick="toggleEntry(${realIdx})">
+        <div class="log-cell log-ts">${exp.ts.replace('T',' ').slice(0,19)}</div>
+        <div class="log-cell log-id">${exp.id}</div>
+        <div class="log-cell log-nombre">${exp.data.nombre || '—'}<br>
+          <span style="font-size:10px;color:#4a5568">${exp.data.nac || ''} · ${exp.data.destino || ''}</span>
+        </div>
+        <div class="log-cell log-tipo">${exp.data.tipo || '—'}</div>
+        <div class="log-cell">
+          <span class="badge ${badgeClass}">${exp.estado}</span>
+        </div>
+        <div class="log-cell log-hash" title="${exp.hashFull}">${exp.hash}</div>
+      </div>
+      <div class="log-detail">
+        <div class="detail-grid">
+          <div class="detail-block">
+            <div class="detail-block-title">Datos del viajero</div>
+            <div class="detail-row"><span class="detail-key">Nombre</span><span class="detail-val">${exp.data.nombre || '—'}</span></div>
+            <div class="detail-row"><span class="detail-key">Nacionalidad</span><span class="detail-val">${exp.data.nac || '—'}</span></div>
+            <div class="detail-row"><span class="detail-key">Pasaporte</span><span class="detail-val">${exp.data.pasaporte || '—'}</span></div>
+            <div class="detail-row"><span class="detail-key">Email</span><span class="detail-val">${exp.data.email || '—'}</span></div>
+            <div class="detail-row"><span class="detail-key">Destino</span><span class="detail-val">${exp.data.destino || '—'}</span></div>
+            <div class="detail-row"><span class="detail-key">Fecha viaje</span><span class="detail-val">${exp.data.fecha || '—'}</span></div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-title">Expediente</div>
+            <div class="detail-row"><span class="detail-key">ID</span><span class="detail-val">${exp.id}</span></div>
+            <div class="detail-row"><span class="detail-key">Tipo</span><span class="detail-val">${exp.data.tipo || '—'}</span></div>
+            <div class="detail-row"><span class="detail-key">Tarifa</span><span class="detail-val">${exp.data.tarifa ? '$'+exp.data.tarifa+' MXN' : '—'}</span></div>
+            <div class="detail-row"><span class="detail-key">Estado</span><span class="detail-val">${exp.estado}</span></div>
+            <div class="detail-row"><span class="detail-key">Validaciones</span><span class="detail-val">${exp.checksOk}/7 ✓ · ${exp.checksFail} ✗</span></div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-title">Integridad criptográfica</div>
+            <div class="detail-row"><span class="detail-key">Hash</span><span class="detail-val" style="font-size:10px">${exp.hash}</span></div>
+            <div class="detail-row"><span class="detail-key">Prev hash</span><span class="detail-val" style="font-size:10px">${exp.prevHash}</span></div>
+            <div class="detail-row"><span class="detail-key">Algoritmo</span><span class="detail-val">SHA-256</span></div>
+            <div class="detail-row"><span class="detail-key">Eventos</span><span class="detail-val">${exp.eventos.length}</span></div>
+            ${exp.data.notas ? `<div class="detail-row"><span class="detail-key">Notas</span><span class="detail-val" style="font-size:10px;text-align:left">${exp.data.notas}</span></div>` : ''}
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px">
+          <div class="detail-block-title" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold-dim);padding-bottom:6px;margin-bottom:10px">
+            Validaciones · Bloque B — RMP v1.0
+          </div>
+          <div class="checks-grid">${checksHtml}</div>
+        </div>
+
+        <div class="events-timeline">
+          <p class="events-title">Timeline de eventos · Append-only</p>
+          ${eventosHtml}
+        </div>
+
+        <div class="detail-actions">
+          ${acciones[exp.estado] || ''}
+          <button class="btn-action" onclick="copiarHash('${exp.hashFull}')">Copiar hash completo</button>
+          <button class="btn-action" onclick="exportarExpediente(${realIdx})">Exportar JSON</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════════
+
+function actualizarStats() {
+  document.getElementById('stat-total').textContent = expedientes.length;
+  document.getElementById('stat-validados').textContent = expedientes.filter(e => e.estado === 'VALIDADO').length;
+  document.getElementById('stat-enviados').textContent = expedientes.filter(e => e.estado === 'ENVIADO').length;
+  document.getElementById('stat-aprobados').textContent = expedientes.filter(e => e.estado === 'APROBADO').length;
+  document.getElementById('stat-pendientes').textContent = expedientes.filter(e => e.estado === 'PENDIENTE').length;
+}
+
+// ══════════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════════
+
+function toggleEntry(idx) {
+  const entry = document.getElementById(`entry-${idx}`);
+  if (!entry) return;
+  const wasOpen = entry.classList.contains('expanded');
+  document.querySelectorAll('.log-entry.expanded').forEach(e => e.classList.remove('expanded'));
+  if (!wasOpen) entry.classList.add('expanded');
+}
+
+function toggleForm() {
+  const form = document.getElementById('new-form');
+  form.classList.toggle('open');
+}
+
+function limpiarForm() {
+  ['f-nombre','f-nac','f-pasaporte','f-email','f-destino','f-tipo','f-fecha','f-tarifa','f-notas']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+}
+
+function filtrar(estado, btn) {
+  filtroActivo = estado;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLog();
+}
+
+function copiarHash(hash) {
+  navigator.clipboard.writeText(hash).then(() => notificar('Hash copiado al portapapeles', 'ok'));
+}
+
+function exportarExpediente(idx) {
+  const exp = expedientes[idx];
+  const blob = new Blob([JSON.stringify(exp, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${exp.id}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  notificar(`${exp.id}.json descargado`, 'ok');
+}
+
+function notificar(msg, tipo) {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.style.borderColor = tipo === 'ok' ? 'var(--green-dim)' : '#78350f';
+  el.style.color = tipo === 'ok' ? 'var(--green)' : 'var(--amber)';
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 3000);
+}
+
+// Reloj en tiempo real
+function tickClock() {
+  const el = document.getElementById('ts-live');
+  if (el) el.textContent = new Date().toISOString().replace('T',' ').slice(0,19) + ' UTC';
+}
+setInterval(tickClock, 1000);
+tickClock();
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+cargarDatos();
+</script>
+
+</body>
+</html>
