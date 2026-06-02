@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Representación ETIAS — Intermediario Comercial · México & LATAM</title>
+<meta name="description" content="Gestionamos tu ETIAS como intermediario comercial reconocido por el Reglamento UE 2018/1240. Declaración de Representación incluida.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#0d0d0d;--ink-soft:#3a3a3a;--rule:#d4c9b0;--gold:#b8860b;--gold-lt:#e8d48a;--cream:#f5f1e8;--white:#fdfcf9;--eu-blue:#003399;--eu-blue-lt:#e8edf7;--danger:#8b1a1a;--mono:'DM Mono',monospace;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Instrument Sans',system-ui,sans-serif}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);line-height:1.6;overflow-x:hidden}
+.urgency-bar{background:var(--danger);color:#fff;padding:14px 24px;text-align:center}
+.urgency-bar p{font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.urgency-bar strong{color:#ffcaca}
+.site-header{background:var(--ink);border-bottom:3px solid var(--gold);padding:0 24px;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:32px;height:32px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink);flex-shrink:0}
+.logo-text{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--white);letter-spacing:.02em;line-height:1.2}
+.logo-sub{font-family:var(--mono);font-size:9px;color:var(--gold-lt);letter-spacing:.15em;text-transform:uppercase;display:block}
+.header-cta{background:var(--gold);color:var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;text-decoration:none;white-space:nowrap;font-weight:500;transition:background .2s}
+.header-cta:hover{background:var(--gold-lt)}
+.normativa-banner{background:var(--eu-blue-lt);border-bottom:1px solid #b8c6e0;padding:8px 24px;text-align:center}
+.normativa-banner p{font-family:var(--mono);font-size:11px;color:var(--eu-blue);letter-spacing:.05em}
+.hero{background:var(--ink);color:var(--white);padding:80px 24px 72px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(184,134,11,.06) 39px,rgba(184,134,11,.06) 40px);pointer-events:none}
+.hero-inner{max-width:900px;margin:0 auto;position:relative}
+.hero-label{font-family:var(--mono);font-size:11px;color:var(--gold-lt);letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.hero-label::before{content:'';display:block;width:32px;height:1px;background:var(--gold)}
+.hero h1{font-family:var(--serif);font-size:clamp(36px,7vw,72px);font-weight:400;line-height:1.1;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:var(--gold-lt)}
+.hero-sub{font-family:var(--serif);font-size:clamp(18px,3vw,26px);color:#aaa;font-weight:400;margin-bottom:40px;line-height:1.4}
+.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);margin-bottom:48px}
+.hero-stat{background:rgba(0,0,0,.4);padding:20px 24px}
+.hero-stat-num{font-family:var(--mono);font-size:28px;color:var(--gold-lt);display:block;margin-bottom:4px}
+.hero-stat-label{font-size:12px;color:#888;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn-primary{background:var(--gold);color:var(--ink);font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:14px 28px;text-decoration:none;font-weight:500;transition:background .2s,transform .1s;display:inline-block}
+.btn-primary:hover{background:var(--gold-lt);transform:translateY(-1px)}
+.btn-ghost{color:#ccc;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:14px 0;text-decoration:none;border-bottom:1px solid #555;transition:color .2s,border-color .2s}
+.btn-ghost:hover{color:var(--white);border-color:var(--gold)}
+.law-strip{background:var(--eu-blue);color:var(--white);padding:16px 24px;text-align:center}
+.law-strip p{font-family:var(--mono);font-size:11px;letter-spacing:.1em;opacity:.9}
+.law-strip strong{color:var(--gold-lt)}
+section{padding:80px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-label{font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.section-title{font-family:var(--serif);font-size:clamp(28px,5vw,48px);font-weight:400;line-height:1.15;margin-bottom:24px}
+.section-lead{font-size:16px;color:var(--ink-soft);max-width:640px;line-height:1.7;margin-bottom:48px}
+.process-section{background:var(--cream)}
+.process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;background:var(--rule);margin-top:48px}
+.step{background:var(--white);padding:32px 24px}
+.step-num{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;display:block}
+.step h3{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:10px;line-height:1.2}
+.step p{font-size:13px;color:var(--ink-soft);line-height:1.6}
+.step-highlight{background:var(--ink);color:var(--white)}
+.step-highlight .step-num{color:var(--gold-lt)}
+.step-highlight h3{color:var(--white)}
+.step-highlight p{color:#aaa}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;background:var(--rule);margin-top:48px}
+.price-card{background:var(--white);padding:40px 32px}
+.price-card.featured{background:var(--ink);color:var(--white)}
+.price-tier{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
+.price-amount{font-family:var(--serif);font-size:52px;line-height:1;margin-bottom:4px;font-weight:400}
+.price-currency{font-family:var(--mono);font-size:16px;vertical-align:super;margin-right:2px}
+.price-period{font-family:var(--mono);font-size:11px;color:#888;margin-bottom:28px;display:block}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.price-features li{font-size:13px;color:var(--ink-soft);display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.price-card.featured .price-features li{color:#bbb}
+.price-features li::before{content:'→';color:var(--gold);font-family:var(--mono);font-size:12px;flex-shrink:0;margin-top:1px}
+.price-features li.cross::before{content:'×';color:#ccc}
+.btn-price{display:block;text-align:center;padding:14px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .2s;font-weight:500}
+.btn-price-outline{border:1px solid var(--rule);color:var(--ink)}
+.btn-price-outline:hover{background:var(--ink);color:var(--white)}
+.btn-price-gold{background:var(--gold);color:var(--ink)}
+.btn-price-gold:hover{background:var(--gold-lt)}
+.form-section{background:var(--cream)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.contact-form{background:var(--white);padding:40px;border:1px solid var(--rule)}
+.form-title{font-family:var(--serif);font-size:24px;margin-bottom:6px}
+.form-subtitle{font-family:var(--mono);font-size:11px;color:#888;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px}
+.field-group{margin-bottom:20px}
+.field-label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.field-input,.field-select{width:100%;padding:12px 14px;border:1px solid var(--rule);background:var(--cream);font-family:var(--sans);font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;-webkit-appearance:none}
+.field-input:focus,.field-select:focus{border-color:var(--gold);background:var(--white)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn-submit{width:100%;padding:16px;background:var(--gold);color:var(--ink);font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;border:none;cursor:pointer;font-weight:500;transition:background .2s;margin-top:8px}
+.btn-submit:hover{background:var(--gold-lt)}
+.form-legal{font-family:var(--mono);font-size:10px;color:#999;line-height:1.6;margin-top:16px}
+.trust-item{display:flex;gap:16px;align-items:flex-start;margin-bottom:24px}
+.trust-icon{font-family:var(--mono);font-size:20px;width:40px;flex-shrink:0;text-align:center;margin-top:2px}
+.trust-text strong{display:block;font-size:14px;font-weight:600;margin-bottom:3px}
+.trust-text span{font-size:13px;color:var(--ink-soft);line-height:1.5}
+hr.rule{border:none;border-top:1px solid var(--rule);margin:24px 0}
+footer{background:var(--ink);color:#666;padding:40px 24px;border-top:1px solid #222}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:flex-start}
+.footer-brand{font-family:var(--serif);font-size:18px;color:var(--white);margin-bottom:8px;display:block}
+.footer-copy{font-family:var(--mono);font-size:10px;letter-spacing:.1em;line-height:1.8}
+.footer-links{display:flex;flex-direction:column;gap:8px}
+.footer-links a{font-family:var(--mono);font-size:11px;color:#555;text-decoration:none;letter-spacing:.05em;transition:color .2s}
+.footer-links a:hover{color:var(--gold-lt)}
+#form-success{display:none;text-align:center;padding:40px 20px}
+#form-success .success-icon{font-size:48px;margin-bottom:16px;display:block}
+#form-success h3{font-family:var(--serif);font-size:28px;margin-bottom:8px}
+#form-success p{font-size:14px;color:var(--ink-soft);font-family:var(--mono)}
+@media(max-width:768px){section{padding:56px 20px}.hero{padding:56px 20px 48px}.form-grid{grid-template-columns:1fr}.contact-form{padding:28px 20px}.field-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="urgency-bar"><p>⚡ ETIAS entra en vigor <strong>Q4 2026</strong> — cada semana sin posicionamiento es mercado cedido</p></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="https://consultoretias.github.io/Simulador-ETIAS-/" class="logo">
+      <div class="logo-mark">C</div>
+      <div class="logo-text">Consultor ETIAS<span class="logo-sub">Representación oficial · México &amp; LATAM</span></div>
+    </a>
+    <a href="#registro" class="header-cta">Iniciar expediente →</a>
+  </div>
+</header>
+<div class="normativa-banner"><p>Marco legal: <strong>Reglamento UE 2018/1240 · Art. 16</strong> — La UE reconoce y regula intermediarios comerciales autorizados</p></div>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Intermediario Comercial · Registro de Representación</div>
+    <h1>Tu ETIAS,<br><em>gestionado por expertos</em></h1>
+    <p class="hero-sub">El único servicio en México que emite <strong style="color:#e8d48a">Declaración de Representación</strong> conforme al Reglamento UE 2018/1240 — el documento que la UE exige para que un tercero tramite tu autorización de viaje.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><span class="hero-stat-num">+60</span><span class="hero-stat-label">Países LATAM sin acceso Schengen</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">Q4·26</span><span class="hero-stat-label">Fecha de entrada en vigor</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">€20</span><span class="hero-stat-label">Tasa oficial + honorarios gestión</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">100%</span><span class="hero-stat-label">Declaración de representación incluida</span></div>
+    </div>
+    <div class="hero-actions">
+      <a href="#registro" class="btn-primary">Iniciar mi expediente ETIAS →</a>
+      <a href="#proceso" class="btn-ghost">Ver cómo funciona</a>
+    </div>
+  </div>
+</section>
+<div class="law-strip"><p><strong>Artículo 16, Reglamento (UE) 2018/1240:</strong> "Los intermediarios comerciales podrán presentar solicitudes en nombre del solicitante… el intermediario comercial podrá cobrar una tarifa adicional por sus servicios."</p></div>
+<section id="proceso" class="process-section">
+  <div class="section-inner">
+    <p class="section-label">Proceso de Representación</p>
+    <h2 class="section-title">Cómo gestionamos tu ETIAS</h2>
+    <div class="process-steps">
+      <div class="step"><span class="step-num">Paso 01</span><h3>Consulta inicial</h3><p>Verificamos elegibilidad, nacionalidad, historial de viajes y fechas.</p></div>
+      <div class="step step-highlight"><span class="step-num">Paso 02</span><h3>Declaración de Representación</h3><p>Generamos el documento legal exigido por la UE en PDF trilingüe ES/EN/PT.</p></div>
+      <div class="step"><span class="step-num">Paso 03</span><h3>Revisión del borrador</h3><p>Te enviamos copia antes de presentar — como recomienda la Comisión Europea.</p></div>
+      <div class="step"><span class="step-num">Paso 04</span><h3>Presentación oficial</h3><p>Enviamos tu solicitud al portal oficial ETIAS de la Comisión Europea.</p></div>
+      <div class="step"><span class="step-num">Paso 05</span><h3>Seguimiento y entrega</h3><p>Monitoreamos el estado y te notificamos cuando tu autorización esté lista.</p></div>
+    </div>
+  </div>
+</section>
+<section id="precios">
+  <div class="section-inner">
+    <p class="section-label">Tarifas de Gestión</p>
+    <h2 class="section-title">Transparentes y razonables,<br><em>como exige la UE</em></h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <span class="price-tier">Individual</span>
+        <div class="price-amount"><span class="price-currency">$</span>599</div>
+        <span class="price-period">MXN · por viajero + tasa UE €20</span>
+        <ul class="price-features">
+          <li>Revisión de elegibilidad</li>
+          <li>Declaración de Representación PDF</li>
+          <li>Presentación en portal oficial</li>
+          <li>Seguimiento por email</li>
+          <li class="cross">Expedientes múltiples</li>
+        </ul>
+        <a href="#registro" class="btn-price btn-price-outline">Iniciar expediente →</a>
+      </div>
+      <div class="price-card featured">
+        <span class="price-tier">Familiar · Más popular</span>
+        <div class="price-amount" style="color:var(--gold-lt)"><span class="price-currency">$</span>1,499</div>
+        <span class="price-period">MXN · hasta 4 viajeros + tasas UE</span>
+        <ul class="price-features">
+          <li>Todo lo del plan Individual</li>
+          <li>Declaraciones múltiples (hasta 4)</li>
+          <li>Gestión coordinada del grupo</li>
+          <li>Seguimiento unificado</li>
+          <li>Atención prioritaria 24h</li>
+        </ul>
+        <a href="#registro" class="btn-price btn-price-gold">Iniciar expediente →</a>
+      </div>
+      <div class="price-card">
+        <span class="price-tier">Agencias &amp; B2B</span>
+        <div class="price-amount">Custom</div>
+        <span class="price-period">Volumen · Programa revendedor</span>
+        <ul class="price-features">
+          <li>Precio por volumen (10+ viajeros)</li>
+          <li>API de declaraciones</li>
+          <li>White-label disponible</li>
+          <li>SLA y soporte dedicado</li>
+          <li>Co-marketing disponible</li>
+        </ul>
+        <a href="mailto:dggamino@gmail.com" class="btn-price btn-price-outline">Contactar →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="form-section" id="registro">
+  <div class="section-inner">
+    <div class="form-grid">
+      <div>
+        <p class="section-label">Por qué registrarse ahora</p>
+        <h2 class="section-title">El mercado ETIAS abre en Q4 2026.</h2>
+        <p style="font-size:15px;color:var(--ink-soft);line-height:1.7;margin-bottom:32px">Quien tenga posicionamiento y First Party Data cuando la demanda explote, dominará el mercado.</p>
+        <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-text"><strong>Datos bajo tu control</strong><span>La declaración requiere tu consentimiento explícito. Nunca compartimos tu información sin tu autorización escrita.</span></div></div>
+        <hr class="rule">
+        <div class="trust-item"><div class="trust-icon">📬</div><div class="trust-text"><strong>Notificación de activación</strong><span>Cuando ETIAS entre en vigor recibirás instrucciones directas. Lista de espera = acceso prioritario.</span></div></div>
+        <hr class="rule">
+        <div class="trust-item"><div class="trust-icon">📜</div><div class="trust-text"><strong>Reglamento UE como respaldo</strong><span>Operamos bajo el Art. 16, Reglamento (UE) 2018/1240 — la misma norma que regula el sistema ETIAS.</span></div></div>
+      </div>
+      <div>
+        <div class="contact-form">
+          <h3 class="form-title">Registrar mi expediente</h3>
+          <p class="form-subtitle">Lista de espera · Activación Q4 2026</p>
+          <div id="form-fields">
+            <div class="field-row">
+              <div class="field-group"><label class="field-label">Nombre completo</label><input class="field-input" id="f-nombre" type="text" placeholder="Como aparece en pasaporte"></div>
+              <div class="field-group"><label class="field-label">País</label><select class="field-select" id="f-pais"><option value="">Selecciona...</option><option>México</option><option>Colombia</option><option>Argentina</option><option>Chile</option><option>Perú</option><option>Brasil</option><option>Venezuela</option><option>Ecuador</option><option>Otro</option></select></div>
+            </div>
+            <div class="field-group"><label class="field-label">Correo electrónico</label><input class="field-input" id="f-email" type="email" placeholder="Este email recibirá tu autorización ETIAS"></div>
+            <div class="field-group"><label class="field-label">Destino en Europa</label><select class="field-select" id="f-destino"><option value="">Selecciona...</option><option>España</option><option>Francia</option><option>Italia</option><option>Alemania</option><option>Portugal</option><option>Países Bajos</option><option>Grecia</option><option>Múltiples destinos</option></select></div>
+            <div class="field-group"><label class="field-label">Tipo de expediente</label><select class="field-select" id="f-tipo"><option value="">Selecciona...</option><option>Individual (1 viajero)</option><option>Familiar (2-4 viajeros)</option><option>Agencia de viajes (revendedor)</option></select></div>
+            <button class="btn-submit" onclick="handleSubmit()">Registrar en lista de espera →</button>
+            <p class="form-legal">Al enviar consientes que Consultor ETIAS procese tus datos para gestionar tu expediente conforme al Reglamento UE 2018/1240.</p>
+          </div>
+          <div id="form-success"><span class="success-icon">✅</span><h3>Expediente registrado</h3><p>Recibirás confirmación en tu email.<br>Te contactamos cuando ETIAS entre en vigor.</p></div>
+        </div>
+        <div style="margin-top:16px;padding:20px 24px;background:var(--ink);border-left:3px solid var(--gold)">
+          <p style="font-family:var(--mono);font-size:11px;color:var(--gold-lt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">¿Quieres ver el proceso?</p>
+          <p style="font-size:13px;color:#aaa;margin-bottom:12px;line-height:1.5">Prueba el simulador — genera tu Declaración de Representación en 3 minutos.</p>
+          <a href="https://consultoretias.github.io/Simulador-ETIAS-/" target="_blank" style="font-family:var(--mono);font-size:12px;color:var(--gold-lt);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--gold)">Probar simulador gratuito →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-inner">
+    <div><span class="footer-brand">Consultor ETIAS</span><p class="footer-copy">Intermediario comercial · Reglamento UE 2018/1240 · Art. 16<br>México · dggamino@gmail.com · © 2026</p></div>
+    <div class="footer-links"><a href="https://consultoretias.github.io/Simulador-ETIAS-/">Simulador ETIAS</a><a href="https://travel-europe.europa.eu/etias_es" target="_blank">Portal Oficial ETIAS (EU)</a><a href="mailto:dggamino@gmail.com">Contacto directo</a></div>
+    <div><p class="footer-copy" style="font-size:10px;max-width:280px;line-height:1.7">Servicio de intermediario comercial conforme al Art. 16 del Reglamento (UE) 2018/1240. No somos la autoridad ETIAS. La tasa oficial de €20 se abona directamente al sistema UE.</p></div>
+  </div>
+</footer>
+<script>
+function handleSubmit(){
+  var nombre=document.getElementById('f-nombre').value.trim();
+  var email=document.getElementById('f-email').value.trim();
+  var pais=document.getElementById('f-pais').value;
+  var destino=document.getElementById('f-destino').value;
+  var tipo=document.getElementById('f-tipo').value;
+  if(!nombre||!email||!pais||!destino||!tipo){alert('Por favor completa todos los campos.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert('Por favor ingresa un email válido.');return;}
+  if(typeof emailjs!=='undefined'){
+    emailjs.send('service_hxuq7gn','template_r225rld',{name:nombre,nombre:nombre,email:email,nacionalid:pais,title:'[REPRESENTACIÓN] '+tipo+' · '+destino}).catch(function(e){console.log(e);});
+  }
+  document.getElementById('form-fields').style.display='none';
+  document.getElementById('form-success').style.display='block';
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>(function(){emailjs.init({publicKey:"EtWflvMDCWi2oacOH"});})();</script>
+</body>
+</html>
