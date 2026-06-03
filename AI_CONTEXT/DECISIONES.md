@@ -263,3 +263,22 @@ Submit a Google Search Console para iniciar indexación
 **Países con cobertura profunda**: México, Argentina, Brasil, Colombia, Chile, Venezuela
 **Países con solo hub**: Bolivia, Ecuador, Costa Rica, Honduras, Guatemala, El Salvador, Panamá, Paraguay, Cuba, Nicaragua, Rep. Dominicana, Uruguay
 **Próximo**: Perú (hub + spokes completos)
+
+## 2026-05-14 — Sitemap y referencias indexadas
+
+### ✅ DECISIÓN: Agregar referencia sitemap en HEAD de todas las páginas
+
+**Problema detectado:**
+- 200 páginas en sitemap.xml
+- GSC reportaba "No se ha detectado ningún sitemap de referencia"
+- Cada página HTML no tenía `<link rel="sitemap">` en el head
+
+**Solución implementada:**
+- Sed loop: agregar `<link rel="sitemap">` antes de `</head>` en 199 archivos
+- Git push: commit `2f7e8c2`
+- Reenviar sitemap a GSC después de propagar (30 min)
+
+**Estado esperado:**
+- Indexación de 200+ URLs en 3-7 días
+- Checkpoint: 22 mayo 15:00 en GSC
+
