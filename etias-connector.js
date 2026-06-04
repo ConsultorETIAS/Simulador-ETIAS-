@@ -1,7 +1,7 @@
 // etias-connector.js — RMP v2.0
 // Groq API directo desde browser
 
-var GROQ_KEY = ""; // se inyecta desde index.html o variable
+var GROQ_KEY = "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"; // se inyecta desde index.html o variable
 
 function getGroqKey() {
   return window.GROQ_API_KEY || GROQ_KEY;
