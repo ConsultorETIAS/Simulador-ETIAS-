@@ -639,6 +639,11 @@ function renderStep6() {
     +C.steps.map(function(s){return '<p style="font-size:12px;color:#374151;margin-bottom:7px;padding-left:10px;border-left:3px solid #C9A84C">'+esc(s)+'</p>';}).join('')
     +'</div>'
     +'<div style="background:#fef3c7;border-radius:8px;padding:9px;margin-bottom:18px;font-size:10px;color:#92400e;font-weight:700">⚠ '+esc(C.note)+'</div>'
+    +'<div style="background:linear-gradient(135deg,#fff7ed,#ffedd5);border:2px solid #f97316;border-radius:14px;padding:20px;margin-bottom:16px;text-align:left">'
+    +'<div style="font-size:11px;font-weight:800;color:#f97316;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px">🚗 ¿Vas a manejar en Europa?</div>'
+    +'<p style="font-size:13px;color:#1f2937;margin-bottom:12px;line-height:1.5">La <strong>Licencia Internacional de Conducir</strong> es obligatoria para manejar con licencia mexicana en Europa. Misma vigencia y costo que tu pasaporte.</p>'
+    +'<a href="mailto:consultor.etias@proton.me?subject=LIC-'+esc(S.expId)+'&body=Solicito%20LIC" style="background:#f97316;color:#fff;border-radius:8px;padding:11px 20px;font-weight:700;font-size:12px;text-decoration:none;display:inline-block">🚗 Solicitar LIC →</a>'
+    +'</div>'
     +'<button class="btn btn-navy" onclick="resetAll()">'+esc(C.newBtn)+'</button>'
     +'</div>';
 }
