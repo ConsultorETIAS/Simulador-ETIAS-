@@ -95,3 +95,17 @@ generar_sitemap.py     ← nuevo hoy — USAR SIEMPRE AL FINAL
 - ❌ NO modificar index.html (774 líneas funcionando)
 - ✅ SÍ ejecutar generar_sitemap.py después de cada batch
 - ✅ SÍ respetar flujo: generar → sitemap → push
+
+## Estado: 2026-06-03
+
+✅ Migración a etias.netlify.app completada
+✅ Sitemap: Correcto · 5 páginas descubiertas
+✅ Google indexará en 24-48h
+✅ Problema de GitHub Pages resuelto definitivamente
+
+URLs en producción:
+https://etias.netlify.app/
+https://etias.netlify.app/representacion-etias.html
+https://etias.netlify.app/etias-audit-log.html
+https://etias.netlify.app/etias-mexico.html
+https://etias.netlify.app/sitemap.xml
