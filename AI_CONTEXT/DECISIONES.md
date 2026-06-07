@@ -287,3 +287,12 @@ Submit a Google Search Console para iniciar indexación
 - Solución: regenerado con Python, 203 URLs
 - Submitido a GSC: etias.netlify.app
 - Estado: procesando (24-72h)
+
+## 2026-06-07 — Consolidación dominio principal
+
+### ✅ DECISIÓN: Netlify como dominio único
+- GitHub Pages deshabilitado (Branch: None)
+- robots.txt apunta a etias.netlify.app/sitemap.xml
+- Sitemap con 203 URLs submitido a GSC
+- Eliminada canibalización SEO entre dos dominios
+- Dominio principal: https://etias.netlify.app
