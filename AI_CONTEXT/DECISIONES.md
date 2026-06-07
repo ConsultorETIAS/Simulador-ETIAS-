@@ -282,3 +282,8 @@ Submit a Google Search Console para iniciar indexación
 - Indexación de 200+ URLs en 3-7 días
 - Checkpoint: 22 mayo 15:00 en GSC
 
+## 2026-06-07 — Sitemap corregido
+- Problema: sitemap solo tenía 5 URLs
+- Solución: regenerado con Python, 203 URLs
+- Submitido a GSC: etias.netlify.app
+- Estado: procesando (24-72h)

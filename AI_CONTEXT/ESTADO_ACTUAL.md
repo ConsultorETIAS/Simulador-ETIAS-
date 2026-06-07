@@ -109,3 +109,9 @@ https://etias.netlify.app/representacion-etias.html
 https://etias.netlify.app/etias-audit-log.html
 https://etias.netlify.app/etias-mexico.html
 https://etias.netlify.app/sitemap.xml
+
+## 2026-06-04
+✅ Groq conector v2.0 funcional
+✅ Oferta LIC activa en paso 6
+✅ Funnel ETIAS → LIC completo
+🔥 PRÓXIMO: distribución — primer canal de tráfico
