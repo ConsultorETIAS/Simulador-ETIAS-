@@ -296,3 +296,12 @@ Submit a Google Search Console para iniciar indexación
 - Sitemap con 203 URLs submitido a GSC
 - Eliminada canibalización SEO entre dos dominios
 - Dominio principal: https://etias.netlify.app
+
+## 2026-06-08 — Cloudflare Worker proxy anti API-key-hell
+
+- Worker: https://etias-proxy.dggamino.workers.dev
+- GROQ_KEY guardada como secreto Cloudflare (nunca en HTML)
+- Modelo: llama-3.1-8b-instant
+- chatWithETIAS: reglas locales + fallback Worker para preguntas libres
+- Token CF guardado en ~/etias_cf_token.txt (no commitear)
+- Para cambiar modelo: editar ~/worker.js y correr ~/crear_worker.py
