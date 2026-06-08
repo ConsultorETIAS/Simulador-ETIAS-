@@ -1,0 +1,15 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_version = "20"
+
+[dev]
+  command = "python3 -m http.server 8888"
+  port = 8888
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
