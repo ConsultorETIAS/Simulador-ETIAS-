@@ -172,6 +172,25 @@ function chatWithETIAS(messages, lang) {
   if(escalares.some(function(c){return input.includes(c);})) return Promise.resolve(R.escalar);
   var precio = ["precio","costo","cuanto","tarifa","fee","cost","price","quanto","valor"];
   if(precio.some(function(c){return input.includes(c);})) return Promise.resolve(R.tarifa);
+  // --- WORKER GROQ para preguntas libres ---
+  var systemPrompt = {
+    es: "Eres el Asistente ETIAS oficial. Ayudas a viajeros latinoamericanos a entender el sistema ETIAS de la UE. Responde en español, máximo 3 oraciones. Si preguntan por precio di: tarifa oficial €20. Si hay antecedentes penales o deportaciones di que requiere revisión del agente. Si quieren tramitar, di que pueden iniciar el formulario.",
+    en: "You are the official ETIAS Assistant. You help Latin American travelers understand the EU ETIAS system. Reply in English, max 3 sentences. Fee is €20 official. Criminal records require agent review.",
+    pt: "Você é o Assistente ETIAS oficial. Ajuda viajeiros latino-americanos a entender o sistema ETIAS da UE. Responda em português, máximo 3 frases. Taxa oficial €20."
+  };
+  var sys = systemPrompt[lang] || systemPrompt.es;
+  var payload = {
+    messages: [{role:"system", content: sys}].concat(messages)
+  };
+  return fetch("https://etias-proxy.dggamino.workers.dev", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(payload)
+  }).then(function(r){ return r.json(); })
+  .then(function(d){
+    return d.choices && d.choices[0] ? d.choices[0].message.content : R.noentiendo;
+  })
+  .catch(function(){ return R.noentiendo; });
   var nats = ["mexico","brasil","brazil","argentina","colombia","peru","uruguay","chile","venezuela","ecuador","bolivia","paraguay","panama","costa rica"];
   var dests = ["europa","spain","france","italia","germany","alemania","portugal","europe","schengen"];
   if(nats.some(function(c){return input.includes(c);})||dests.some(function(c){return input.includes(c);})) return Promise.resolve(R.eligible);
