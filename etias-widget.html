@@ -75,7 +75,7 @@
 function etiasWidgetAbrir() {
   var q = document.getElementById("etias-widget-q").value.trim();
   if (!q) return;
-  var base = "https://consultoretias.github.io/Simulador-ETIAS-/";
+  var base = "https://etias.netlify.app/";
   window.location.href = base + "?q=" + encodeURIComponent(q);
 }
 </script>
@@ -94,7 +94,7 @@ function etiasWidgetAbrir() {
 function etiasWidgetAbrirPT() {
   var q = document.getElementById("etias-widget-q-pt").value.trim();
   if (!q) return;
-  var base = "https://consultoretias.github.io/Simulador-ETIAS-/";
+  var base = "https://etias.netlify.app/";
   window.location.href = base + "?q=" + encodeURIComponent(q) + "&lang=pt";
 }
 </script>
@@ -110,7 +110,7 @@ function etiasWidgetAbrirPT() {
 <script>
 function etiasWidgetContextual(pais, destino, lang) {
   var q = document.getElementById("etias-widget-q").value.trim();
-  var base = "https://consultoretias.github.io/Simulador-ETIAS-/";
+  var base = "https://etias.netlify.app/";
   var url = base + "?pais=" + encodeURIComponent(pais)
                  + "&destino=" + encodeURIComponent(destino);
   if (lang) url += "&lang=" + lang;

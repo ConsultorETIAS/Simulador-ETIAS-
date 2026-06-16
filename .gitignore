@@ -1,2 +1,5 @@
 tmp_text/
 config.js
+
+# Local Netlify folder
+.netlify

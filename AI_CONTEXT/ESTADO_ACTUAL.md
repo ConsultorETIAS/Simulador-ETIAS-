@@ -96,22 +96,20 @@ generar_sitemap.py     ← nuevo hoy — USAR SIEMPRE AL FINAL
 - ✅ SÍ ejecutar generar_sitemap.py después de cada batch
 - ✅ SÍ respetar flujo: generar → sitemap → push
 
-## Estado: 2026-06-03
+## Estado: 2026-06-02
 
-✅ Migración a etias.netlify.app completada
-✅ Sitemap: Correcto · 5 páginas descubiertas
-✅ Google indexará en 24-48h
-✅ Problema de GitHub Pages resuelto definitivamente
+✅ etias-connector.js — conector audit log live
+✅ etias-audit-log.html — panel trazabilidad live  
+✅ representacion-etias.html — landing conversión live
+✅ Ecosistema RMP v1.0 completo en producción
+✅ 4/4 URLs con código 200
 
-URLs en producción:
-https://etias.netlify.app/
-https://etias.netlify.app/representacion-etias.html
-https://etias.netlify.app/etias-audit-log.html
-https://etias.netlify.app/etias-mexico.html
-https://etias.netlify.app/sitemap.xml
+Próximo: submit representacion-etias.html a Google Search Console
+Sesión completa. 6 archivos deployados, 4 URLs en 200, sitemap actualizado, indexación solicitada.
 
-## 2026-06-04
-✅ Groq conector v2.0 funcional
-✅ Oferta LIC activa en paso 6
-✅ Funnel ETIAS → LIC completo
-🔥 PRÓXIMO: distribución — primer canal de tráfico
+## 2026-06-07
+✅ Groq key rotada — key vieja revocada
+✅ Push exitoso con --force
+✅ Netlify desplegando automáticamente
+🔥 PRÓXIMO: mover key a Netlify Environment Variables
+🔥 PRÓXIMO: primer canal de distribución — tráfico real
