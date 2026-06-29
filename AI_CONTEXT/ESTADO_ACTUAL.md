@@ -113,3 +113,20 @@ Sesión completa. 6 archivos deployados, 4 URLs en 200, sitemap actualizado, ind
 ✅ Netlify desplegando automáticamente
 🔥 PRÓXIMO: mover key a Netlify Environment Variables
 🔥 PRÓXIMO: primer canal de distribución — tráfico real
+
+---
+
+## Estado: 2026-06-29
+
+✅ FIX CRÍTICO desplegado: robots.txt corregido (dominio cruzado resuelto)
+✅ Hosting confirmado: Netlify (site etias-simulador), NO GitHub Pages
+✅ Commit 1b05899 en producción, verificado vía curl
+✅ Sitemap GSC: 203 URLs, estado "Correcto"
+⏳ Indexación real: pendiente recálculo de Google (24-48h+)
+⏳ Solicitud manual de indexación: bloqueada por cuota diaria, reintentar mañana
+
+### Pendiente próxima sesión
+- [ ] Solicitar indexación manual: home + etias-costo + etias-requisitos-2026 + 1 país top
+- [ ] Revisar desglose "Indexación de páginas" en GSC (indexadas vs no indexadas + motivos)
+- [ ] site:etias-simulador.netlify.app en Google (verificación independiente)
+- [ ] Depurar tokens GitHub sin expiración / sin uso

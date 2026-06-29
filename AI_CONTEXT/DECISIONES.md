@@ -305,3 +305,41 @@ Submit a Google Search Console para iniciar indexación
 - chatWithETIAS: reglas locales + fallback Worker para preguntas libres
 - Token CF guardado en ~/etias_cf_token.txt (no commitear)
 - Para cambiar modelo: editar ~/worker.js y correr ~/crear_worker.py
+
+---
+
+## 2026-06-29 — FIX CRÍTICO: dominio cruzado robots.txt vs sitemap
+
+### ✅ HALLAZGO: causa raíz de meses sin indexación en Google
+
+**Contexto**:
+- >3 meses con sitemap.xml "Correcto" en GSC (203 URLs) pero 0 páginas indexadas
+- Se sospechaba CSR, contenido fino, o falta de canonical tags
+
+**Diagnóstico real**:
+- robots.txt apuntaba a `https://etias.netlify.app/sitemap.xml`
+- Ese dominio (`etias.netlify.app`) NO es nuestro — es un proyecto Netlify ajeno con nombre parecido
+- El sitemap real siempre vivió en `https://etias-simulador.netlify.app/sitemap.xml`
+- Google nunca pudo conectar robots.txt con el sitemap real con suficiente confianza
+
+**Confirmación del hosting real**:
+- El proyecto NO usa GitHub Pages (a pesar de lo que dice PROYECTO_MASTER.md original)
+- Hosting real: Netlify, site "etias-simulador", deploy automático desde GitHub main
+- Dominio canónico: https://etias-simulador.netlify.app/
+
+**Fix aplicado**:
+- robots.txt corregido para apuntar a `https://etias-simulador.netlify.app/sitemap.xml`
+- Commit: 1b05899
+- Confirmado en producción vía curl
+
+**Lección operativa**:
+- Otra sesión (LLM distinto o edición directa en GitHub web) ya había corregido esto
+  parcialmente (commits ed61447, f7ee921) sin que quedara reflejado en AI_CONTEXT/
+- AI_CONTEXT/ debe actualizarse INMEDIATAMENTE después de cada fix, no al final del día,
+  para evitar trabajo duplicado entre sesiones
+
+### 📝 PRÓXIMOS PASOS (registrados 29 jun 2026)
+- [ ] Solicitar indexación manual en GSC (cuota diaria se resetea c/24h)
+- [ ] Revisar "Indexación de páginas" en GSC en 3-7 días
+- [ ] Verificar con site:etias-simulador.netlify.app en Google
+- [ ] Revisar y depurar tokens de GitHub sin uso (6 activos detectados, varios sin expiración)
