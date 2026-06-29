@@ -3,3 +3,5 @@ config.js
 
 # Local Netlify folder
 .netlify
+*.json
+index.html.backup_*

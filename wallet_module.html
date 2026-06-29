@@ -1,0 +1,81 @@
+<!--
+  MÓDULO: Botón "Agregar a Google Wallet"
+  Insertar justo antes del </body> en index.html del simulador ETIAS
+-->
+
+<style>
+  #wallet-module {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  #wallet-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #000;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 12px 22px;
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #wallet-btn:hover { background: #1a1a1a; }
+  #wallet-btn:disabled { opacity: 0.5; cursor: wait; }
+
+  #wallet-status {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #888;
+    font-family: monospace;
+  }
+</style>
+
+<div id="wallet-module">
+  <button id="wallet-btn" onclick="agregarAGoogleWallet()">
+    📲 Agregar a Google Wallet
+  </button>
+  <div id="wallet-status"></div>
+</div>
+
+<script>
+  const WALLET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzDV-yw71Y3urwwKsH95xjums_mfnO4x79ObjM_A_yN3uGKAx9mPFDiICXm0gent_-q/exec';
+
+  async function agregarAGoogleWallet() {
+    const btn = document.getElementById('wallet-btn');
+    const status = document.getElementById('wallet-status');
+
+    const nombre     = (typeof nombreViajero !== 'undefined' && nombreViajero) || 'Viajero ETIAS';
+    const expediente = (typeof numeroExpediente !== 'undefined' && numeroExpediente) || ('ETIAS-' + Date.now());
+    const fecha       = new Date().toLocaleDateString('es-MX');
+
+    btn.disabled = true;
+    status.textContent = 'Generando pase…';
+
+    try {
+      const resp = await fetch(WALLET_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ nombre, expediente, fecha })
+      });
+
+      const data = await resp.json();
+
+      if (data.ok) {
+        status.textContent = '';
+        window.open(data.url, '_blank');
+      } else {
+        status.textContent = 'No se pudo generar el pase: ' + data.error;
+      }
+    } catch (err) {
+      status.textContent = 'Error de conexión. Intenta de nuevo.';
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+</script>
