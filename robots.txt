@@ -1,3 +1,10 @@
 User-agent: *
 Allow: /
 Sitemap: https://etias-simulador.netlify.app/sitemap.xml
+Disallow: /etias-argentina-*
+Disallow: /etias-brasil-*
+Disallow: /etias-chile-*
+Disallow: /etias-colombia-*
+Disallow: /template-*
+Disallow: /etias-audit-log.html
+Disallow: /etias-widget.html
