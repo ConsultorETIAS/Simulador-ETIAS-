@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETIAS Tag — Tu autorización de viaje, a un toque de distancia</title>
+<meta name="description" content="Llavero NFC que guarda el acceso a tu confirmación ETIAS, tu Declaración de Representación y tu itinerario. Un toque, sin apps, sin cobertura.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0b1220;
+    --navy-panel:#111a2e;
+    --navy-panel-2:#0e1626;
+    --gold:#c9a15a;
+    --gold-bright:#e0bd7d;
+    --ink:#e8e6df;
+    --muted:#7d8699;
+    --line:#22304a;
+    --verified:#3ddc84;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--navy-deep);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+
+  /* ── topbar ─────────────────────────── */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,18,32,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:960px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:600;font-size:17px;letter-spacing:0.02em;}
+  .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);}
+  .topbar a.cta-mini{
+    font-size:12px;letter-spacing:0.06em;text-transform:uppercase;
+    border:1px solid var(--gold);color:var(--gold);
+    padding:8px 16px;text-decoration:none;
+  }
+
+  /* ── hero ─────────────────────────── */
+  .hero{
+    padding:76px 24px 60px;
+    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--gold);border:1px solid var(--line);padding:6px 12px;margin-bottom:28px;
+  }
+  .hero h1{
+    font-size:clamp(34px,6vw,54px);
+    line-height:1.08;
+    max-width:12ch;
+    margin-bottom:22px;
+  }
+  .hero h1 em{font-style:italic;color:var(--gold-bright);}
+  .hero p.lede{
+    font-size:17px;color:var(--muted);max-width:46ch;margin-bottom:36px;
+  }
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:56px;}
+  .btn-primary{
+    background:var(--gold);color:#14100a;font-weight:600;font-size:14px;
+    padding:14px 26px;text-decoration:none;letter-spacing:0.02em;
+    display:inline-block;
+  }
+  .btn-ghost{
+    border:1px solid var(--line);color:var(--ink);font-size:14px;
+    padding:14px 22px;text-decoration:none;
+  }
+
+  /* ── signature: sello NFC ─────────────────────────── */
+  .seal-stage{
+    display:flex;justify-content:center;align-items:center;
+    padding:20px 0 8px;
+  }
+  .seal{
+    position:relative;width:180px;height:180px;
+  }
+  .ring{
+    position:absolute;inset:0;border-radius:50%;
+    border:1px solid var(--gold);opacity:0;
+    animation:pulse 3.2s cubic-bezier(.2,.6,.2,1) infinite;
+  }
+  .ring:nth-child(2){animation-delay:1.05s;}
+  .ring:nth-child(3){animation-delay:2.1s;}
+  @keyframes pulse{
+    0%{transform:scale(0.55);opacity:0;}
+    12%{opacity:0.55;}
+    100%{transform:scale(1.55);opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ring{animation:none;opacity:0.25;}
+  }
+  .seal-core{
+    position:absolute;inset:0;margin:auto;width:96px;height:96px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #1a2740, var(--navy-panel-2));
+    border:1px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 1px rgba(201,161,90,0.15), 0 20px 40px -12px rgba(0,0,0,0.6);
+  }
+  .seal-core svg{width:38px;height:38px;stroke:var(--gold-bright);}
+  .seal-caption{
+    text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;
+    color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:18px;
+  }
+
+  /* ── context ─────────────────────────── */
+  section{padding:64px 24px;border-bottom:1px solid var(--line);}
+  .section-label{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);
+    letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px;
+  }
+  section h2{font-size:clamp(24px,3.6vw,32px);max-width:22ch;margin-bottom:18px;}
+  .context-grid{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:48px;
+    max-width:960px;margin:0 auto;align-items:start;
+  }
+  .context-grid p{color:var(--muted);font-size:15px;max-width:48ch;}
+  .fact-list{list-style:none;display:flex;flex-direction:column;gap:16px;}
+  .fact-list li{
+    display:flex;gap:14px;font-size:14px;color:var(--ink);
+    padding-bottom:16px;border-bottom:1px solid var(--line);
+  }
+  .fact-list li:last-child{border-bottom:none;}
+  .fact-list .num{font-family:'IBM Plex Mono',monospace;color:var(--gold);flex-shrink:0;}
+
+  /* ── steps ─────────────────────────── */
+  .steps{max-width:960px;margin:0 auto;}
+  .step{
+    display:grid;grid-template-columns:64px 1fr;gap:22px;
+    padding:28px 0;border-bottom:1px solid var(--line);
+  }
+  .step:last-child{border-bottom:none;}
+  .step .num{
+    font-family:'Fraunces',serif;font-size:34px;color:var(--gold);opacity:0.85;line-height:1;
+  }
+  .step h3{font-size:19px;margin-bottom:6px;color:var(--ink);}
+  .step p{color:var(--muted);font-size:14.5px;max-width:52ch;}
+
+  /* ── pricing ─────────────────────────── */
+  .price-panel{
+    max-width:520px;margin:0 auto;
+    background:var(--navy-panel);border:1px solid var(--line);
+    padding:32px;
+  }
+  .price-row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:14px 0;border-bottom:1px solid var(--line);font-size:14.5px;
+  }
+  .price-row:last-of-type{border-bottom:none;}
+  .price-row .label{color:var(--muted);}
+  .price-row .val{font-family:'IBM Plex Mono',monospace;color:var(--ink);}
+  .price-row.total .val{color:var(--gold-bright);font-size:17px;}
+  .price-note{
+    margin-top:20px;font-size:12.5px;color:var(--muted);
+    border-left:2px solid var(--gold);padding-left:12px;
+  }
+
+  /* ── disclaimer ─────────────────────────── */
+  .disclaimer{
+    max-width:960px;margin:0 auto;
+    font-size:13px;color:var(--muted);
+    background:var(--navy-panel-2);border:1px solid var(--line);
+    padding:22px 26px;
+  }
+  .disclaimer strong{color:var(--ink);}
+
+  /* ── waitlist ─────────────────────────── */
+  .waitlist{
+    max-width:560px;margin:0 auto;text-align:center;
+  }
+  .waitlist h2{margin:0 auto 12px;}
+  .waitlist p{color:var(--muted);font-size:15px;margin-bottom:32px;}
+  .wl-form{
+    display:flex;gap:0;border:1px solid var(--line);
+  }
+  .wl-form input{
+    flex:1;background:var(--navy-panel);border:none;color:var(--ink);
+    padding:16px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;outline:none;
+  }
+  .wl-form input:focus{outline:1px solid var(--gold);outline-offset:-1px;}
+  .wl-form button{
+    background:var(--gold);color:#14100a;border:none;font-weight:600;
+    padding:0 24px;cursor:pointer;font-size:14px;
+  }
+  .wl-status{margin-top:14px;font-size:13px;color:var(--verified);min-height:18px;}
+
+  footer{padding:36px 24px;text-align:center;font-size:12px;color:var(--muted);}
+  footer a{text-decoration:none;border-bottom:1px solid var(--line);}
+
+  @media (max-width:720px){
+    .context-grid{grid-template-columns:1fr;gap:32px;}
+    .wl-form{flex-direction:column;}
+    .wl-form button{padding:14px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="dot"></span>ETIAS TAG</div>
+    <a class="cta-mini" href="#lista">Unirme a la lista</a>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Complemento físico · No reemplaza tu ETIAS oficial</span>
+    <h1>Tu autorización de viaje, <em>a un toque</em> de distancia.</h1>
+    <p class="lede">Un llavero NFC que guarda el acceso a tu confirmación ETIAS, tu Declaración de Representación y tu itinerario — sin apps, sin batería, sin cobertura.</p>
+    <div class="hero-actions">
+      <a href="#lista" class="btn-primary">Reservar mi lugar</a>
+      <a href="#como-funciona" class="btn-ghost">Cómo funciona</a>
+    </div>
+
+    <div class="seal-stage">
+      <div class="seal">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="seal-core">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2v20"/>
+            <path d="M6 6c4 0 4 3 8 3s4-3 8-3"/>
+            <path d="M6 12c4 0 4 3 8 3s4-3 8-3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <p class="seal-caption">Acerca · Confirma · Cruza</p>
+  </div>
+</header>
+
+<section id="contexto">
+  <div class="wrap context-grid">
+    <div>
+      <div class="section-label">El problema en frontera</div>
+      <h2>Tu ETIAS vive en tu pasaporte digital. El control fronterizo no siempre.</h2>
+      <p>El ETIAS se vincula electrónicamente a tu pasaporte y dura 3 años, pero en aeropuertos saturados o con validación manual, el personal a veces pide confirmación visual del número de solicitud. Buscarlo en el correo, con roaming caro o sin señal, cuesta minutos que en fila no tienes.</p>
+    </div>
+    <ul class="fact-list">
+      <li><span class="num mono">01</span><span>Acceso offline al PDF de confirmación, sin depender de datos móviles</span></li>
+      <li><span class="num mono">02</span><span>Un solo toque abre tu comprobante — sin apps, sin contraseñas en el momento</span></li>
+      <li><span class="num mono">03</span><span>Chip bloqueado por contraseña tras la grabación (write-lock), no editable en el aeropuerto</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="como-funciona">
+  <div class="wrap">
+    <div class="section-label">Cómo funciona</div>
+    <h2>Tres pasos, un solo toque al final.</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="num mono">01</span>
+        <div><h3>Activas tu Tag</h3><p>Recibes el llavero y escaneas por primera vez. Te lleva a una página segura donde vinculas tu expediente ETIAS ya presentado.</p></div>
+      </div>
+      <div class="step">
+        <span class="num mono">02</span>
+        <div><h3>Vinculamos tu confirmación</h3><p>Guardamos el enlace a tu PDF de autorización y tu Declaración de Representación en una URL privada asociada al chip — no en el chip mismo.</p></div>
+      </div>
+      <div class="step">
+        <span class="num mono">03</span>
+        <div><h3>Lo acercas en el control</h3><p>En el aeropuerto, acercas el llavero a cualquier teléfono. Se abre tu comprobante al instante, sin buscar en el correo.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="precio">
+  <div class="wrap">
+    <div class="section-label" style="text-align:center;">Transparencia de costos</div>
+    <h2 style="text-align:center;margin:0 auto 32px;">Nada se mezcla con la tarifa oficial.</h2>
+    <div class="price-panel">
+      <div class="price-row">
+        <span class="label">Tarifa oficial ETIAS (Comisión Europea)</span>
+        <span class="val">20 EUR</span>
+      </div>
+      <div class="price-row">
+        <span class="label">Llavero ETIAS Tag + activación</span>
+        <span class="val">por definir</span>
+      </div>
+      <div class="price-row total">
+        <span class="label">Total estimado</span>
+        <span class="val">gob. + servicio</span>
+      </div>
+      <p class="price-note">La tarifa de 20 EUR se paga directo al portal oficial <span class="mono">travel-europe.europa.eu/etias</span>. ETIAS Tag cobra únicamente por el dispositivo físico y el servicio de vinculación — nunca por la autorización en sí.</p>
+    </div>
+  </div>
+</section>
+
+<section id="legal">
+  <div class="wrap">
+    <div class="disclaimer">
+      <strong>Aviso importante:</strong> ETIAS Tag es un accesorio de acceso a documentos, no un servicio de tramitación ni una autorización de viaje. No garantiza aprobación ni sustituye al sistema oficial europeo. La decisión sobre tu ETIAS corresponde exclusivamente a las autoridades migratorias de la Unión Europea.
+    </div>
+  </div>
+</section>
+
+<section id="lista" style="border-bottom:none;">
+  <div class="wrap waitlist">
+    <div class="section-label" style="justify-content:center;display:flex;">Lista de espera</div>
+    <h2>Sé de los primeros en tener el tuyo.</h2>
+    <p>Aún en preparación. Déjanos tu correo y te avisamos cuando esté disponible — sin costo, sin compromiso.</p>
+    <form class="wl-form" id="waitlistForm">
+      <input type="email" id="wlEmail" placeholder="tu@correo.com" required>
+      <button type="submit">Avísame</button>
+    </form>
+    <p class="wl-status" id="wlStatus"></p>
+  </div>
+</section>
+
+<footer>
+  <p>ETIAS Tag es un producto independiente de ETIAS Simulador · <a href="https://consultoretias.github.io/Simulador-ETIAS-/">Ver simulador ETIAS</a></p>
+  <p style="margin-top:6px;">Contacto: consultor.etias@proton.me</p>
+</footer>
+
+<script>
+  // Waitlist: captura simple sin backend.
+  // TODO Daniel: reemplazar con el mismo EmailJS del simulador
+  // (service_hxuq7gn) apuntando a un template nuevo, o con Google Forms,
+  // igual que index.html. Por ahora abre un mailto pre-llenado como
+  // fallback funcional a costo $0.
+  document.getElementById('waitlistForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = document.getElementById('wlEmail').value.trim();
+    var status = document.getElementById('wlStatus');
+    if(!email){ return; }
+
+    var subject = encodeURIComponent('Lista de espera ETIAS Tag');
+    var body = encodeURIComponent('Quiero unirme a la lista de espera de ETIAS Tag.\nMi correo: ' + email);
+    window.location.href = 'mailto:consultor.etias@proton.me?subject=' + subject + '&body=' + body;
+
+    status.textContent = 'Abriendo tu correo para confirmar tu lugar…';
+  });
+</script>
+
+</body>
+</html>
