@@ -343,3 +343,28 @@ Submit a Google Search Console para iniciar indexación
 - [ ] Revisar "Indexación de páginas" en GSC en 3-7 días
 - [ ] Verificar con site:etias-simulador.netlify.app en Google
 - [ ] Revisar y depurar tokens de GitHub sin uso (6 activos detectados, varios sin expiración)
+
+---
+
+## 2026-07-01 — CAMBIO DE REGLA: Activación de monetización
+
+### ✅ DECISIÓN: Iniciar cobro del servicio ETIAS Pass desde julio 2026 (deroga espera a Q4 2026)
+
+**Contexto**:
+- Estrategia original (12 mar 2026): NO monetizar hasta Q4 2026, apostar todo a pSEO
+- 4 meses de pSEO (82 URLs indexadas) sin conversión a usuarios/leads reales
+- 0 usuarios reales, 0 ingreso — la espera pasiva no está funcionando
+
+**Decisión final**: Activar monetización del servicio (Declaración de Representación + gestión documental ETIAS) desde julio 2026, usando los leads ya capturados vía EmailJS/Google Forms como primera base a contactar.
+
+**Alcance explícito**:
+- SÍ: cobrar honorarios de intermediación desde ahora
+- NO incluido aquí: venta/cesión de datos de leads a terceros (decisión distinta, no activada hoy)
+
+**Implicaciones**:
+- ETIAS_PASS_copy_corregido.md pasa de copy preparatorio a copy operativo
+- Contactar leads existentes ofreciendo el servicio pagado
+- Comunicar el honorario claramente antes de cualquier cobro
+- Infraestructura sigue en \$0/mes — cambia la política comercial, no el stack
+
+**Reemplaza**: la regla "NO monetizar hasta Q4 2026" en PROYECTO_MASTER.md, PROMPTS.md y ESTADO_ACTUAL.md

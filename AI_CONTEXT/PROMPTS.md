@@ -25,7 +25,7 @@ SEO básico (sitemap.xml, robots.txt, página /etias-mexico.html)
 Captura de leads (formulario waitlist)
 Programmatic SEO (100 páginas automáticas)
 REGLAS CRÍTICAS:
-NO monetizar ahora (ETIAS no existe hasta Q4 2026)
+SÍ monetizar desde julio 2026 (ver DECISIONES.md 2026-07-01)
 NO construir features nuevas al simulador
 NO modificar index.html existente (~1,150 líneas funcionando)
 SÍ enfocarse en SEO + captura leads

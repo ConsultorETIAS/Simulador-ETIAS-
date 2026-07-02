@@ -68,7 +68,7 @@
 
 ### ❌ NO HACER
 - NO modificar index.html sin backup
-- NO monetizar antes de Q4 2026
+- SÍ monetizar desde julio 2026 (ver DECISIONES.md 2026-07-01)
 - NO agregar features sin validación
 - NO sobre-optimizar código funcionando
 
