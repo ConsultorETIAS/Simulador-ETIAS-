@@ -77,3 +77,36 @@
 **Commits totales:** 5  
 **Última sincronización:** 2026-03-14  
 **Próxima sesión:** Martes 16 Mar, 14:00
+
+---
+
+## CAMINO E: Modelos de integración con agencias europeas y agregadores de vuelos
+
+**Objetivo**: reemplazar dependencia de SEO orgánico por distribución vía
+plataformas que ya concentran al viajero.
+
+**Modelos técnicos disponibles ($0-bajo costo de entrada)**:
+
+1. **NDC / GDS APIs (Amadeus, Sabre, Travelport)**
+   Self-service, sin ventas ni contrato. Permite ofrecer validación ETIAS
+   como servicio adicional dentro de flujos de reserva ya existentes.
+
+2. **Agregadores de vuelos con API de afiliado**
+   - Kiwi.com Tequila API — motor de búsqueda de vuelos con API pública gratuita
+   - Travelpayouts — red de afiliados travel, comisión por venta, sin costo fijo
+   - Duffel — API moderna de reservas, self-service, pensada para startups
+
+3. **Modelo "capa de compliance" (parasitario, alineado a tu tesis)**
+   No compites por vuelos ni hoteles — te posicionas como capa de
+   validación de documentos de viaje (ETIAS) que cualquier agregador
+   puede insertar antes del checkout, vía webhook o iframe embebido.
+
+4. **White-label / reventa a agencias pequeñas**
+   Mismo Kit de Agencia, pero distribuido directamente a agencias
+   receptivas europeas que ya atienden turistas LATAM, en vez de
+   esperar que te encuentren por Google.
+
+**Siguiente paso concreto**: elegir UNO de los 4 modelos para prototipar
+antes de dispersar esfuerzo en los 4 — mismo error de fragmentación ya
+documentado dos veces en este archivo.
+

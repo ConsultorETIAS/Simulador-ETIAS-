@@ -368,3 +368,26 @@ Submit a Google Search Console para iniciar indexación
 - Infraestructura sigue en \$0/mes — cambia la política comercial, no el stack
 
 **Reemplaza**: la regla "NO monetizar hasta Q4 2026" en PROYECTO_MASTER.md, PROMPTS.md y ESTADO_ACTUAL.md
+
+---
+
+## 2026-07-05 — LECCIÓN: pSEO modo "specialist" fallido + confirmación monetización Q3
+
+**Resultado del experimento pSEO**:
+- 203 páginas generadas (conteo declarado en esta sesión — inconsistente
+  con sesiones previas: 82 URLs en marzo, 24 URLs el 29-jun en Netlify)
+- Cero indexación, cero leads, cero clics
+- Diagnóstico: thin content — páginas generadas por template sin
+  diferenciación sustancial de contenido real
+
+**Factor agravante identificado**: cuenta de Search Console con 6+
+propiedades activas de proyectos no relacionados (viralprotest.org,
+etias-agency-os.netlify.app, hereditaria.netlify.app, etc.) — patrón de
+dispersión entre múltiples dominios/proyectos, mismo error estructural
+que ya se documentó en 2026-03-12 (45 artefactos HTML sin lanzar).
+
+**DECISIÓN CONFIRMADA: Monetizar en Q3 2026**
+- Se abandona la estrategia de esperar indexación orgánica antes de cobrar
+- Canal de distribución pasa de SEO orgánico a integración directa con
+  agentes/agencias y plataformas existentes (ver Camino E en PROYECTO_MASTER.md)
+
