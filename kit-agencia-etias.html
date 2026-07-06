@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETIAS Agency Kit — Sistema completo para tramitar ETIAS a tus clientes</title>
+<meta name="description" content="Documentos legales, checklist y scripts listos para que agencias de viaje en Latinoamérica cobren honorarios por tramitar ETIAS a sus clientes desde hoy.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#EDE7D9;
+    --paper-deep:#E3DBC8;
+    --ink:#16213E;
+    --ink-soft:#3A4460;
+    --stamp:#9A2B1E;
+    --stamp-deep:#7A2118;
+    --gold:#9C7A3C;
+    --line:#C9BFA3;
+    --green:#3C4A3A;
+    --white:#FBF9F3;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4', serif;
+    font-size:17px;
+    line-height:1.6;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.08;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.03em;
+  }
+  a{color:inherit;}
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .rule{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:0;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--stamp);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--stamp);
+    display:inline-block;
+  }
+
+  header{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 0;
+  }
+  header .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brandmark{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .brandmark .dot{
+    width:7px;height:7px;
+    border-radius:50%;
+    background:var(--stamp);
+    display:inline-block;
+  }
+  .file-no{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:#9AA3C0;
+  }
+
+  .hero{
+    padding:72px 0 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.3fr 0.8fr;
+    gap:48px;
+    align-items:start;
+  }
+  .hero h1{
+    font-size:clamp(34px, 5vw, 52px);
+    margin-top:16px;
+  }
+  .hero .lede{
+    font-size:19px;
+    color:var(--ink-soft);
+    margin-top:18px;
+    max-width:46ch;
+  }
+  .hero-actions{
+    margin-top:32px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  .btn-primary{
+    background:var(--stamp);
+    color:var(--white);
+    border:none;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:16px 28px;
+    text-decoration:none;
+    display:inline-block;
+    border-radius:var(--radius);
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{ background:var(--stamp-deep); }
+  .btn-primary:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; }
+  .price-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .price-tag s{ opacity:.55; margin-right:6px; }
+  .price-tag strong{ color:var(--stamp); font-size:16px; }
+
+  .seal{
+    justify-self:end;
+    width:168px;height:168px;
+    border:2px solid var(--stamp);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-9deg);
+    color:var(--stamp);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    line-height:1.5;
+    padding:14px;
+    position:relative;
+    flex-shrink:0;
+  }
+  .seal::before{
+    content:"";
+    position:absolute;
+    inset:8px;
+    border:1px dashed var(--stamp);
+    border-radius:50%;
+    opacity:.55;
+  }
+  .seal b{ display:block; font-size:15px; margin:4px 0; }
+
+  section{ padding:56px 0; }
+  section.alt{ background:var(--paper-deep); }
+  .section-head{ margin-bottom:32px; max-width:60ch; }
+  .section-head h2{ font-size:clamp(26px,3.4vw,34px); margin-top:14px; }
+
+  .calc{
+    background:var(--white);
+    border:1px solid var(--line);
+    padding:32px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+  }
+  .calc-control label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  input[type="range"]{
+    width:100%;
+    accent-color:var(--stamp);
+  }
+  .calc-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--stamp);
+    margin-top:8px;
+  }
+  .calc-result{
+    border-left:2px solid var(--line);
+    padding-left:32px;
+  }
+  .calc-result .big{
+    font-family:'Fraunces', serif;
+    font-size:44px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .calc-result .sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:4px;
+  }
+  .calc-breakdown{
+    margin-top:20px;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .calc-breakdown div{
+    display:flex;
+    justify-content:space-between;
+    padding:6px 0;
+    border-bottom:1px dotted var(--line);
+  }
+  @media (max-width:680px){
+    .calc{ grid-template-columns:1fr; }
+    .calc-result{ border-left:none; border-top:2px solid var(--line); padding-left:0; padding-top:24px; }
+  }
+
+  .ledger{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+  .ledger-cell{
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:24px 20px;
+  }
+  .ledger-cell .num{
+    font-family:'Fraunces', serif;
+    font-size:32px;
+    font-weight:600;
+    color:var(--stamp);
+  }
+  .ledger-cell .label{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+  .ledger-cell .src{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--gold);
+    margin-top:8px;
+    display:block;
+  }
+  @media (max-width:680px){
+    .ledger{ grid-template-columns:1fr 1fr; }
+  }
+
+  .extract{
+    background:var(--white);
+    border-left:3px solid var(--gold);
+    padding:20px 24px;
+    margin-bottom:16px;
+  }
+  .extract h3{
+    font-size:16px;
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--ink);
+    margin-bottom:10px;
+  }
+  .extract p{ margin:0; color:var(--ink-soft); }
+  .extract .src{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--gold);
+    display:block;
+    margin-top:10px;
+  }
+
+  .process-row{
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:20px;
+    padding:24px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .process-row:first-of-type{ border-top:1px solid var(--line); }
+  .process-idx{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--stamp);
+    padding-top:4px;
+  }
+  .process-row h3{ font-size:20px; margin-bottom:8px; }
+  .process-row p{ color:var(--ink-soft); margin:0 0 8px; }
+  .process-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--green);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--white);
+    font-size:15px;
+  }
+  th,td{
+    text-align:left;
+    padding:14px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  th{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    background:var(--paper-deep);
+  }
+  td.num{ font-family:'IBM Plex Mono', monospace; }
+  .table-note{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:12px;
+    font-style:italic;
+  }
+
+  .kit-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .kit-item{
+    background:var(--white);
+    padding:24px;
+  }
+  .kit-item .idx{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--gold);
+  }
+  .kit-item h3{ font-size:17px; margin:8px 0 6px; }
+  .kit-item p{ font-size:14px; color:var(--ink-soft); margin:0; }
+  @media (max-width:680px){ .kit-grid{ grid-template-columns:1fr; } }
+
+  details{
+    border-bottom:1px solid var(--line);
+    padding:18px 0;
+  }
+  summary{
+    cursor:pointer;
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:17px;
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+  }
+  summary::-webkit-details-marker{ display:none; }
+  summary::after{
+    content:"+";
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--stamp);
+    font-size:20px;
+    flex-shrink:0;
+  }
+  details[open] summary::after{ content:"–"; }
+  details p{ color:var(--ink-soft); margin:12px 0 0; }
+
+  .cta-final{
+    background:var(--ink);
+    color:var(--paper);
+    padding:64px 0;
+    text-align:center;
+  }
+  .cta-final h2{ color:var(--white); font-size:clamp(26px,4vw,36px); }
+  .cta-final .lede{ color:#B7BEDA; max-width:50ch; margin:14px auto 28px; }
+  .cta-final .price-tag{ color:#B7BEDA; margin-top:14px; }
+  .cta-final .price-tag strong{ color:#E7A891; }
+
+  footer{
+    padding:28px 0 40px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  footer a{ text-decoration:underline; }
+
+  @media (max-width:780px){
+    .hero .wrap{ grid-template-columns:1fr; }
+    .seal{ justify-self:start; margin-top:8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brandmark"><span class="dot"></span>ETIAS Agency Kit</div>
+    <div class="file-no">Expediente N.º AK-2026</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Kit operativo para agentes · LATAM</span>
+      <h1>Tramitar ETIAS ya es un servicio que se cobra. Faltan los documentos para hacerlo bien.</h1>
+      <p class="lede">La normativa europea permite que un tercero comercial gestione la autorización de viaje de tus clientes, con honorario propio, siempre que exista una Declaración de Representación firmada. Este kit trae esa declaración lista, el checklist de datos y los guiones de conversación — para que empieces esta semana, no cuando termines de armarlo tú mismo.</p>
+      <div class="hero-actions">
+        <a href="#comprar" class="btn-primary">Ver el kit completo</a>
+        <span class="price-tag"><s>$97</s> <strong>$47 USD</strong> · pago único</span>
+      </div>
+    </div>
+    <div class="seal">
+      DECLARACIÓN<br>
+      <b>INCLUIDA</b>
+      1 documento<br>por viajero
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Calculadora de honorarios</span>
+      <h2>Lo que representa tramitar ETIAS para tu cartera actual de clientes</h2>
+    </div>
+    <div class="calc">
+      <div class="calc-control">
+        <label for="slider">Clientes que tramitas al mes</label>
+        <input type="range" id="slider" min="1" max="200" value="30">
+        <div class="calc-value" id="sliderValue">30 clientes / mes</div>
+
+        <label for="fee" style="margin-top:24px;">Tu honorario por trámite (USD)</label>
+        <input type="range" id="fee" min="10" max="35" value="20">
+        <div class="calc-value" id="feeValue">$20 por trámite</div>
+      </div>
+      <div class="calc-result">
+        <div class="big mono" id="monthly">$600</div>
+        <div class="sub">ingreso mensual estimado en honorarios</div>
+        <div class="calc-breakdown">
+          <div><span>Costo oficial ETIAS</span><span>€20 / viajero</span></div>
+          <div><span>Tu honorario (este cálculo)</span><span id="feeEcho">$20</span></div>
+          <div><span>Ingreso anual estimado</span><span id="yearly">$7,200</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="table-note">Cálculo ilustrativo con fines de referencia. El ingreso real depende de tu volumen de clientes y de la tarifa que definas.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="ledger">
+      <div class="ledger-cell">
+        <div class="num">15</div>
+        <div class="label">países de LATAM exentos de visa Schengen que deberán tramitar ETIAS</div>
+      </div>
+      <div class="ledger-cell">
+        <div class="num">€20</div>
+        <div class="label">tarifa oficial por viajero de 18 a 70 años</div>
+        <span class="src">travel-europe.europa.eu</span>
+      </div>
+      <div class="ledger-cell">
+        <div class="num">3 años</div>
+        <div class="label">vigencia de cada autorización — renovación recurrente</div>
+      </div>
+      <div class="ledger-cell">
+        <div class="num">Sin tope fijo</div>
+        <div class="label">el reglamento no fija un monto máximo de honorario, solo pide que sea razonable</div>
+        <span class="src">FAQ oficial ETIAS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Marco legal</span>
+      <h2>Tres extractos que definen tu posición como intermediario</h2>
+    </div>
+
+    <div class="extract">
+      <h3>Representación autorizada</h3>
+      <p>El viajero puede designar a un tercero —una agencia u otro intermediario comercial— para presentar su solicitud ETIAS a través del sitio o app oficiales, en su nombre.</p>
+      <span class="src">travel-europe.europa.eu/etias · "Presentar la solicitud en nombre de otros"</span>
+    </div>
+
+    <div class="extract">
+      <h3>Honorarios del intermediario</h3>
+      <p>El trámite directo cuesta €20. El intermediario puede sumar una tarifa adicional por su servicio; el reglamento pide que sea razonable, sin definir un tope numérico.</p>
+      <span class="src">travel-europe.europa.eu/etias · FAQ, intermediarios comerciales</span>
+    </div>
+
+    <div class="extract">
+      <h3>Documento requerido</h3>
+      <p>Intermediario y viajero firman una Declaración de Representación — un documento por persona. Ambos conservan copia; es la prueba de consentimiento para tratar los datos personales.</p>
+      <span class="src">travel-europe.europa.eu/etias · Sección de representación</span>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">El proceso</span>
+      <h2>Cinco pasos, del primer contacto a la renovación en 2029</h2>
+    </div>
+
+    <div class="process-row">
+      <div class="process-idx mono">01</div>
+      <div>
+        <h3>Informar y captar</h3>
+        <p>Explicas que tramitarás el ETIAS con Declaración de Representación y revisión previa de datos. Un error en el pasaporte causa rechazo sin devolución del €20 — esa revisión es tu valor.</p>
+        <span class="process-tag">Tu ventaja frente al trámite directo</span>
+      </div>
+    </div>
+
+    <div class="process-row">
+      <div class="process-idx mono">02</div>
+      <div>
+        <h3>Firma de la declaración</h3>
+        <p>Antes de recibir cualquier dato, el viajero firma — en persona, digital o por foto de WhatsApp. Un documento por persona, copia para ambos.</p>
+        <span class="process-tag">Plantilla incluida en el kit</span>
+      </div>
+    </div>
+
+    <div class="process-row">
+      <div class="process-idx mono">03</div>
+      <div>
+        <h3>Recopilación con checklist</h3>
+        <p>Pasaporte, correo personal del viajero —nunca el tuyo, ahí llegan las notificaciones oficiales— y las declaraciones de seguridad requeridas.</p>
+        <span class="process-tag">Checklist de 14 campos incluido</span>
+      </div>
+    </div>
+
+    <div class="process-row">
+      <div class="process-idx mono">04</div>
+      <div>
+        <h3>Borrador para revisión</h3>
+        <p>Compartes el resumen antes de enviar. El viajero sigue siendo responsable de la veracidad de sus datos aunque tú los captures — este paso también te protege a ti.</p>
+        <span class="process-tag">Guion de revisión incluido</span>
+      </div>
+    </div>
+
+    <div class="process-row">
+      <div class="process-idx mono">05</div>
+      <div>
+        <h3>Presentación y seguimiento</h3>
+        <p>Envías en el portal oficial. La mayoría se resuelve en minutos; casos con alertas pueden tardar hasta 30 días. Agendas el recordatorio de renovación a los 2.5 años.</p>
+        <span class="process-tag">Ingreso recurrente en 2029</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Modelo de precios</span>
+      <h2>Referencia de honorarios por tipo de trámite</h2>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Servicio</th><th>Costo oficial</th><th>Honorario sugerido</th><th>Ingreso por caso</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Trámite individual</td><td class="num">€20</td><td class="num">$15 – $30</td><td class="num">$35 – $50</td></tr>
+        <tr><td>Familia, 4 personas</td><td class="num">€20 c/u</td><td class="num">$12 – $25 c/u</td><td class="num">$128 – $180</td></tr>
+        <tr><td>Grupo corporativo, 10+</td><td class="num">€20 c/u</td><td class="num">$10 – $20 c/u</td><td class="num">$300 – $400</td></tr>
+        <tr><td>Menores / tutela legal</td><td class="num">Exento</td><td class="num">$15 – $25</td><td class="num">$15 – $25</td></tr>
+        <tr><td>Mayores de 70 años</td><td class="num">Exento</td><td class="num">$10 – $20</td><td class="num">$10 – $20</td></tr>
+      </tbody>
+    </table>
+    <p class="table-note">Cifras de referencia. Tú defines tu propia tarifa según tu mercado y volumen.</p>
+  </div>
+</section>
+
+<section class="alt" id="comprar">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Contenido del kit</span>
+      <h2>Ocho piezas listas para usar con el primer cliente</h2>
+    </div>
+    <div class="kit-grid">
+      <div class="kit-item">
+        <div class="idx mono">01</div>
+        <h3>Declaración de Representación</h3>
+        <p>Plantilla legal, un documento por viajero. Firmable en persona, digital o por WhatsApp.</p>
+      </div>
+      <div class="kit-item">
+        <div class="idx mono">02</div>
+        <h3>Checklist de 14 campos</h3>
+        <p>Todos los datos requeridos del viajero, con alertas para casos de antecedentes o zonas de conflicto.</p>
+      </div>
+      <div class="kit-item">
+        <div class="idx mono">03</div>
+        <h3>Tres guiones de WhatsApp</h3>
+        <p>Primer contacto, revisión de borrador y entrega de autorización, listos para copiar.</p>
+      </div>
+      <div class="kit-item">
+        <div class="idx mono">04</div>
+        <h3>Modelo de precios completo</h3>
+        <p>Tablas de honorarios por individual, familia, grupo corporativo, menores y mayores de 70.</p>
+      </div>
+      <div class="kit-item">
+        <div class="idx mono">05</div>
+        <h3>Formulario digital de captura</h3>
+        <p>Sistema de intake con validación básica de datos del viajero.</p>
+      </div>
+      <div class="kit-item">
+        <div class="idx mono">06</div>
+        <h3>Flujo de automatización</h3>
+        <p>Esquema de notificaciones automáticas al registrar cada caso.</p>
+      </div>
+      <div class="kit-item">
+        <div class="idx mono">07</div>
+        <h3>FAQ de 10 objeciones</h3>
+        <p>Respuestas preparadas para las dudas más comunes antes de que un viajero confíe sus datos.</p>
+      </div>
+      <div class="kit-item">
+        <div class="idx mono">08</div>
+        <h3>Licencia de uso en tu marca</h3>
+        <p>Ponle tu nombre y logo. Úsalo con todos tus clientes, sin fecha de expiración.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:40px;">
+      <a href="https://etiasconsult.gumroad.com/l/exqhkq" class="btn-primary" id="buyLink" target="_blank">Obtener el kit — $47 USD →</a>
+      <p class="table-note" style="margin-top:14px;">Pago único · acceso inmediato · lo recuperas con tu primer trámite cobrado.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2>Antes de empezar</h2>
+    </div>
+
+    <details open>
+      <summary>¿No basta con que el cliente tramite directo en el sitio oficial?</summary>
+      <p>Técnicamente sí. En la práctica, es la primera vez que la mayoría lo hace, el formulario está en varios idiomas europeos y un error en el número de pasaporte causa rechazo sin devolución del €20. Tu valor está en la verificación, no en hacer clic.</p>
+    </details>
+
+    <details>
+      <summary>¿Tengo base legal para cobrar mi honorario?</summary>
+      <p>Sí. El FAQ oficial de ETIAS reconoce explícitamente que un intermediario puede cobrar una tarifa adicional por su servicio. La Declaración de Representación formaliza el acuerdo entre ambas partes.</p>
+    </details>
+
+    <details>
+      <summary>¿Qué pasa si el viajero tiene antecedentes o historial de viaje complejo?</summary>
+      <p>La solicitud puede pasar a revisión manual y tardar hasta 30 días en vez de minutos. El checklist del kit incluye estas preguntas para identificarlo antes de tramitar y avisar al cliente con anticipación.</p>
+    </details>
+
+    <details>
+      <summary>¿Y los menores de edad o los mayores de 70 años?</summary>
+      <p>Están exentos del pago oficial de €20, pero igual deben tramitar su autorización. Para menores se necesita la firma de quien ejerce la patria potestad o tutela legal.</p>
+    </details>
+
+    <details>
+      <summary>¿Cuánto tiempo tengo antes de que sea obligatorio?</summary>
+      <p>El lanzamiento es en Q4 2026, con un período de gracia posterior. Pero los viajeros con planes para fin de año necesitarán tramitarlo antes — el momento de posicionarte es ahora, no cuando el portal abra.</p>
+    </details>
+
+    <details>
+      <summary>¿Qué necesito del viajero para tramitar en su nombre?</summary>
+      <p>Pasaporte vigente, correo electrónico personal del viajero —nunca el tuyo— y la Declaración de Representación firmada. Con eso se presenta la solicitud en el sitio oficial de la UE.</p>
+    </details>
+  </div>
+</section>
+
+<section class="cta-final">
+  <div class="wrap">
+    <span class="eyebrow" style="color:#B7BEDA;">Expediente listo para abrir</span>
+    <h2>Todo lo que necesitas para tramitar tu primer ETIAS esta semana</h2>
+    <p class="lede">Ocho documentos, un pago único, sin fecha de expiración.</p>
+    <a href="#comprar" class="btn-primary">Ver el kit completo</a>
+    <div class="price-tag"><s>$97</s> <strong>$47 USD</strong></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    ETIAS Agency Kit no es un servicio oficial de la Unión Europea. Es un conjunto de plantillas y guías para intermediarios comerciales autorizados por el reglamento ETIAS.
+    Consultas: <a href="mailto:consultor.etias@proton.me">consultor.etias@proton.me</a>
+  </div>
+</footer>
+
+<script>
+  const slider = document.getElementById('slider');
+  const fee = document.getElementById('fee');
+  const sliderValue = document.getElementById('sliderValue');
+  const feeValue = document.getElementById('feeValue');
+  const monthly = document.getElementById('monthly');
+  const feeEcho = document.getElementById('feeEcho');
+  const yearly = document.getElementById('yearly');
+
+  function recalc(){
+    const clients = parseInt(slider.value, 10);
+    const feeVal = parseInt(fee.value, 10);
+    sliderValue.textContent = clients + (clients === 1 ? ' cliente / mes' : ' clientes / mes');
+    feeValue.textContent = '$' + feeVal + ' por trámite';
+    const monthlyTotal = clients * feeVal;
+    monthly.textContent = '$' + monthlyTotal.toLocaleString('en-US');
+    feeEcho.textContent = '$' + feeVal;
+    yearly.textContent = '$' + (monthlyTotal * 12).toLocaleString('en-US');
+  }
+  slider.addEventListener('input', recalc);
+  fee.addEventListener('input', recalc);
+  recalc();
+</script>
+
+</body>
+</html>
