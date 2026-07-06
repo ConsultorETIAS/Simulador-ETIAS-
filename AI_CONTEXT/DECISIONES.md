@@ -391,3 +391,22 @@ que ya se documentó en 2026-03-12 (45 artefactos HTML sin lanzar).
 - Canal de distribución pasa de SEO orgánico a integración directa con
   agentes/agencias y plataformas existentes (ver Camino E en PROYECTO_MASTER.md)
 
+
+---
+
+## 2026-07-06 — DECISIÓN: Camino B/C solo tras validación de producto
+
+**Regla adoptada**: No invertir en Claude Code (Camino B) ni Cowork (Camino C)
+hasta tener evidencia de pago real — no tráfico, no indexación, no leads
+tibios. Evidencia = venta del Kit confirmada o expediente completo del
+Simulador con seguimiento real.
+
+**Razón**: Ambos caminos rompen la regla de $0/mes (mínimo $20/mes cada uno,
+Camino C además requiere computadora). Invertir sin validación repite el
+error de marzo 2026 (construir antes de tener usuarios).
+
+**Trigger de activación**:
+- Camino B: 5-10 ventas/expedientes reales gestionados manualmente que
+  empiecen a saturar el manejo por WhatsApp/Termux.
+- Camino C: ingreso recurrente que sostenga el costo + acceso a Mac/Windows/Linux.
+
