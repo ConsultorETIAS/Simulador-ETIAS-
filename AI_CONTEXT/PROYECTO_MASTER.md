@@ -1,112 +1,69 @@
 # ETIAS CONSULTANT SIMULATOR - PROYECTO MASTER
 
-**Propietario:** Daniel
+**Propietario:** Daniel Gómez Gamiño
 **Objetivo:** Dominar mercado ETIAS México antes de Q4 2026
-**URL:** https://consultoretias.github.io/Simulador-ETIAS-/
-**Última actualización:** 2026-03-14
+**URL REAL:** https://etias-simulador.netlify.app/
+**Repo:** github.com/ConsultorETIAS/Simulador-ETIAS- (rama main → deploy automático en Netlify)
+**Última actualización:** 2026-07-06
 
 ---
 
-## ESTADO ACTUAL (14 Mar 2026)
+## ⚠️ CORRECCIÓN CRÍTICA (2026-07-06)
 
-### ✅ COMPLETADO HOY
-
-| Tarea | Archivo/URL | Estado |
-|-------|-------------|--------|
-| Verificación Google Search Console | googleb3774603a75b32a8.html | ✅ Activo |
-| Sitemap.xml enviado | 2 URLs indexadas | ✅ Completado |
-| Robots.txt configurado | Permitir todo | ✅ Activo |
-| Landing page SEO | /etias-mexico.html | ✅ Online |
-| Sincronización Git | main branch | ✅ Up to date |
-
-### 📊 MÉTRICAS ACTUALES
-- **Usuarios reales:** 0
-- **Tráfico:** 0
-- **Indexación Google:** En proceso (24-48h)
-- **Costo mensual:** $0
-- **Commits totales:** 5
+Todo el AI_CONTEXT/ hasta hoy decía que el hosting era GitHub Pages
+(consultoretias.github.io/Simulador-ETIAS-/). ESA URL DA 404, NO EXISTE.
+El proyecto se migró a Netlify (Production deploy, rama main) en algún
+momento y la documentación nunca se actualizó. Corregido hoy tras
+auditoría con Claude tras diagnóstico en Google Search Console.
 
 ---
 
-## PRÓXIMA SESIÓN AGENDADA
+## ESTADO ACTUAL (6 Jul 2026)
 
-**📅 Martes 16 Marzo 2026 - 14:00 (1h 30min)**
+### Hosting y deploy
+- Hosting real: Netlify, Production deploy, rama `main`, estado "Published"
+- NO es GitHub Pages (ese dominio está muerto)
 
-**Objetivo:** Implementar envío automático de PDF por email
+### SEO / Indexación (auditado hoy en GSC)
+- sitemap.xml: **25 URLs** (no 82 — corregido, verificado contando el XML real)
+- Propiedad GSC verificada: etias-simulador.netlify.app
+- Sitemap enviado: 30 jun 2026 — Estado: Correcto — 25 páginas descubiertas
+- **Indexadas: 0 / 25**
+- Motivos (GSC → Páginas → Sin indexar):
+  - "Descubierta: actualmente sin indexar"
+  - "Rastreada: actualmente sin indexar"
+- Causa: sitio nuevo (6 días desde envío de sitemap), sin autoridad de
+  dominio, sin backlinks, contenido tipo pSEO (Google es cauteloso con
+  páginas plantilla hasta que demuestran valor único). NO es un bloqueo
+  técnico (robots.txt correcto, sin noindex, rastreo permitido = Sí).
 
-**Tareas:**
-- Configurar EmailJS (200 emails/mes gratis)
-- Modificar index.html con función enviarPDFporEmail()
-- Testing con usuario de prueba
-- Deploy vía Termux
-
-**Recordatorios:** 13:00 (1h antes) + 13:45 (15 min antes)
-
----
-
-## PRIORIDADES
-
-### 🔥 URGENTE (Esta semana)
-1. [ ] Envío automático PDF (Mar 16 - agendado)
-2. [ ] Verificar indexación Google (48-72h post-sitemap)
-3. [ ] Testear sistema memoria con otros LLMs
-
-### 📋 IMPORTANTE (Próximas 2 semanas)
-4. [ ] Crear requisitos-etias.html
-5. [ ] Crear cuando-entra-vigor-etias.html
-6. [ ] Formulario waitlist integrado
+### Simulador
+- 7 pasos operativo, PDF legal trilingüe ES/EN/PT
+- EmailJS activo: service_hxuq7gn / template_r225rld → dggamino@gmail.com
+- Costo mensual: $0
 
 ---
 
-## REGLAS DEL PROYECTO
+## PRÓXIMOS PASOS (sin tocar arquitectura)
+
+1. [ ] Verificar si el simulador (home) enlaza internamente a las 25
+       páginas pSEO (mejora descubrimiento más allá del sitemap)
+2. [ ] Solicitar indexación manual en GSC para 5-10 URLs/día
+       (home + páginas más fuertes primero)
+3. [ ] Esperar 2-3 semanas — es el tiempo normal para sitios nuevos
+4. [ ] Re-auditar GSC cada semana, no diario (evita ruido/ansiedad de datos)
+
+---
+
+## REGLAS DEL PROYECTO (sin cambios)
 
 ### ✅ SÍ HACER
-- Documentar cambios en AI_CONTEXT/
-- Usar Termux para deployment
+- Documentar cambios reales en AI_CONTEXT/ (verificados, no asumidos)
 - Actualizar ESTADO_ACTUAL.md después de cada sesión
 - Usar PROMPTS.md con cualquier LLM
 
 ### ❌ NO HACER
-- NO modificar index.html sin backup
-- SÍ monetizar desde julio 2026 (ver DECISIONES.md 2026-07-01)
+- NO modificar el simulador (774 líneas funcionando) sin backup
+- NO monetizar antes de Q4 2026
 - NO agregar features sin validación
-- NO sobre-optimizar código funcionando
-
----
-
-**Commits totales:** 5  
-**Última sincronización:** 2026-03-14  
-**Próxima sesión:** Martes 16 Mar, 14:00
-
----
-
-## CAMINO E: Modelos de integración con agencias europeas y agregadores de vuelos
-
-**Objetivo**: reemplazar dependencia de SEO orgánico por distribución vía
-plataformas que ya concentran al viajero.
-
-**Modelos técnicos disponibles ($0-bajo costo de entrada)**:
-
-1. **NDC / GDS APIs (Amadeus, Sabre, Travelport)**
-   Self-service, sin ventas ni contrato. Permite ofrecer validación ETIAS
-   como servicio adicional dentro de flujos de reserva ya existentes.
-
-2. **Agregadores de vuelos con API de afiliado**
-   - Kiwi.com Tequila API — motor de búsqueda de vuelos con API pública gratuita
-   - Travelpayouts — red de afiliados travel, comisión por venta, sin costo fijo
-   - Duffel — API moderna de reservas, self-service, pensada para startups
-
-3. **Modelo "capa de compliance" (parasitario, alineado a tu tesis)**
-   No compites por vuelos ni hoteles — te posicionas como capa de
-   validación de documentos de viaje (ETIAS) que cualquier agregador
-   puede insertar antes del checkout, vía webhook o iframe embebido.
-
-4. **White-label / reventa a agencias pequeñas**
-   Mismo Kit de Agencia, pero distribuido directamente a agencias
-   receptivas europeas que ya atienden turistas LATAM, en vez de
-   esperar que te encuentren por Google.
-
-**Siguiente paso concreto**: elegir UNO de los 4 modelos para prototipar
-antes de dispersar esfuerzo en los 4 — mismo error de fragmentación ya
-documentado dos veces en este archivo.
-
+- NO asumir datos de infraestructura sin verificarlos (lección de hoy)

@@ -410,3 +410,42 @@ error de marzo 2026 (construir antes de tener usuarios).
   empiecen a saturar el manejo por WhatsApp/Termux.
 - Camino C: ingreso recurrente que sostenga el costo + acceso a Mac/Windows/Linux.
 
+
+---
+
+## 2026-07-06 — AUDITORÍA: Documentación desactualizada detectada y corregida
+
+### ❌ LECCIÓN APRENDIDA: AI_CONTEXT/ no se actualizó tras migrar hosting
+
+**Error detectado**:
+- Todo el sistema de memoria (PROYECTO_MASTER.md, PROMPTS.md, ESTADO_ACTUAL.md)
+  seguía apuntando a GitHub Pages (consultoretias.github.io/Simulador-ETIAS-/)
+- Esa URL da 404 — el proyecto migró a Netlify (etias-simulador.netlify.app)
+  en algún momento sin documentar el cambio
+- El sitemap.xml se reportaba con "82 URLs" en la documentación; el
+  archivo real tiene 25 URLs
+
+**Cómo se detectó**:
+- Auditoría paso a paso con Claude vía Google Search Console:
+  Inspección de URL → pestaña "Índice de Google" → Sección "Sitemaps"
+  → Reporte "Páginas" (Indexación)
+
+**Diagnóstico final de indexación (6 jul 2026)**:
+- Sitemap correcto, enviado 30 jun 2026, 25 páginas descubiertas
+- 0/25 indexadas — motivos: "Descubierta: sin indexar" y
+  "Rastreada: sin indexar"
+- NO es error técnico (robots.txt OK, sin noindex, rastreo permitido)
+- Es comportamiento normal de un sitio nuevo (6 días desde sitemap)
+  sin autoridad de dominio ni backlinks
+
+**Corrección aplicada**:
+- PROYECTO_MASTER.md, PROMPTS.md actualizados con URL y conteo reales
+- Regla nueva añadida: verificar infraestructura en vivo antes de
+  asumir que AI_CONTEXT/ está al día, especialmente tras cualquier
+  cambio de hosting/deploy
+
+**Implicación para el sistema de memoria**:
+El propósito de AI_CONTEXT/ es continuidad — pero continuidad de datos
+incorrectos es peor que empezar de cero. A partir de ahora, cualquier
+cambio de infraestructura (hosting, dominio, cuenta de deploy) debe
+documentarse el mismo día en DECISIONES.md.
